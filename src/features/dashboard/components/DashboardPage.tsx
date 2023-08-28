@@ -8,22 +8,19 @@ import {LayoutContent, LayoutWrapper} from 'features/app/components/Layout';
 import DashboardContent from 'features/dashboard/components/DashboardContent';
 import DashboardHeader from 'features/dashboard/components/DashboardHeader';
 
-const Dashboard: FC = () => {
+const DashboardPage: FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery('mobile');
-
   return (
-    <AnimatePresence mode="wait">
-      <LayoutWrapper $theme={theme}>
-        <DashboardHeader />
-        <AnimatePresence mode="wait">
-          <LayoutContent $theme={theme} $fullWidth={isMobile}>
-            <DashboardContent />
-          </LayoutContent>
-        </AnimatePresence>
-      </LayoutWrapper>
-    </AnimatePresence>
+    <LayoutWrapper $theme={theme}>
+      <DashboardHeader />
+      <AnimatePresence mode="wait">
+        <LayoutContent $theme={theme} $fullWidth={isMobile}>
+          <DashboardContent />
+        </LayoutContent>
+      </AnimatePresence>
+    </LayoutWrapper>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;
