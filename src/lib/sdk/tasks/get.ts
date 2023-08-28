@@ -1,9 +1,17 @@
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
 import {cookies} from 'next/headers';
 
-export const getTasks = async () => {
-  const {auth} = createServerComponentClient({cookies});
-  const {data: tasks} = await auth.getSession();
+import {EntityResponse} from 'lib/sdk/models/Entity';
+import {type Database} from 'lib/supabase/models';
 
-  return tasks;
+type TaskProps = Database['public']['Tables']['tasks']['Row'];
+
+export const getTasks = async (pickProps: (keyof TaskProps | '*')[] = ['*']) => {
+  const supabase = createServerComponentClient({cookies});
+  const {data: tasks, error} = await supabase.from('tasks').select(`
+    ${pickProps.join(', ')},
+    users(*)
+  `);
+
+  return {tasks, error} as EntityResponse<'tasks', TaskProps>;
 };

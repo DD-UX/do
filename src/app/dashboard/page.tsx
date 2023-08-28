@@ -1,23 +1,14 @@
 import {FC} from 'react';
-import {createServerComponentClient} from '@supabase/auth-helpers-nextjs';
-import {cookies} from 'next/headers';
+
+import {getTasks} from 'lib/sdk/tasks/get';
+import {getUsers} from 'lib/sdk/users/get';
 
 const Dashboard: FC = async () => {
-  const supabase = createServerComponentClient({cookies});
-
-  const {data: tasks} = await supabase.from('tasks').select(`
-    *,
-    users(*)
-  `);
-
-  const {data: users} = await supabase.from('users').select(`
-    id, user
-  `);
-
-  const {data: assignedTasks} = await supabase.from('tasks').select('*');
+  const {tasks, error: tasksError} = await getTasks();
+  const {users, error: usersError} = await getUsers(['id', 'user_name', 'avatar_url']);
 
   console.log('tasks', tasks);
-  console.log('assignedTasks', assignedTasks);
+  console.log('users', users);
 
   return (
     <main className="flex flex-col gap-1">
