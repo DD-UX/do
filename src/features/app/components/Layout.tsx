@@ -8,7 +8,7 @@ import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 export const LayoutWrapper = styled(motion.div).attrs({
   initial: {y: '-20%', opacity: 0},
   animate: {y: 0, opacity: 1},
-  exit: {y: '-20%', opacity: 0},
+  exit: {y: '20%', opacity: 0},
   transition: {duration: 0.2}
 })<GeistThemeProps>`
   display: grid;
@@ -28,7 +28,7 @@ export const LayoutColumn = styled(motion.menu).attrs({
   initial: {x: '-100%'},
   animate: {x: 0},
   exit: {x: '-100%'},
-  transition: {duration: 0.2}
+  transition: {duration: 0.2, delay: 0.2}
 })<GeistThemeProps>`
   grid-row-start: app-header-start;
   grid-row-end: app-content-end;

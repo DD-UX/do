@@ -8,7 +8,8 @@ import styled from 'styled-components';
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
-import {TaskProps} from 'lib/sdk/tasks/get';
+import {deleteTask} from 'lib/sdk/tasks/client/delete';
+import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 const TaskListItemWrapper = styled.div<GeistThemeProps>`
   display: grid;
@@ -36,11 +37,13 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const {setToast} = useToasts();
   const [isUpdatingTask, setIsUpdatingTask] = useState(false);
   const [isDeletingTask, setIsDeletingTask] = useState(false);
-  const {id, title, content, created_at, user_id, assignee_id} = task;
+  const {id, title, created_at} = task;
 
   const removeTaskHandler = async () => {
     try {
       setIsDeletingTask(true);
+      console.log('id', id);
+      await deleteTask(id);
       setToast({
         text: `${title} task deleted successfully`,
         type: 'success'

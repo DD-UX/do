@@ -2,10 +2,10 @@ import {FC} from 'react';
 import NextLink from 'next/link';
 import {redirect} from 'next/navigation';
 
-import {getSession} from 'lib/sdk/session/get';
+import {getSessionServer} from 'lib/sdk/session/server/get';
 
 const Home: FC = async () => {
-  const {session} = await getSession();
+  const {session} = await getSessionServer();
 
   if (!session) {
     redirect('login');

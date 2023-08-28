@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react';
 import {Text, useToasts} from '@geist-ui/core';
 
 import TasksListItem from 'features/task/components/TaskListItem';
-import {getTasks, TaskProps} from 'lib/sdk/tasks/get';
+import {getTasks, TaskProps} from 'lib/sdk/tasks/client/get';
 
 const DashboardContent: FC = () => {
   const {setToast} = useToasts();

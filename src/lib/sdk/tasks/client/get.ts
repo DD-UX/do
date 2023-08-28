@@ -1,6 +1,6 @@
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 
-import {EntityResponse} from 'lib/sdk/models/Entity';
+import {EntityListResponse} from 'lib/sdk/models/Entity';
 import {type Database} from 'lib/supabase/models';
 
 export type TaskProps = Database['public']['Tables']['tasks']['Row'];
@@ -12,5 +12,5 @@ export const getTasks = async (pickProps: (keyof TaskProps | '*')[] = ['*']) => 
     users(*)
   `);
 
-  return {tasks, error} as EntityResponse<'tasks', TaskProps>;
+  return {tasks, error} as EntityListResponse<'tasks', TaskProps>;
 };

@@ -6,6 +6,7 @@ import Save from '@geist-ui/icons/save';
 import styled from 'styled-components';
 
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
+import {setTask} from 'lib/sdk/tasks/client/set';
 
 const AddTaskFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
@@ -46,7 +47,7 @@ const AddTaskForm: FC = () => {
     // Handle creation
     try {
       setIsCreatingTask(true);
-      await refreshProject();
+      await setTask({title: newTaskTitle});
       setToast({
         text: `Task ${newTaskTitle} created successfully.`,
         type: 'success'

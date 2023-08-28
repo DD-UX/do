@@ -4,7 +4,7 @@ import {FC} from 'react';
 import {Button} from '@geist-ui/core';
 import {useRouter} from 'next/navigation';
 
-import {deleteSession} from 'lib/sdk/session/delete';
+import {deleteSession} from 'lib/sdk/session/client/delete';
 
 const GithubSignInButton: FC = () => {
   const router = useRouter();

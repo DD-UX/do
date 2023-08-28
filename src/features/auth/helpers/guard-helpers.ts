@@ -1,9 +1,9 @@
 import {redirect} from 'next/navigation';
 
-import {getSession} from 'lib/sdk/session/get';
+import {getSessionServer} from 'lib/sdk/session/server/get';
 
 export const authGuard = async () => {
-  const {session} = await getSession();
+  const {session} = await getSessionServer();
 
   if (!session) {
     redirect('login');
