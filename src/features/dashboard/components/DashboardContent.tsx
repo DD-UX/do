@@ -1,34 +1,26 @@
-import {FC, useEffect, useState} from 'react';
+import {FC, useContext, useEffect} from 'react';
 import {Text, useToasts} from '@geist-ui/core';
 
+import {TasksContext} from 'features/app/context/TasksContext';
 import TasksListItem from 'features/task/components/TaskListItem';
-import {getTasks, TaskProps} from 'lib/sdk/tasks/client/get';
 
 const DashboardContent: FC = () => {
   const {setToast} = useToasts();
-  const [tasksList, setTasksList] = useState<TaskProps[]>(null);
+  const {tasks, error: tasksError} = useContext(TasksContext);
 
-  const getTasksHandler = async () => {
-    const {tasks, error: tasksError} = await getTasks();
-
+  useEffect(() => {
     if (tasksError) {
       setToast({
         text: `An error occurred while loading tasks.`,
         type: 'error'
       });
     }
-
-    setTasksList(tasks);
-  };
-
-  useEffect(() => {
-    getTasksHandler();
-  }, []);
+  }, [tasksError]);
 
   return (
     <>
-      {tasksList?.map((task) => <TasksListItem key={task.id} task={task} />)}
-      {tasksList?.length < 1 && <Text>No available tasks</Text>}
+      {tasks?.map((task) => <TasksListItem key={task.id} task={task} />)}
+      {tasks?.length < 1 && <Text>No available tasks</Text>}
     </>
   );
 };

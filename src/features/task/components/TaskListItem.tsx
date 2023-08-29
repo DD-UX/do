@@ -1,11 +1,12 @@
 'use client';
 
-import {FC, useState} from 'react';
+import {FC, useContext, useState} from 'react';
 import {Button, Toggle, useTheme, useToasts} from '@geist-ui/core';
 import XIcon from '@geist-ui/icons/x';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
+import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {deleteTask} from 'lib/sdk/tasks/client/delete';
@@ -35,6 +36,7 @@ type TaskListItemProps = {
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
   const {setToast} = useToasts();
+  const {refreshTasks} = useContext(TasksContext);
   const [isUpdatingTask, setIsUpdatingTask] = useState(false);
   const [isDeletingTask, setIsDeletingTask] = useState(false);
   const {id, title, created_at} = task;
@@ -42,12 +44,12 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const removeTaskHandler = async () => {
     try {
       setIsDeletingTask(true);
-      console.log('id', id);
       await deleteTask(id);
       setToast({
         text: `${title} task deleted successfully`,
         type: 'success'
       });
+      refreshTasks();
     } catch (error) {
       setToast({
         text: `An error occurred while deleting ${title} task.`,

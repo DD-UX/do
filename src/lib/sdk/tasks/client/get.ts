@@ -5,10 +5,16 @@ import {type Database} from 'lib/supabase/models';
 
 export type TaskProps = Database['public']['Tables']['tasks']['Row'];
 
-export const getTasks = async (pickProps: (keyof TaskProps | '*')[] = ['*']) => {
+export const getTasks = async ({
+  pickProps = ['*'],
+  search = ''
+}: {
+  pickProps?: (keyof TaskProps | '*')[];
+  search?: string;
+}) => {
   const supabase = createClientComponentClient();
   const {data: tasks, error} = await supabase.from('tasks').select(`
-    ${pickProps.join(', ')},
+    ${pickProps?.join(', ')},
     users(*)
   `);
 

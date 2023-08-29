@@ -3,6 +3,7 @@ import type {Metadata} from 'next';
 import {Quicksand} from 'next/font/google';
 
 import Providers from 'features/app/context/providers';
+import {TasksContextProvider} from 'features/app/context/TasksContext';
 import {authGuard} from 'features/auth/helpers/guard-helpers';
 
 import '../globals.css';
@@ -21,7 +22,9 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
   return (
     <html lang="en" className="h-full">
       <body className={`${quicksand.className} h-full`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <TasksContextProvider>{children}</TasksContextProvider>
+        </Providers>
       </body>
     </html>
   );
