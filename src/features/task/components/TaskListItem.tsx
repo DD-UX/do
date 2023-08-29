@@ -36,31 +36,15 @@ type TaskListItemProps = {
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
   const {setToast} = useToasts();
-  const {refreshTasks} = useContext(TasksContext);
+  const {deleteTask} = useContext(TasksContext);
   const [isUpdatingTask, setIsUpdatingTask] = useState(false);
-  const [isDeletingTask, setIsDeletingTask] = useState(false);
-  const {id, title, created_at} = task;
+  const {title, created_at} = task;
 
-  const removeTaskHandler = async () => {
-    try {
-      setIsDeletingTask(true);
-      await deleteTask(id);
-      setToast({
-        text: `${title} task deleted successfully`,
-        type: 'success'
-      });
-      refreshTasks();
-    } catch (error) {
-      setToast({
-        text: `An error occurred while deleting ${title} task.`,
-        type: 'error'
-      });
-    } finally {
-      setIsDeletingTask(false);
-    }
+  const removeTaskHandler = () => {
+    deleteTask(task);
   };
 
-  // Handle add task
+  // Handle update task
   const updateTaskHandler = async (updatedTask: TaskProps) => {
     console.log('updatedTask', updatedTask);
     try {
@@ -86,7 +70,7 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
           disabled={isUpdatingTask}
           initialChecked={true}
           checked={true}
-          onChange={() => updateTaskHandler({})}
+          onChange={() => updateTaskHandler(task)}
         />
       </div>
       <EllipsisText h5 my={0}>
@@ -100,7 +84,6 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
         scale={0.75}
         type="error"
         ghost
-        loading={isDeletingTask}
         onClick={removeTaskHandler}
       />
     </TaskListItemWrapper>
