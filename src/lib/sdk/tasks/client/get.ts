@@ -13,10 +13,16 @@ export const getTasks = async ({
   search?: string;
 }) => {
   const supabase = createClientComponentClient();
-  const {data: tasks, error} = await supabase.from('tasks').select(`
+  const query = supabase.from('tasks').select(`
     ${pickProps?.join(', ')},
     users(*)
   `);
+
+  if (search) {
+    query.ilike('title', `%${search}%`);
+  }
+
+  const {data: tasks, error} = await query;
 
   return {tasks, error} as EntityListResponse<'tasks', TaskProps>;
 };
