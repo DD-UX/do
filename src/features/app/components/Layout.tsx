@@ -1,4 +1,4 @@
-import {Text} from '@geist-ui/core';
+import {Link, Text} from '@geist-ui/core';
 import {motion} from 'framer-motion';
 import styled from 'styled-components';
 
@@ -87,4 +87,12 @@ export const LayoutContent = styled(motion.section).attrs({
   padding: ${({$theme, $noPadding}) => ($noPadding ? 0 : $theme.layout.gapHalf)};
   height: 100%;
   overflow: auto;
+`;
+
+export const LayoutLink = styled(Link)<GeistThemeProps>`
+  color: ${({$theme}) => $theme.palette.accents_7}!important;
+
+  &:hover {
+    color: ${({$theme}) => $theme.palette.accents_8}!important;
+  }
 `;

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {setTask} from 'lib/sdk/tasks/client/set';
-import {bool} from 'yup';
 
 const AddTaskFormWrapper = styled.form<GeistThemeProps>`
   display: grid;

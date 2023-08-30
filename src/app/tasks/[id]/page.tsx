@@ -6,8 +6,8 @@ import {AnimatePresence} from 'framer-motion';
 
 import {LayoutContent, LayoutWrapper} from 'features/app/components/Layout';
 import TaskForm from 'features/task/components/TaskForm';
-import {TaskContextProvider} from 'features/task/context/TaskContext';
 import TaskHeader from 'features/task/components/TaskHeader';
+import {TaskContextProvider} from 'features/task/context/TaskContext';
 
 const Tasks: FC = () => {
   const theme = useTheme();

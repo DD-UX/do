@@ -1,12 +1,15 @@
 'use client';
 
 import {FC, useContext} from 'react';
-import {Badge, Button, Link, useTheme} from '@geist-ui/core';
+import {Button, useTheme} from '@geist-ui/core';
+import Calendar from '@geist-ui/icons/calendar';
 import XIcon from '@geist-ui/icons/x';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
+import StatusIcon from 'features/app/components/common/StatusIcon';
+import {LayoutLink} from 'features/app/components/Layout';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -15,17 +18,13 @@ import {TaskProps} from 'lib/sdk/tasks/client/get';
 const TaskListItemWrapper = styled.div<GeistThemeProps>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content minmax(0, 1fr) 8rem 2.5rem;
+  grid-template-columns: min-content minmax(0, 1fr) 10rem 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf} 0;
   align-items: center;
 
   & + & {
     border-block-start: 0.0625rem solid ${({$theme}) => $theme.palette.border};
-  }
-
-  a {
-    text-decoration: none;
   }
 `;
 
@@ -45,18 +44,23 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   return (
     <TaskListItemWrapper $theme={theme}>
       <div>
-        <Badge width="100px">{status}</Badge>
+        <StatusIcon status={status} />
       </div>
 
       <NextLink href={`/tasks/${id}`} passHref>
-        <Link>
-          <EllipsisText h6 my={0} type="success">
+        <LayoutLink $theme={theme}>
+          <EllipsisText h6 my={0}>
             {title}
           </EllipsisText>
-        </Link>
+        </LayoutLink>
       </NextLink>
 
-      <div style={{textAlign: 'end'}}>{formatDateTime(created_at)}</div>
+      <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
+        <span>
+          <Calendar size={12} />
+        </span>
+        {formatDateTime(created_at)}
+      </div>
 
       <Button
         auto
