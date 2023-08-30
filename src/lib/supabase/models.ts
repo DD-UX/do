@@ -9,13 +9,30 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      task_statuses: {
+        Row: {
+          id: number
+          name: string
+        }
+        Insert: {
+          id?: number
+          name?: string
+        }
+        Update: {
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       tasks: {
         Row: {
           assignee_id: string | null
           content: string
           created_at: string
           id: string
+          status: string
           title: string
+          updated_at: string
           user_id: string
         }
         Insert: {
@@ -23,7 +40,9 @@ export interface Database {
           content?: string
           created_at?: string
           id?: string
+          status?: string
           title?: string
+          updated_at?: string
           user_id: string
         }
         Update: {
@@ -31,7 +50,9 @@ export interface Database {
           content?: string
           created_at?: string
           id?: string
+          status?: string
           title?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: [

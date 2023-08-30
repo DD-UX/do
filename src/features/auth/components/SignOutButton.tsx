@@ -2,6 +2,7 @@
 
 import {FC} from 'react';
 import {Button} from '@geist-ui/core';
+import LogOut from '@geist-ui/icons/logOut';
 import {useRouter} from 'next/navigation';
 
 import {deleteSession} from 'lib/sdk/session/client/delete';
@@ -16,8 +17,8 @@ const GithubSignInButton: FC = () => {
   };
 
   return (
-    <Button auto type="secondary" scale={0.75} onClick={handleLogout}>
-      Sign out
+    <Button auto type="secondary" icon={<LogOut />} scale={0.75} onClick={handleLogout}>
+      Log out
     </Button>
   );
 };

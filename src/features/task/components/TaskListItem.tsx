@@ -8,8 +8,9 @@ import NextLink from 'next/link';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
-import StatusIcon from 'features/app/components/common/StatusIcon';
+import StatusSelector from 'features/app/components/common/StatusSelector';
 import {LayoutLink} from 'features/app/components/Layout';
+import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -34,18 +35,20 @@ type TaskListItemProps = {
 
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
-  const {deleteTask} = useContext(TasksContext);
+  const {deleteTask, updateTask} = useContext(TasksContext);
   const {id, title, created_at, status} = task;
 
   const removeTaskHandler = () => {
     deleteTask(task);
   };
 
+  const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+    await updateTask({...task, status: updatedStatus});
+  };
+
   return (
     <TaskListItemWrapper $theme={theme}>
-      <div>
-        <StatusIcon status={status} />
-      </div>
+      <StatusSelector status={status} onChange={updateStatus} />
 
       <NextLink href={`/tasks/${id}`} passHref>
         <LayoutLink $theme={theme}>

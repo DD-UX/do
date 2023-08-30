@@ -13,10 +13,14 @@ export const getTasks = async ({
   search?: string;
 }) => {
   const supabase = createClientComponentClient();
-  const query = supabase.from('tasks').select(`
-    ${pickProps?.join(', ')},
-    users(*)
-  `);
+  const query = supabase
+    .from('tasks')
+    .select(
+      `
+    ${pickProps?.join(', ')}
+  `
+    )
+    .order('created_at');
 
   if (search) {
     query.ilike('title', `%${search}%`);

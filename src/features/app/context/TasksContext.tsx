@@ -7,6 +7,7 @@ import DeleteModal from 'features/app/components/common/DeleteModal';
 import useTasksData from 'features/app/hooks/useTasksData';
 import {deleteTask} from 'lib/sdk/tasks/client/delete';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
+import {updateTask} from 'lib/sdk/tasks/client/update';
 
 type TasksContextProviderProps = {
   onInitialized?: () => void;
@@ -16,8 +17,12 @@ export const TasksContext = createContext({
   tasks: [],
   isLoadingTasks: false,
   error: null,
-  isDeletingTask: false,
   refreshTasks: () => {},
+
+  isUpdatingTask: false,
+  updateTask: (updatingTask: TaskProps) => {},
+
+  isDeletingTask: false,
   deleteTask: (deletingTask: TaskProps) => {}
 });
 
@@ -28,6 +33,7 @@ export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProp
   const {setToast} = useToasts();
   const {tasks, error, refreshTasks, isLoadingTasks} = useTasksData();
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskProps | null>(null);
   const modalInstance = useModal();
@@ -74,6 +80,25 @@ export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProp
     }
   };
 
+  // This method deletes the selected task
+  const updateTaskHandler = async (updatingTask: TaskProps) => {
+    try {
+      setIsUpdating(true);
+      await updateTask(updatingTask);
+      setToast({
+        text: `${updatingTask.title} task updated successfully`,
+        type: 'success'
+      });
+    } catch (error) {
+      setToast({
+        text: `An error occurred while updating ${updatingTask.title} task.`,
+        type: 'error'
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   useEffect(() => {
     if (!isLoadingTasks && !hasInitialized) {
       onInitialized?.();
@@ -88,6 +113,10 @@ export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProp
         tasks,
         error,
         refreshTasks,
+
+        updateTask: updateTaskHandler,
+        isUpdatingTask: isUpdating,
+
         deleteTask: handleDeleteTask,
         isDeletingTask: isDeleting
       }}
