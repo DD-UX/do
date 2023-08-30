@@ -8,17 +8,22 @@ import styled from 'styled-components';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {setTask} from 'lib/sdk/tasks/client/set';
+import {bool} from 'yup';
 
 const AddTaskFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: minmax(6rem, 12rem) 2.5rem;
-  gap: ${({$theme}) => $theme.layout.gapQuarter};
+  grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
   margin-inline-start: auto;
 `;
 
-const AddTaskForm: FC = () => {
+type AddTaskFormProps = {
+  autoFocus?: boolean;
+};
+
+const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
   const {setToast} = useToasts();
   const theme = useTheme();
   const {refreshTasks} = useContext(TasksContext);
@@ -70,7 +75,7 @@ const AddTaskForm: FC = () => {
     <AddTaskFormWrapper $theme={theme} onSubmit={addTaskHandler}>
       <Input
         tabIndex={0}
-        autoFocus
+        autoFocus={autoFocus}
         width="100%"
         initialValue={newTaskTitle}
         value={newTaskTitle}

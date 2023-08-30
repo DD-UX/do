@@ -1,21 +1,21 @@
 'use client';
 
-import {FC, useContext, useState} from 'react';
-import {Button, Toggle, useTheme, useToasts} from '@geist-ui/core';
+import {FC, useContext} from 'react';
+import {Badge, Button, Link, useTheme} from '@geist-ui/core';
 import XIcon from '@geist-ui/icons/x';
+import NextLink from 'next/link';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
-import {deleteTask} from 'lib/sdk/tasks/client/delete';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 const TaskListItemWrapper = styled.div<GeistThemeProps>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: 1.5rem minmax(0, 1fr) 8rem 2.5rem;
+  grid-template-columns: min-content minmax(0, 1fr) 8rem 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf} 0;
   align-items: center;
@@ -35,48 +35,29 @@ type TaskListItemProps = {
 
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
-  const {setToast} = useToasts();
   const {deleteTask} = useContext(TasksContext);
-  const [isUpdatingTask, setIsUpdatingTask] = useState(false);
-  const {title, created_at} = task;
+  const {id, title, created_at, status} = task;
 
   const removeTaskHandler = () => {
     deleteTask(task);
   };
 
-  // Handle update task
-  const updateTaskHandler = async (updatedTask: TaskProps) => {
-    console.log('updatedTask', updatedTask);
-    try {
-      setIsUpdatingTask(true);
-      setToast({
-        text: `Task ${task.title} updated successfully.`,
-        type: 'success'
-      });
-    } catch (error) {
-      setToast({
-        text: `An error occurred while updating ${task.title} task.`,
-        type: 'error'
-      });
-    } finally {
-      setIsUpdatingTask(false);
-    }
-  };
-
   return (
     <TaskListItemWrapper $theme={theme}>
       <div>
-        <Toggle
-          disabled={isUpdatingTask}
-          initialChecked={true}
-          checked={true}
-          onChange={() => updateTaskHandler(task)}
-        />
+        <Badge width="100px">{status}</Badge>
       </div>
-      <EllipsisText h5 my={0}>
-        {title}
-      </EllipsisText>
+
+      <NextLink href={`/tasks/${id}`} passHref>
+        <Link>
+          <EllipsisText h6 my={0} type="success">
+            {title}
+          </EllipsisText>
+        </Link>
+      </NextLink>
+
       <div style={{textAlign: 'end'}}>{formatDateTime(created_at)}</div>
+
       <Button
         auto
         icon={<XIcon />}

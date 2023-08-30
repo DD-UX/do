@@ -77,14 +77,14 @@ export const LayoutContent = styled(motion.section).attrs({
   animate: {y: 0, opacity: 1},
   exit: {y: 20, opacity: 0},
   transition: {duration: 0.6}
-})<GeistThemeProps & {$fullWidth?: boolean}>`
+})<GeistThemeProps & {$fullWidth?: boolean; $noPadding?: boolean}>`
   grid-row-start: app-content-start;
   grid-row-end: app-content-end;
   grid-column-start: ${({$fullWidth}) => ($fullWidth ? 'app-column-start' : 'app-content-start')};
   grid-column-end: app-content-end;
 
   background-color: ${({$theme}) => $theme.palette.accents_1};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
+  padding: ${({$theme, $noPadding}) => ($noPadding ? 0 : $theme.layout.gapHalf)};
   height: 100%;
   overflow: auto;
 `;
