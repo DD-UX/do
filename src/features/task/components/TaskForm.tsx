@@ -9,12 +9,14 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 
 import FormControl from 'features/app/components/common/FormControl';
+import StatusSelector from 'features/app/components/common/StatusSelector';
+import UserSelector from 'features/app/components/common/UserSelector';
+import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
-import StatusSelector from 'features/app/components/common/StatusSelector';
-import {TASK_STATUSES} from 'features/app/constants/status-constants';
+import {UserProps} from 'lib/sdk/users/client/get';
 
 const TaskFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
@@ -98,8 +100,12 @@ const TaskForm: FC = () => {
     formikInstance.resetForm();
   }, [KeyCode.Escape]);
 
-  const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+  const updateStatus = (updatedStatus: (typeof TASK_STATUSES)[number]) => {
     formikInstance.setFieldValue('status', updatedStatus, true);
+  };
+
+  const updateAssigneeUser = (updatedUser: UserProps['id']) => {
+    formikInstance.setFieldValue('assignee_id', updatedUser || null, true);
   };
 
   return (
@@ -146,6 +152,13 @@ const TaskForm: FC = () => {
                 iconSize={18}
                 status={formikInstance.values.status}
                 onChange={updateStatus}
+              />
+            </FormControl>
+            <FormControl label="Assigned:" alignItems="start">
+              <UserSelector
+                showUserName
+                userId={formikInstance.values.assignee_id}
+                onChange={updateAssigneeUser}
               />
             </FormControl>
             <Button

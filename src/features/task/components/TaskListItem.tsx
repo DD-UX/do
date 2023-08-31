@@ -9,17 +9,19 @@ import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import StatusSelector from 'features/app/components/common/StatusSelector';
+import UserSelector from 'features/app/components/common/UserSelector';
 import {LayoutLink} from 'features/app/components/Layout';
 import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
+import {UserProps} from 'lib/sdk/users/client/get';
 
 const TaskListItemWrapper = styled.div<GeistThemeProps>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content minmax(0, 1fr) 10rem 2.5rem;
+  grid-template-columns: min-content minmax(0, 1fr) 10rem 10rem 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf} 0;
   align-items: center;
@@ -36,7 +38,7 @@ type TaskListItemProps = {
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
   const {deleteTask, updateTask} = useContext(TasksContext);
-  const {id, title, created_at, status} = task;
+  const {id, title, created_at, status, assignee_id} = task;
 
   const removeTaskHandler = () => {
     deleteTask(task);
@@ -44,6 +46,10 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number]) => {
     await updateTask({...task, status: updatedStatus});
+  };
+
+  const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
+    await updateTask({...task, assignee_id: updatedUserId});
   };
 
   return (
@@ -57,6 +63,8 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
           </EllipsisText>
         </LayoutLink>
       </NextLink>
+
+      <UserSelector showUserName userId={assignee_id} onChange={updateAssigneeUser} />
 
       <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
         <span>
