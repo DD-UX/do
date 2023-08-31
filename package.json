@@ -15,15 +15,8 @@
     "@geist-ui/icons": "1.0.2",
     "@supabase/auth-helpers-nextjs": "0.7.4",
     "@supabase/supabase-js": "2.33.1",
-    "@types/node": "20.5.6",
-    "@types/react": "18.2.21",
-    "@types/react-dom": "18.2.7",
-    "@types/styled-components": "5.1.26",
     "autoprefixer": "10.4.15",
     "dayjs": "1.11.9",
-    "eslint": "8.0.1",
-    "eslint-config-next": "13.4.16",
-    "eslint-plugin-simple-import-sort": "10.0.0",
     "formik": "2.4.3",
     "framer-motion": "10.16.1",
     "next": "13.4.16",
@@ -36,12 +29,20 @@
     "yup": "1.2.0"
   },
   "devDependencies": {
+    "@types/node": "20.5.6",
+    "@types/react": "18.2.21",
+    "@types/react-dom": "18.2.7",
+    "@types/styled-components": "5.1.26",
     "@typescript-eslint/eslint-plugin": "6.1.0",
     "eslint-config-standard-with-typescript": "38.0.0",
-    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-import": "2.28.1",
     "eslint-plugin-n": "16.0.0 ",
     "eslint-plugin-promise": "6.0.0",
     "eslint-plugin-react": "7.33.2",
+    "eslint": "8.0.1",
+    "eslint-config-next": "13.4.16",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-simple-import-sort": "7.0.0",
     "prettier": "3.0.2"
   }
 }
