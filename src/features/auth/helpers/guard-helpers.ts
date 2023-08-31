@@ -6,6 +6,6 @@ export const authGuard = async () => {
   const {session} = await getSessionServer();
 
   if (!session) {
-    redirect('login');
+    redirect(`${process.env.NEXT_PUBLIC_DOMAIN}/login`);
   }
 };

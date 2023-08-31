@@ -5,7 +5,7 @@ export const setSessionWithGithub = async () => {
   await auth.signInWithOAuth({
     provider: 'github',
     options: {
-      redirectTo: 'http://localhost:3000/auth/callback/github'
+      redirectTo: '/auth/callback/github'
     }
   });
 };
