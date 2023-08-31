@@ -105,7 +105,7 @@ const TaskForm: FC = () => {
   };
 
   const updateAssigneeUser = (updatedUser: UserProps['id']) => {
-    formikInstance.setFieldValue('assignee_id', updatedUser || null, true);
+    formikInstance.setFieldValue('assignee_id', updatedUser, true);
   };
 
   return (

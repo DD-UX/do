@@ -82,9 +82,14 @@ export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProp
 
   // This method deletes the selected task
   const updateTaskHandler = async (updatingTask: TaskProps) => {
+    if (!updatingTask.assignee_id) {
+      updatingTask.assignee_id = null;
+    }
     try {
       setIsUpdating(true);
       await updateTask(updatingTask);
+      // Refresh list
+      await refreshTasks();
       setToast({
         text: `${updatingTask.title} task updated successfully`,
         type: 'success'
