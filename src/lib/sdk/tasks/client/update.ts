@@ -1,15 +1,13 @@
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {PostgrestSingleResponse} from '@supabase/supabase-js';
 
-import {EntityResponse} from 'lib/sdk/models/Entity';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 export const updateTask = async (updatingTask: TaskProps) => {
   const supabase = createClientComponentClient();
-  const {data: task, error} = await supabase
-    .from('tasks')
-    .update(updatingTask)
-    .eq('id', updatingTask.id)
-    .select();
+  const query = supabase.from('tasks').update(updatingTask).eq('id', updatingTask.id).select();
 
-  return {task, error} as EntityResponse<'tasks', TaskProps>;
+  const {data: task, error} = (await query) as PostgrestSingleResponse<TaskProps[]>;
+
+  return {task, error};
 };

@@ -5,7 +5,8 @@ import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 import {getTasks, TaskProps} from 'lib/sdk/tasks/client/get';
 
 type useTasksDataValues = {
-  tasks: TaskProps[];
+  tasks: TaskProps[] | null;
+  error: PostgrestError | null;
   isLoadingTasks: boolean;
   setSearch(taskName: string): void;
   refreshTasks(): void;
@@ -16,7 +17,7 @@ type useTasksDataValues = {
  */
 function useTasksData(): useTasksDataValues {
   const {setToast} = useToasts();
-  const [tasksData, setTasksData] = useState<TaskProps[]>([]);
+  const [tasksData, setTasksData] = useState<TaskProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [search, setSearch] = useState('');
   const [isLoadingTasks, setIsLoadingTasks] = useState(false);

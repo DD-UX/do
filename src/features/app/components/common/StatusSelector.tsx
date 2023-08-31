@@ -25,7 +25,7 @@ const StatusSelectorLabel = styled.div<GeistThemeProps>`
   display: inline-grid;
   grid-auto-flow: column;
   grid-template-columns: repeat('auto-fit', min-content);
-  gap: ${({$theme}) => $theme.layout.gapQuarter};
+  grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
 `;
 
@@ -37,10 +37,10 @@ const StatusSelectorMenu = styled.menu<GeistThemeProps>`
 `;
 
 type StatusSelectorProps = {
-  status: (typeof TASK_STATUSES)[number];
+  status: (typeof TASK_STATUSES)[number] | string;
   iconSize?: number;
   showValue?: boolean;
-  onChange: (updatedStatus: (typeof TASK_STATUSES)[number]) => void;
+  onChange: (updatedStatus: (typeof TASK_STATUSES)[number] | string) => void;
 };
 
 const StatusSelector: FC<StatusSelectorProps> = ({
@@ -62,7 +62,7 @@ const StatusSelector: FC<StatusSelectorProps> = ({
     setMenuVisible(false);
   }, [KeyCode.Escape]);
 
-  const handleStatusChange = (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+  const handleStatusChange = (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     onChange(updatedStatus);
   };
 

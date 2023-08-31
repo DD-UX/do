@@ -9,6 +9,7 @@ import {authGuard} from 'features/auth/helpers/guard-helpers';
 import '../globals.css';
 
 const quicksand = Quicksand({subsets: ['latin']});
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Dashboard',

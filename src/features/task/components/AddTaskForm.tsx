@@ -3,7 +3,6 @@
 import {FC, FormEvent, useContext, useState} from 'react';
 import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-ui/core';
 import Save from '@geist-ui/icons/save';
-import {useRouter} from 'next/navigation';
 import styled from 'styled-components';
 
 import {TasksContext} from 'features/app/context/TasksContext';
@@ -26,7 +25,6 @@ type AddTaskFormProps = {
 
 const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
   const {setToast} = useToasts();
-  const router = useRouter();
   const theme = useTheme();
   const {refreshTasks} = useContext(TasksContext);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
@@ -56,9 +54,8 @@ const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
     // Handle creation
     try {
       setIsCreatingTask(true);
-      const {
-        task: {id}
-      } = await setTask({title: newTaskTitle});
+      const {task} = await setTask({title: newTaskTitle});
+
       refreshTasks();
       setToast({
         text: `Task ${newTaskTitle} created successfully.`,
@@ -67,7 +64,7 @@ const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
         actions: [
           {
             name: 'Open in new tab',
-            handler: () => openNewTabLink(`/tasks/${id}`)
+            handler: () => openNewTabLink(`/tasks/${task?.id}`)
           }
         ]
       });

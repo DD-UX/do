@@ -48,7 +48,7 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
     deleteTask(task);
   };
 
-  const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+  const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus});
   };
 

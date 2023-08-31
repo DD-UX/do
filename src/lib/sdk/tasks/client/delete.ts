@@ -1,11 +1,14 @@
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {PostgrestSingleResponse} from '@supabase/supabase-js';
 
-import {EntityResponse} from 'lib/sdk/models/Entity';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 export const deleteTask = async (taskId: string) => {
   const supabase = createClientComponentClient();
-  const {data: task, error} = await supabase.from('tasks').delete().eq('id', taskId).select();
+  const query = supabase.from('tasks').delete().eq('id', taskId).select();
+  const {data: tasks, error} = (await query) as PostgrestSingleResponse<TaskProps[]>;
 
-  return {task, error} as EntityResponse<'tasks', TaskProps>;
+  const task = Array.isArray(tasks) && tasks.length > 0 ? tasks[0] : null;
+
+  return {task, error};
 };

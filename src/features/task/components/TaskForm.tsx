@@ -18,7 +18,7 @@ import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
 
-const TaskFormWrapper = styled.form<GeistThemeProps>`
+const TaskFormWrapper = styled.form`
   display: grid;
   grid-template-rows:
     [task-header-start] 3.6rem [task-header-end] 0
@@ -100,7 +100,7 @@ const TaskForm: FC = () => {
     formikInstance.resetForm();
   }, [KeyCode.Escape]);
 
-  const updateStatus = (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+  const updateStatus = (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     formikInstance.setFieldValue('status', updatedStatus, true);
   };
 

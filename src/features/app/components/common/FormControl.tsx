@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, PropsWithChildren} from 'react';
 import {Text} from '@geist-ui/core';
 import {FormikErrors} from 'formik/dist/types';
 import styled, {css} from 'styled-components';
@@ -50,7 +50,7 @@ export type FormControlProps = {
   wrapHorizontal?: boolean;
 };
 
-const FormControl: FC<FormControlProps> = ({
+const FormControl: FC<PropsWithChildren<FormControlProps>> = ({
   label = '',
   errors = [],
   showErrors = false,

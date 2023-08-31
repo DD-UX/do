@@ -2,6 +2,7 @@
 
 import {createContext, FC, PropsWithChildren, useEffect, useState} from 'react';
 import {Text, useModal, useToasts} from '@geist-ui/core';
+import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
 import DeleteModal from 'features/app/components/common/DeleteModal';
 import useTasksData from 'features/app/hooks/useTasksData';
@@ -13,17 +14,30 @@ type TasksContextProviderProps = {
   onInitialized?: () => void;
 };
 
-export const TasksContext = createContext({
+type TasksContextProps = {
+  tasks: TaskProps[] | null;
+  isLoadingTasks: boolean;
+  error: PostgrestError | null;
+  refreshTasks(): void;
+
+  isUpdatingTask: boolean;
+  updateTask(updatedTask: TaskProps): void;
+
+  isDeletingTask: boolean;
+  deleteTask(deletingTask: TaskProps): void;
+};
+
+export const TasksContext = createContext<TasksContextProps>({
   tasks: [],
   isLoadingTasks: false,
   error: null,
   refreshTasks: () => {},
 
   isUpdatingTask: false,
-  updateTask: (updatingTask: TaskProps) => {},
+  updateTask: () => {},
 
   isDeletingTask: false,
-  deleteTask: (deletingTask: TaskProps) => {}
+  deleteTask: () => {}
 });
 
 export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProps>> = ({

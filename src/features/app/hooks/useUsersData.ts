@@ -1,13 +1,14 @@
-import {useEffect, useMemo, useState} from 'react';
+import {Dispatch, SetStateAction, useEffect, useMemo, useState} from 'react';
 import {useToasts} from '@geist-ui/core';
 import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
 import {getUsers, UserProps} from 'lib/sdk/users/client/get';
 
 type useUsersDataValues = {
-  users: UserProps[];
+  users: UserProps[] | null;
+  error: PostgrestError | null;
   isLoadingUsers: boolean;
-  setSearch(userName: string): void;
+  setSearch: Dispatch<SetStateAction<string>>;
   refreshUsers(): void;
 };
 
@@ -16,7 +17,7 @@ type useUsersDataValues = {
  */
 function useUsersData(): useUsersDataValues {
   const {setToast} = useToasts();
-  const [usersData, setUsersData] = useState<UserProps[]>([]);
+  const [usersData, setUsersData] = useState<UserProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [search, setSearch] = useState('');
   const [isLoadingUsers, setIsLoadingUsers] = useState(false);

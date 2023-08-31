@@ -1,7 +1,9 @@
-import {GeistUserTheme} from '@geist-ui/core/dist/themes/themes';
+import {GeistUIThemes} from '@geist-ui/core/dist/themes/presets';
 
 export type GeistThemeProps = {
-  $theme: GeistUserTheme;
+  $theme: GeistUIThemes & {
+    type: string;
+  };
 };
 
 export type GeistSelectOption = {

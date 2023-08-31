@@ -46,6 +46,7 @@ const DeleteModal: FC<DeleteModalProps> = ({
         <Text>{description}</Text>
         {keyword && (
           <Input
+            name="keyword_input"
             scale={1.5}
             width="100%"
             value={keywordInput}

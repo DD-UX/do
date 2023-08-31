@@ -6,6 +6,7 @@ import {getTask, TaskProps} from 'lib/sdk/tasks/client/get';
 
 type useTaskByIdValues = {
   task: TaskProps | null;
+  error: PostgrestError | null;
   isLoadingTask: boolean;
   refreshTask(): void;
 };
@@ -15,7 +16,7 @@ type useTaskByIdValues = {
  */
 function useTaskById(taskId: TaskProps['id']): useTaskByIdValues {
   const {setToast} = useToasts();
-  const [tasksData, setTaskData] = useState<TaskProps>(null);
+  const [tasksData, setTaskData] = useState<TaskProps | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [isLoadingTask, setIsLoadingTask] = useState(false);
 

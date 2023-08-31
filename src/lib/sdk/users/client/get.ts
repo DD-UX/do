@@ -1,6 +1,6 @@
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
+import {PostgrestSingleResponse} from '@supabase/supabase-js';
 
-import {EntityListResponse} from 'lib/sdk/models/Entity';
 import {type Database} from 'lib/supabase/models';
 
 export type UserProps = Database['public']['Tables']['users']['Row'];
@@ -26,7 +26,7 @@ export const getUsers = async ({
     query.ilike('user_name', `%${search}%`);
   }
 
-  const {data: users, error} = await query;
+  const {data: users, error} = (await query) as PostgrestSingleResponse<UserProps[]>;
 
-  return {users, error} as EntityListResponse<'users', UserProps>;
+  return {users, error};
 };

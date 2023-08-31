@@ -19,7 +19,7 @@ import {
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
 
-type StatusIconProps<STATUS = (typeof TASK_STATUSES)[number]> = {
+type StatusIconProps<STATUS = (typeof TASK_STATUSES)[number] | string> = {
   status: STATUS;
   size?: number;
 };

@@ -20,7 +20,7 @@ const DashboardContent: FC = () => {
   return (
     <>
       {tasks?.map((task) => <TasksListItem key={task.id} task={task} />)}
-      {tasks?.length < 1 && <Text>No available tasks</Text>}
+      {!Array.isArray(tasks) || (tasks?.length < 1 && <Text>No available tasks</Text>)}
     </>
   );
 };

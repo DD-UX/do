@@ -12,8 +12,6 @@ import {
 } from '@geist-ui/core';
 import styled from 'styled-components';
 
-import StatusIcon from 'features/app/components/common/StatusIcon';
-import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import {USER_NOT_ASSIGNED} from 'features/app/constants/users-constants';
 import useUsersData from 'features/app/hooks/useUsersData';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
@@ -115,7 +113,7 @@ const UserSelector: FC<UserSelectorProps> = ({
             >
               {USER_NOT_ASSIGNED.user_name}
             </Button>
-            {users.map(({id, user_name, avatar_url}) => (
+            {users?.map(({id, user_name, avatar_url}) => (
               <Button
                 key={id}
                 icon={
