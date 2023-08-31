@@ -1,5 +1,13 @@
-import {FC, useState} from 'react';
-import {Button, ButtonGroup, useTheme} from '@geist-ui/core';
+import {FC, useRef, useState} from 'react';
+import {
+  Button,
+  ButtonGroup,
+  KeyCode,
+  Text,
+  useClickAway,
+  useKeyboard,
+  useTheme
+} from '@geist-ui/core';
 import styled from 'styled-components';
 
 import StatusIcon from 'features/app/components/common/StatusIcon';
@@ -11,7 +19,16 @@ const StatusSelectorWrapper = styled.div`
   position: relative;
   display: inline-block;
   line-height: 1;
+  cursor: pointer;
 `;
+const StatusSelectorLabel = styled.div<GeistThemeProps>`
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-template-columns: repeat('auto-fit', min-content);
+  gap: ${({$theme}) => $theme.layout.gapQuarter};
+  align-items: center;
+`;
+
 const StatusSelectorMenu = styled.menu<GeistThemeProps>`
   position: absolute;
   left: ${({$theme}) => `calc((${$theme.layout.gapHalf} + ${$theme.layout.gapQuarter}) * -1)`};
@@ -21,23 +38,48 @@ const StatusSelectorMenu = styled.menu<GeistThemeProps>`
 
 type StatusSelectorProps = {
   status: (typeof TASK_STATUSES)[number];
+  iconSize?: number;
+  showValue?: boolean;
   onChange: (updatedStatus: (typeof TASK_STATUSES)[number]) => void;
 };
 
-const StatusSelector: FC<StatusSelectorProps> = ({status, onChange}) => {
+const StatusSelector: FC<StatusSelectorProps> = ({
+  status,
+  iconSize = 18,
+  showValue = false,
+  onChange
+}) => {
   const theme = useTheme();
-  const [currentStatus, setCurrentStatus] = useState(status);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuElementRef = useRef(null);
+  const [menuVisible, setMenuVisible] = useState(false);
+
+  useClickAway(menuElementRef, () => {
+    setMenuVisible(false);
+  });
+
+  // Toggle menu
+  useKeyboard(() => {
+    setMenuVisible(false);
+  }, [KeyCode.Escape]);
 
   const handleStatusChange = (updatedStatus: (typeof TASK_STATUSES)[number]) => {
-    setCurrentStatus(updatedStatus);
     onChange(updatedStatus);
   };
 
   return (
-    <StatusSelectorWrapper onClick={() => setIsMenuOpen((prevState) => !prevState)}>
-      <StatusIcon status={currentStatus} />
-      {isMenuOpen && (
+    <StatusSelectorWrapper
+      ref={menuElementRef}
+      onClick={() => setMenuVisible((prevState) => !prevState)}
+    >
+      <StatusSelectorLabel $theme={theme}>
+        <StatusIcon size={iconSize as number} status={status} />
+        {showValue && (
+          <Text my={0} style={{textTransform: 'capitalize'}}>
+            {status}
+          </Text>
+        )}
+      </StatusSelectorLabel>
+      {menuVisible && (
         <StatusSelectorMenu $theme={theme}>
           <ButtonGroup vertical>
             {TASK_STATUSES.map((status) => (

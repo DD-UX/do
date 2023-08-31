@@ -13,6 +13,8 @@ import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
+import StatusSelector from 'features/app/components/common/StatusSelector';
+import {TASK_STATUSES} from 'features/app/constants/status-constants';
 
 const TaskFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
@@ -96,6 +98,10 @@ const TaskForm: FC = () => {
     formikInstance.resetForm();
   }, [KeyCode.Escape]);
 
+  const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number]) => {
+    formikInstance.setFieldValue('status', updatedStatus, true);
+  };
+
   return (
     <TaskFormWrapper onSubmit={formikInstance.handleSubmit}>
       {isLoadingTask ? (
@@ -134,6 +140,14 @@ const TaskForm: FC = () => {
             </FormControl>
           </TaskContent>
           <TaskColumn $theme={theme}>
+            <FormControl label="Status:" alignItems="start">
+              <StatusSelector
+                showValue
+                iconSize={18}
+                status={formikInstance.values.status}
+                onChange={updateStatus}
+              />
+            </FormControl>
             <Button
               width="100%"
               icon={<Save />}

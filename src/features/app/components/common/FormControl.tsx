@@ -12,12 +12,12 @@ export const FormControlRow = styled.div<{
 }>`
   display: grid;
   grid-gap: 0.2rem;
-  ${({$alignItems, vertical, $wrapHorizontal}) =>
+  ${({$alignItems, vertical}) =>
     !vertical
       ? css`
           grid-auto-flow: column;
-          grid-template-columns: ${$wrapHorizontal ? 'auto' : 'minmax(3rem, 10rem)'} 1fr;
-          align-items: ${$alignItems ? $alignItems : 'center'};
+          grid-template-columns: 4rem minmax(0, 1fr);
+          align-items: ${$alignItems};
         `
       : css`
           grid-template-columns: minmax(0, 1fr);
@@ -54,9 +54,8 @@ const FormControl: FC<FormControlProps> = ({
   label = '',
   errors = [],
   showErrors = false,
-  alignItems = '',
+  alignItems = 'center',
   vertical = false,
-  noEllipsis = false,
   wrapHorizontal = false,
   children
 }) => {
@@ -71,7 +70,11 @@ const FormControl: FC<FormControlProps> = ({
        * Form control label element
        */}
       <label htmlFor="" style={{display: 'block'}}>
-        {label && <Text aria-label={label}>{label}</Text>}
+        {label && (
+          <Text type="secondary" aria-label={label}>
+            {label}
+          </Text>
+        )}
       </label>
 
       <FormControlContent>
