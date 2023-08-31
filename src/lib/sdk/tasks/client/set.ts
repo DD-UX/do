@@ -10,5 +10,5 @@ export const setTask = async (creatingTask: TaskToCreate) => {
   const supabase = createClientComponentClient();
   const {data: task, error} = await supabase.from('tasks').insert(creatingTask).select();
 
-  return {task, error} as EntityResponse<'tasks', TaskProps>;
+  return {task: task?.[0] || null, error} as EntityResponse<'tasks', TaskProps>;
 };

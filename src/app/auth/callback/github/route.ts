@@ -9,7 +9,7 @@ export const GET = async ({url}: NextRequest) => {
     const code = String(requestURL.searchParams.get('code'));
     const {auth} = createRouteHandlerClient({cookies});
     await auth.exchangeCodeForSession(code);
-    return NextResponse.redirect('http://localhost:3000/dashboard');
+    return NextResponse.redirect('http://localhost:3000/tasks');
   } catch (error) {
     return NextResponse.redirect(`http://localhost:3000//login?error=${error.message}`);
   }

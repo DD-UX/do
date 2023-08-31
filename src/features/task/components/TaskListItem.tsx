@@ -3,7 +3,7 @@
 import {FC, useContext} from 'react';
 import {Button, useTheme} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
-import XIcon from '@geist-ui/icons/x';
+import Trash2 from '@geist-ui/icons/trash2';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 
@@ -11,7 +11,11 @@ import EllipsisText from 'features/app/components/common/EllipsisText';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
 import {LayoutLink} from 'features/app/components/Layout';
-import {TASK_STATUSES} from 'features/app/constants/status-constants';
+import {
+  STATUS_CANCELLED,
+  STATUS_DONE,
+  TASK_STATUSES
+} from 'features/app/constants/status-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -58,7 +62,15 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
 
       <NextLink href={`/tasks/${id}`} passHref>
         <LayoutLink $theme={theme}>
-          <EllipsisText h6 my={0}>
+          <EllipsisText
+            h6
+            my={0}
+            type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
+            style={{
+              textDecoration:
+                status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
+            }}
+          >
             {title}
           </EllipsisText>
         </LayoutLink>
@@ -75,7 +87,7 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
 
       <Button
         auto
-        icon={<XIcon />}
+        icon={<Trash2 />}
         px={0.4}
         scale={0.75}
         type="error"

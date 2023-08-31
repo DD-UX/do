@@ -20,7 +20,7 @@ export const getTasks = async ({
     ${pickProps?.join(', ')}
   `
     )
-    .order('created_at');
+    .order('created_at', {ascending: false});
 
   if (search) {
     query.ilike('title', `%${search}%`);
