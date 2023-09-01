@@ -11,8 +11,8 @@ import '../globals.css';
 const quicksand = Quicksand({subsets: ['latin']});
 export const revalidate = 0;
 export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Dashboard'
+  title: 'Tasks - Do',
+  description: 'Do tasks and Do resolve them'
 };
 
 const RootLayout = async ({children}: {children: ReactNode}) => {
