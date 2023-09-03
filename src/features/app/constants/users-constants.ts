@@ -1,6 +1,8 @@
+import {NO_VALUE} from 'features/app/constants/ui-constants';
+
 export const USER_NOT_ASSIGNED = {
-  user_name: 'N/A',
+  user_name: NO_VALUE,
   id: '',
   avatar_url: '',
-  name: 'N/A'
+  name: NO_VALUE
 };

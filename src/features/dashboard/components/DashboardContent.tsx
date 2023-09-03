@@ -1,21 +1,11 @@
-import {FC, useContext, useEffect} from 'react';
-import {Text, useToasts} from '@geist-ui/core';
+import {FC, useContext} from 'react';
+import {Text} from '@geist-ui/core';
 
 import {TasksContext} from 'features/app/context/TasksContext';
 import TasksListItem from 'features/task/components/TaskListItem';
 
 const DashboardContent: FC = () => {
-  const {setToast} = useToasts();
-  const {tasks, error: tasksError} = useContext(TasksContext);
-
-  useEffect(() => {
-    if (tasksError) {
-      setToast({
-        text: `An error occurred while loading tasks.`,
-        type: 'error'
-      });
-    }
-  }, [tasksError]);
+  const {tasks} = useContext(TasksContext);
 
   return (
     <>

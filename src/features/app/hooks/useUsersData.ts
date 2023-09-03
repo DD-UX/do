@@ -4,7 +4,7 @@ import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
 import {getUsers, UserProps} from 'lib/sdk/users/client/get';
 
-type useUsersDataValues = {
+type UseUsersDataValues = {
   users: UserProps[] | null;
   error: PostgrestError | null;
   isLoadingUsers: boolean;
@@ -15,7 +15,7 @@ type useUsersDataValues = {
 /*
  * This Hook will pull down all the users
  */
-function useUsersData(): useUsersDataValues {
+function useUsersData(): UseUsersDataValues {
   const {setToast} = useToasts();
   const [usersData, setUsersData] = useState<UserProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
@@ -42,7 +42,7 @@ function useUsersData(): useUsersDataValues {
     loadUsers();
   }, []);
 
-  const memoizedReturnValue: useUsersDataValues = useMemo(() => {
+  const memoizedReturnValue: UseUsersDataValues = useMemo(() => {
     return {
       users: usersData,
       error,

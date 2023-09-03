@@ -6,6 +6,7 @@ import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 export const LayoutWrapper = styled(motion.div).attrs({
+  key: 'layout-wrapper',
   initial: {y: '-20%', opacity: 0},
   animate: {y: 0, opacity: 1},
   exit: {y: '20%', opacity: 0},
@@ -25,6 +26,7 @@ export const LayoutWrapper = styled(motion.div).attrs({
 `;
 
 export const LayoutColumn = styled(motion.menu).attrs({
+  key: 'layout-column',
   initial: {x: '-100%'},
   animate: {x: 0},
   exit: {x: '-100%'},
@@ -73,6 +75,7 @@ export const LayoutHeader = styled.header<GeistThemeProps & {$fullWidth?: boolea
 export const LayoutHeading = styled(Text).attrs({my: 0, h4: true})``;
 
 export const LayoutContent = styled(motion.section).attrs({
+  key: 'layout-content',
   initial: {y: 20, opacity: 0},
   animate: {y: 0, opacity: 1},
   exit: {y: 20, opacity: 0},

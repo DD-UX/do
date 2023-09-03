@@ -9,6 +9,36 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      projects: {
+        Row: {
+          content: string
+          created_at: string
+          end_datetime: string | null
+          id: string
+          start_datetime: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          end_datetime?: string | null
+          id?: string
+          start_datetime?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          end_datetime?: string | null
+          id?: string
+          start_datetime?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       task_statuses: {
         Row: {
           id: number
@@ -30,6 +60,7 @@ export interface Database {
           content: string
           created_at: string
           id: string
+          project_id: string | null
           status: string
           title: string
           updated_at: string
@@ -40,6 +71,7 @@ export interface Database {
           content?: string
           created_at?: string
           id?: string
+          project_id?: string | null
           status?: string
           title?: string
           updated_at?: string
@@ -50,12 +82,19 @@ export interface Database {
           content?: string
           created_at?: string
           id?: string
+          project_id?: string | null
           status?: string
           title?: string
           updated_at?: string
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "tasks_user_id_fkey"
             columns: ["user_id"]

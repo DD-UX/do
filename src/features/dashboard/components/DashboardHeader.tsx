@@ -91,7 +91,7 @@ const DashboardHeader: FC = () => {
       </LayoutHeader>
       <AnimatePresence mode="wait">
         {(menuVisible || !isMobile) && (
-          <LayoutColumn key="motion_layout_column" $theme={theme} ref={menuElementRef}>
+          <LayoutColumn $theme={theme} ref={menuElementRef}>
             <LayoutColumnHeader $theme={theme}>
               <Button
                 auto
@@ -112,7 +112,7 @@ const DashboardHeader: FC = () => {
               <AddProjectForm focusPriority={false} />
             </LayoutColumnHeader>
             <Spacer h={0.5} />
-            <EllipsisText h3>Other projects</EllipsisText>
+            <EllipsisText h3> Other projects</EllipsisText>
           </LayoutColumn>
         )}
       </AnimatePresence>
