@@ -12,23 +12,22 @@ import {
   useTheme
 } from '@geist-ui/core';
 import ArrowLeft from '@geist-ui/icons/arrowLeft';
-import {redirect} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import {LayoutColumn, LayoutColumnHeader} from 'features/app/components/Layout';
-import useProjectByTask from 'features/app/hooks/useProjectByTask';
 import AddProjectForm from 'features/project/components/AddProjectForm';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
 import {TaskContext} from 'features/task/context/TaskContext';
 
 const TaskProjectColumn: FC = () => {
+  const router = useRouter();
   const theme = useTheme();
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
-  const {task} = useContext(TaskContext);
-  const {project, isLoadingProject} = useProjectByTask(task);
+  const {task, project, isLoadingProject} = useContext(TaskContext);
 
   const handleGoBack = () => {
-    redirect('/');
+    router.push('/tasks');
   };
 
   // Reset form on Escape
@@ -55,7 +54,7 @@ const TaskProjectColumn: FC = () => {
             L
           </Keyboard>
         </Button>
-        <AddProjectForm focusPriority={false} />
+        <AddProjectForm autoFocus={false} />
       </LayoutColumnHeader>
       <Spacer h={0.5} />
       {isLoadingProject ? (
@@ -63,9 +62,16 @@ const TaskProjectColumn: FC = () => {
       ) : (
         <>
           <EllipsisText h2>{project?.title}</EllipsisText>
-          {project?.tasks?.map((task) => <TaskProjectColumnItem key={task.id} task={task} />)}
-          {!Array.isArray(project?.tasks) ||
-            (project?.tasks?.length < 1 && <Text>No available tasks</Text>)}
+          {project?.tasks?.map((currentTask) => (
+            <TaskProjectColumnItem
+              key={currentTask.id}
+              task={currentTask}
+              active={currentTask.id === task?.id}
+            />
+          ))}
+          {(!Array.isArray(project?.tasks) || (project?.tasks && project?.tasks?.length < 1)) && (
+            <Text>No available tasks</Text>
+          )}
         </>
       )}
     </LayoutColumn>

@@ -7,19 +7,21 @@ export type ProjectProps = Database['public']['Tables']['projects']['Row'];
 
 export const getProjects = async ({
   pickProps = ['*'],
-  search = ''
+  search = '',
+  sortBy = 'created_at'
 }: {
   pickProps?: (keyof ProjectProps | '*' | string)[];
   search?: string;
+  sortBy?: keyof ProjectProps;
 }) => {
   const supabase = createClientComponentClient();
-  const query = supabase
-    .from('projects')
-    .select(pickProps?.join(','))
-    .order('created_at', {ascending: false});
-
+  const query = supabase.from('projects').select(pickProps?.join(','));
   if (search) {
     query.ilike('title', `%${search}%`);
+  }
+
+  if (sortBy) {
+    query.order(sortBy, {ascending: false});
   }
 
   const {data: projects, error} = (await query) as PostgrestSingleResponse<ProjectProps[]>;

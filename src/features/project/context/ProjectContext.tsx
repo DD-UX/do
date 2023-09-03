@@ -3,35 +3,36 @@
 import {createContext, FC, PropsWithChildren, useEffect, useState} from 'react';
 import {Text, useModal, useToasts} from '@geist-ui/core';
 import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
+import {useParams, useRouter} from 'next/navigation';
 
 import DeleteModal from 'features/app/components/common/DeleteModal';
-import useProjectsData from 'features/app/hooks/useProjectsData';
+import useProjectById from 'features/app/hooks/useProjectById';
 import {deleteProject} from 'lib/sdk/projects/client/delete';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 import {updateProject} from 'lib/sdk/projects/client/update';
 
-type ProjectsContextProviderProps = {
+type ProjectContextProviderProps = {
   onInitialized?: () => void;
 };
 
-type ProjectsContextProps = {
-  projects: ProjectProps[] | null;
-  isLoadingProjects: boolean;
+type ProjectContextProps = {
+  project: ProjectProps | null;
+  isLoadingProject: boolean;
   error: PostgrestError | null;
-  refreshProjects(): void;
+  refreshProject(): void;
 
   isUpdatingProject: boolean;
-  updateProject(updatedProject: ProjectProps): void;
+  updateProject(updatingProject: ProjectProps): void;
 
   isDeletingProject: boolean;
-  deleteProject(deletingProject: ProjectProps): void;
+  deleteProject(): void;
 };
 
-export const ProjectsContext = createContext<ProjectsContextProps>({
-  projects: [],
-  isLoadingProjects: false,
+export const ProjectContext = createContext<ProjectContextProps>({
+  project: null,
+  isLoadingProject: false,
   error: null,
-  refreshProjects: () => {},
+  refreshProject: () => {},
 
   isUpdatingProject: false,
   updateProject: () => {},
@@ -40,34 +41,33 @@ export const ProjectsContext = createContext<ProjectsContextProps>({
   deleteProject: () => {}
 });
 
-export const ProjectsContextProvider: FC<PropsWithChildren<ProjectsContextProviderProps>> = ({
+export const ProjectContextProvider: FC<PropsWithChildren<ProjectContextProviderProps>> = ({
   onInitialized,
   children
 }) => {
+  const {id: projectId} = useParams();
+  const router = useRouter();
+
   const {setToast} = useToasts();
-  const {projects, error, refreshProjects, isLoadingProjects} = useProjectsData();
+  const {project, error, refreshProject, isLoadingProject} = useProjectById(String(projectId));
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [selectedProject, setSelectedProject] = useState<ProjectProps | null>(null);
   const modalInstance = useModal();
 
   // This method triggers the delete modal
-  const handleDeleteProject = (deletingProject: ProjectProps) => {
-    // Select deleting project
-    setSelectedProject(deletingProject);
-
+  const handleDeleteProject = () => {
     // Open modal
     modalInstance.setVisible(true);
   };
 
   // This method deletes the selected project
   const deleteProjectHandler = async () => {
-    if (!selectedProject) {
+    if (!project) {
       return;
     }
 
-    const {id, title} = selectedProject;
+    const {id, title} = project;
 
     try {
       setIsDeleting(true);
@@ -77,13 +77,7 @@ export const ProjectsContextProvider: FC<PropsWithChildren<ProjectsContextProvid
         type: 'success'
       });
       // Refresh list
-      await refreshProjects();
-
-      // Close modal
-      modalInstance.setVisible(false);
-
-      // Clean up selected project
-      setSelectedProject(null);
+      await router.push('/dashboard');
     } catch (error) {
       setToast({
         text: `An error occurred while deleting ${title} project.`,
@@ -99,8 +93,6 @@ export const ProjectsContextProvider: FC<PropsWithChildren<ProjectsContextProvid
     try {
       setIsUpdating(true);
       await updateProject(updatingProject);
-      // Refresh list
-      await refreshProjects();
       setToast({
         text: `${updatingProject.title} project updated successfully`,
         type: 'success'
@@ -116,19 +108,19 @@ export const ProjectsContextProvider: FC<PropsWithChildren<ProjectsContextProvid
   };
 
   useEffect(() => {
-    if (!isLoadingProjects && !hasInitialized) {
+    if (!isLoadingProject && !hasInitialized) {
       onInitialized?.();
       setHasInitialized(true);
     }
-  }, [isLoadingProjects]);
+  }, [isLoadingProject]);
 
   return (
-    <ProjectsContext.Provider
+    <ProjectContext.Provider
       value={{
-        isLoadingProjects,
-        projects,
+        isLoadingProject,
+        project,
         error,
-        refreshProjects,
+        refreshProject,
 
         updateProject: updateProjectHandler,
         isUpdatingProject: isUpdating,
@@ -144,12 +136,12 @@ export const ProjectsContextProvider: FC<PropsWithChildren<ProjectsContextProvid
         title="Delete Project"
         description={
           <Text h6>
-            Are you sure you want to delete <Text b>{selectedProject?.title}</Text>?
+            Are you sure you want to delete <Text b>{project?.title}</Text>?
           </Text>
         }
         disabled={isDeleting}
         onDelete={deleteProjectHandler}
       />
-    </ProjectsContext.Provider>
+    </ProjectContext.Provider>
   );
 };

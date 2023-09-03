@@ -1,18 +1,33 @@
 import {FC, useContext} from 'react';
-import {Button, Loading, Table, Text} from '@geist-ui/core';
+import {Button, Loading, Table, Text, useTheme} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
+import NextLink from 'next/link';
 
+import EllipsisText from 'features/app/components/common/EllipsisText';
+import {LayoutLink} from 'features/app/components/Layout';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
 import {ProjectsContext} from 'features/app/context/ProjectsContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
-import ProjectListItem from 'features/project/components/ProjectListItem';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
 const ProjectsContent: FC = () => {
+  const theme = useTheme();
   const {projects, isLoadingProjects, deleteProject} = useContext(ProjectsContext);
 
-  const renderCreatedAt = (_, {created_at}: ProjectProps) => {
+  const renderTitle = (_: any, {id, title}: ProjectProps) => {
+    return (
+      <NextLink href={`/projects/${id}`} passHref>
+        <LayoutLink $theme={theme}>
+          <EllipsisText h6 my={0}>
+            {title}
+          </EllipsisText>
+        </LayoutLink>
+      </NextLink>
+    );
+  };
+
+  const renderCreatedAt = (_: any, {created_at}: ProjectProps) => {
     return (
       <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
         <span>
@@ -23,7 +38,7 @@ const ProjectsContent: FC = () => {
     );
   };
 
-  const renderStartDateTime = (_, {start_datetime, end_datetime}: ProjectProps) => {
+  const renderStartDateTime = (_: any, {start_datetime, end_datetime}: ProjectProps) => {
     return (
       <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
         <span>
@@ -40,7 +55,7 @@ const ProjectsContent: FC = () => {
     );
   };
 
-  const renderRemoveProjectHandler = (_, project: ProjectProps) => {
+  const renderRemoveProjectHandler = (_: any, project: ProjectProps) => {
     return (
       <Button
         auto
@@ -64,26 +79,19 @@ const ProjectsContent: FC = () => {
     Array.isArray(projects) &&
     (projects?.length > 0 ? (
       <Table<ProjectProps> data={projects}>
-        <Table.Column<ProjectProps> prop="title" label="Title" />
+        <Table.Column<ProjectProps> prop="title" label="Title" render={renderTitle} />
         <Table.Column<ProjectProps> prop="created_at" label="Created at" render={renderCreatedAt} />
         <Table.Column<ProjectProps>
           prop="start_datetime"
           label="Period"
           render={renderStartDateTime}
         />
-        <Table.Column<ProjectProps>
-          prop="id"
-          label="Action"
-          render={renderRemoveProjectHandler}
-          className="justify-items-end"
-        />
+        <Table.Column<ProjectProps> prop="id" label="Action" render={renderRemoveProjectHandler} />
       </Table>
     ) : (
       <Text>No available projects</Text>
     ))
   );
-
-  return <>{projects?.map((project) => <ProjectListItem key={project.id} project={project} />)}</>;
 };
 
 export default ProjectsContent;

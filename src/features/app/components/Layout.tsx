@@ -11,7 +11,7 @@ export const LayoutWrapper = styled(motion.div).attrs({
   animate: {y: 0, opacity: 1},
   exit: {y: '20%', opacity: 0},
   transition: {duration: 0.2}
-})<GeistThemeProps>`
+})<GeistThemeProps & {withColumn?: boolean}>`
   display: grid;
   grid-template-rows:
     [app-header-start] 3.6rem [app-header-end] 0

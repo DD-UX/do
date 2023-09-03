@@ -5,7 +5,9 @@ import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-u
 import Save from '@geist-ui/icons/save';
 import styled from 'styled-components';
 
+import {openNewTabLink} from 'features/app/helpers/ui-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
+import {setProject} from 'lib/sdk/projects/client/set';
 
 const AddProjectFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
@@ -13,13 +15,14 @@ const AddProjectFormWrapper = styled.form<GeistThemeProps>`
   grid-template-columns: minmax(6rem, 12rem) 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
+  margin-inline-start: auto;
 `;
 
 type AddProjectFormProps = {
-  focusPriority?: boolean;
-  onClose?(): void;
+  autoFocus?: boolean;
+  onCreate?: () => void;
 };
-const AddProjectForm: FC<AddProjectFormProps> = ({focusPriority = true, onClose}) => {
+const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) => {
   const {setToast} = useToasts();
   const theme = useTheme();
   const [isCreatingProject, setIsCreatingProject] = useState(false);
@@ -27,7 +30,6 @@ const AddProjectForm: FC<AddProjectFormProps> = ({focusPriority = true, onClose}
 
   // This restores the field value and handles the close
   const resetForm = () => {
-    onClose?.();
     setNewProjectName('');
   };
 
@@ -50,10 +52,18 @@ const AddProjectForm: FC<AddProjectFormProps> = ({focusPriority = true, onClose}
     // Handle creation
     try {
       setIsCreatingProject(true);
-
+      const {project} = await setProject({title: newProjectName});
+      onCreate?.();
       setToast({
         text: `Project ${newProjectName} created successfully.`,
-        type: 'success'
+        type: 'success',
+        delay: 5000,
+        actions: [
+          {
+            name: 'Open in new tab',
+            handler: () => openNewTabLink(`/projects/${project?.id}`)
+          }
+        ]
       });
       resetForm();
     } catch (error) {
@@ -69,7 +79,7 @@ const AddProjectForm: FC<AddProjectFormProps> = ({focusPriority = true, onClose}
   return (
     <AddProjectFormWrapper $theme={theme} onSubmit={addProjectHandler}>
       <Input
-        autoFocus={focusPriority}
+        autoFocus={autoFocus}
         tabIndex={-1}
         width="100%"
         initialValue={newProjectName}

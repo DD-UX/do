@@ -5,7 +5,7 @@ import {Button, useTheme} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
 import NextLink from 'next/link';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import StatusSelector from 'features/app/components/common/StatusSelector';
@@ -22,13 +22,20 @@ import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
 
-const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps>`
+const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: boolean}>`
   display: grid;
   grid-auto-flow: column;
   grid-template-columns: min-content minmax(0, 1fr) 10rem 10rem 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf} 0;
   align-items: center;
+
+  ${({$theme, $isActive}) =>
+    $isActive
+      ? css`
+          border-inline-start: 0.125rem solid ${$theme.palette.success};
+        `
+      : ''}
 
   & + & {
     border-block-start: 0.0625rem solid ${({$theme}) => $theme.palette.border};
@@ -37,9 +44,10 @@ const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps>`
 
 type TaskProjectColumnItemProps = {
   task: TaskProps;
+  active: boolean;
 };
 
-const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task}) => {
+const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
   const {deleteTask, updateTask} = useContext(TasksContext);
   const {id, title, created_at, status, assignee_id} = task;
@@ -48,6 +56,7 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task}) => {
     deleteTask(task);
   };
 
+  console.log(active);
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus});
   };
@@ -57,7 +66,7 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task}) => {
   };
 
   return (
-    <TaskProjectColumnItemWrapper $theme={theme}>
+    <TaskProjectColumnItemWrapper $theme={theme} $isActive={active}>
       <StatusSelector status={status} onChange={updateStatus} />
 
       <NextLink href={`/tasks/${id}`} passHref>

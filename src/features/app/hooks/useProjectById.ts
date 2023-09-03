@@ -3,34 +3,27 @@ import {useToasts} from '@geist-ui/core';
 import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
 import {getProject, ProjectProps} from 'lib/sdk/projects/client/get';
-import {TaskProps} from 'lib/sdk/tasks/client/get';
 
-type UseProjectByTaskValues = {
-  project: (ProjectProps & {tasks: TaskProps[]}) | null;
+type UseProjectByIdValues = {
+  project: ProjectProps | null;
   error: PostgrestError | null;
   isLoadingProject: boolean;
   refreshProject(): void;
 };
 
 /*
- * This Hook will pull down a project and all the tasks
+ * This Hook will pull down all the project
  */
-function useProjectByTask(task: TaskProps | null): UseProjectByTaskValues {
+function useProjectById(projectId: ProjectProps['id']): UseProjectByIdValues {
   const {setToast} = useToasts();
-  const [projectData, setProjectData] = useState<UseProjectByTaskValues['project']>(null);
+  const [projectsData, setProjectData] = useState<ProjectProps | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [isLoadingProject, setIsLoadingProject] = useState(false);
 
   const loadProject = async () => {
-    if (!task?.project_id) {
-      return;
-    }
     try {
       setIsLoadingProject(true);
-      const {project, error} = await getProject<UseProjectByTaskValues['project']>({
-        id: String(task?.project_id),
-        pickProps: ['*', 'tasks(id, title, status)']
-      });
+      const {project, error} = await getProject({id: projectId});
       setError(error);
       setProjectData(project);
     } catch (error) {
@@ -45,19 +38,19 @@ function useProjectByTask(task: TaskProps | null): UseProjectByTaskValues {
 
   useEffect(() => {
     loadProject();
-  }, [task?.project_id]);
+  }, []);
 
-  const memoizedReturnValue: UseProjectByTaskValues = useMemo(() => {
+  const memoizedReturnValue: UseProjectByIdValues = useMemo(() => {
     return {
-      project: projectData,
+      project: projectsData,
       error,
 
       isLoadingProject,
       refreshProject: loadProject
     };
-  }, [projectData, isLoadingProject]);
+  }, [projectsData, isLoadingProject]);
 
   return memoizedReturnValue;
 }
 
-export default useProjectByTask;
+export default useProjectById;

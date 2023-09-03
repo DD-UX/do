@@ -1,11 +1,10 @@
 'use client';
 
-import {FC, FormEvent, useContext, useState} from 'react';
+import {FC, FormEvent, useState} from 'react';
 import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-ui/core';
 import Save from '@geist-ui/icons/save';
 import styled from 'styled-components';
 
-import {TasksContext} from 'features/app/context/TasksContext';
 import {openNewTabLink} from 'features/app/helpers/ui-helpers';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {setTask} from 'lib/sdk/tasks/client/set';
@@ -21,12 +20,12 @@ const AddTaskFormWrapper = styled.form<GeistThemeProps>`
 
 type AddTaskFormProps = {
   autoFocus?: boolean;
+  onCreate?: () => void;
 };
 
-const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
+const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true, onCreate}) => {
   const {setToast} = useToasts();
   const theme = useTheme();
-  const {refreshTasks} = useContext(TasksContext);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
@@ -55,8 +54,7 @@ const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true}) => {
     try {
       setIsCreatingTask(true);
       const {task} = await setTask({title: newTaskTitle});
-
-      refreshTasks();
+      onCreate?.();
       setToast({
         text: `Task ${newTaskTitle} created successfully.`,
         type: 'success',

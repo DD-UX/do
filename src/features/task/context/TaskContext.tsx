@@ -6,7 +6,9 @@ import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 import {useParams, useRouter} from 'next/navigation';
 
 import DeleteModal from 'features/app/components/common/DeleteModal';
+import useProjectByTask from 'features/app/hooks/useProjectByTask';
 import useTaskById from 'features/app/hooks/useTaskById';
+import {ProjectProps} from 'lib/sdk/projects/client/get';
 import {deleteTask} from 'lib/sdk/tasks/client/delete';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {updateTask} from 'lib/sdk/tasks/client/update';
@@ -26,6 +28,11 @@ type TaskContextProps = {
 
   isDeletingTask: boolean;
   deleteTask(): void;
+
+  project: (ProjectProps & {tasks: TaskProps[]}) | null;
+  isLoadingProject: boolean;
+
+  refreshProject(): void;
 };
 
 export const TaskContext = createContext<TaskContextProps>({
@@ -38,7 +45,11 @@ export const TaskContext = createContext<TaskContextProps>({
   updateTask: () => {},
 
   isDeletingTask: false,
-  deleteTask: () => {}
+  deleteTask: () => {},
+
+  project: null,
+  isLoadingProject: false,
+  refreshProject: () => {}
 });
 
 export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>> = ({
@@ -50,6 +61,7 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
 
   const {setToast} = useToasts();
   const {task, error, refreshTask, isLoadingTask} = useTaskById(String(taskId));
+  const {project, isLoadingProject, refreshProject} = useProjectByTask(task);
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -96,6 +108,8 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
     try {
       setIsUpdating(true);
       await updateTask(updatingTask);
+      await refreshTask();
+      await refreshProject();
       setToast({
         text: `${updatingTask.title} task updated successfully`,
         type: 'success'
@@ -129,7 +143,11 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
         isUpdatingTask: isUpdating,
 
         deleteTask: handleDeleteTask,
-        isDeletingTask: isDeleting
+        isDeletingTask: isDeleting,
+
+        project,
+        isLoadingProject,
+        refreshProject
       }}
     >
       {children}
