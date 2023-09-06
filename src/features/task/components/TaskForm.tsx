@@ -34,10 +34,12 @@ const TaskFormWrapper = styled.form`
 `;
 
 const TaskContent = styled(motion.section).attrs({
-  initial: {opacity: 0},
-  animate: {opacity: 1},
-  exit: {opacity: 0},
-  transition: {duration: 0.2}
+  key: 'task-content'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {opacity: 0},
+  // animate: {opacity: 1},
+  // exit: {opacity: 0},
+  // transition: {duration: 0.2}
 })<GeistThemeProps>`
   grid-row-start: task-header-start;
   grid-row-end: task-content-end;
@@ -60,10 +62,12 @@ const TaskContent = styled(motion.section).attrs({
 `;
 
 const TaskColumn = styled(motion.menu).attrs({
-  initial: {x: '100%'},
-  animate: {x: 0},
-  exit: {x: '100%'},
-  transition: {duration: 0.2}
+  key: 'task-column'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {x: '100%'},
+  // animate: {x: 0},
+  // exit: {x: '100%'},
+  // transition: {duration: 0.2}
 })<GeistThemeProps>`
   grid-row-start: task-header-start;
   grid-row-end: task-content-end;

@@ -2,7 +2,6 @@ import {FC, useContext} from 'react';
 import {Button, Loading, Table, Text, useTheme} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
-import NextLink from 'next/link';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import {LayoutLink} from 'features/app/components/Layout';
@@ -17,13 +16,11 @@ const ProjectsContent: FC = () => {
 
   const renderTitle = (_: any, {id, title}: ProjectProps) => {
     return (
-      <NextLink href={`/projects/${id}`} passHref>
-        <LayoutLink $theme={theme}>
-          <EllipsisText h6 my={0}>
-            {title}
-          </EllipsisText>
-        </LayoutLink>
-      </NextLink>
+      <LayoutLink $theme={theme} href={`/projects/${id}`} passHref>
+        <EllipsisText h6 my={0}>
+          {title}
+        </EllipsisText>
+      </LayoutLink>
     );
   };
 

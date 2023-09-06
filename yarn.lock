@@ -3967,7 +3967,7 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
-swr@^2.2.2:
+swr@2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/swr/-/swr-2.2.2.tgz#abcb1f9c97e10527789884169d58b878472d4c98"
   integrity sha512-CbR41AoMD4TQBQw9ic3GTXspgfM9Y8Mdhb5Ob4uIKXhWqnRLItwA5fpGvB7SmSw3+zEjb0PdhiEumtUvYoQ+bQ==
@@ -4209,6 +4209,11 @@ uri-js@^4.2.2:
   integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
   dependencies:
     punycode "^2.1.0"
+
+use-shallow@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/use-shallow/-/use-shallow-1.0.2.tgz#e2e2cdf55b07794a4c490b1b2783ffd98d18904f"
+  integrity sha512-VGycJOiQiGz9nveFbAD3mnd9ono1g8N5j91tSSHyeF/OisgUi/EiuexTsf/nSZmcPb8xF6mqjgAKJLq5Ah5c6A==
 
 use-sync-external-store@^1.2.0:
   version "1.2.0"

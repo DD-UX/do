@@ -1,10 +1,7 @@
 'use client';
 
-import {FC, useContext} from 'react';
-import {Button, useTheme} from '@geist-ui/core';
-import Calendar from '@geist-ui/icons/calendar';
-import Trash2 from '@geist-ui/icons/trash2';
-import NextLink from 'next/link';
+import {FC, MouseEventHandler, useContext} from 'react';
+import {useTheme} from '@geist-ui/core';
 import styled, {css} from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
@@ -16,8 +13,8 @@ import {
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
-import {TasksContext} from 'features/app/context/TasksContext';
-import {formatDateTime} from 'features/app/helpers/date-helpers';
+import useRouterShallow from 'features/app/hooks/useRouterShallow';
+import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -25,9 +22,9 @@ import {UserProps} from 'lib/sdk/users/client/get';
 const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: boolean}>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content minmax(0, 1fr) 10rem 10rem 2.5rem;
+  grid-template-columns: min-content 1fr min-content;
   gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf} 0;
+  padding: ${({$theme}) => $theme.layout.gapHalf};
   align-items: center;
 
   ${({$theme, $isActive}) =>
@@ -36,7 +33,6 @@ const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: bo
           border-inline-start: 0.125rem solid ${$theme.palette.success};
         `
       : ''}
-
   & + & {
     border-block-start: 0.0625rem solid ${({$theme}) => $theme.palette.border};
   }
@@ -49,14 +45,10 @@ type TaskProjectColumnItemProps = {
 
 const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
-  const {deleteTask, updateTask} = useContext(TasksContext);
-  const {id, title, created_at, status, assignee_id} = task;
+  const {push} = useRouterShallow();
+  const {updateTask} = useContext(TaskContext);
+  const {id, title, status, assignee_id} = task;
 
-  const removeTaskHandler = () => {
-    deleteTask(task);
-  };
-
-  console.log(active);
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus});
   };
@@ -65,44 +57,38 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) =
     await updateTask({...task, assignee_id: updatedUserId});
   };
 
+  const handleSelectTask: MouseEventHandler<HTMLAnchorElement> = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    push(`/tasks/${id}`);
+  };
+
   return (
     <TaskProjectColumnItemWrapper $theme={theme} $isActive={active}>
       <StatusSelector status={status} onChange={updateStatus} />
 
-      <NextLink href={`/tasks/${id}`} passHref>
-        <LayoutLink $theme={theme}>
-          <EllipsisText
-            h6
-            my={0}
-            type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
-            style={{
-              textDecoration:
-                status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
-            }}
-          >
-            {title}
-          </EllipsisText>
-        </LayoutLink>
-      </NextLink>
+      <LayoutLink
+        $theme={theme}
+        href={{
+          pathname: `/tasks/${id}`
+        }}
+        passHref
+        onClick={handleSelectTask}
+      >
+        <EllipsisText
+          h6
+          my={0}
+          type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
+          style={{
+            textDecoration:
+              status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
+          }}
+        >
+          {title}
+        </EllipsisText>
+      </LayoutLink>
 
       <UserSelector showUserName userId={assignee_id} onChange={updateAssigneeUser} />
-
-      <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
-        <span>
-          <Calendar size={12} />
-        </span>
-        {formatDateTime(created_at)}
-      </div>
-
-      <Button
-        auto
-        icon={<Trash2 />}
-        px={0.4}
-        scale={0.75}
-        type="error"
-        ghost
-        onClick={removeTaskHandler}
-      />
     </TaskProjectColumnItemWrapper>
   );
 };

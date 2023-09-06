@@ -4,7 +4,6 @@ import {FC, useContext} from 'react';
 import {Button, useTheme} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
-import NextLink from 'next/link';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
@@ -60,21 +59,19 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
     <TaskListItemWrapper $theme={theme}>
       <StatusSelector status={status} onChange={updateStatus} />
 
-      <NextLink href={`/tasks/${id}`} passHref>
-        <LayoutLink $theme={theme}>
-          <EllipsisText
-            h6
-            my={0}
-            type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
-            style={{
-              textDecoration:
-                status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
-            }}
-          >
-            {title}
-          </EllipsisText>
-        </LayoutLink>
-      </NextLink>
+      <LayoutLink $theme={theme} href={`/tasks/${id}`} passHref>
+        <EllipsisText
+          h6
+          my={0}
+          type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
+          style={{
+            textDecoration:
+              status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
+          }}
+        >
+          {title}
+        </EllipsisText>
+      </LayoutLink>
 
       <UserSelector showUserName userId={assignee_id} onChange={updateAssigneeUser} />
 

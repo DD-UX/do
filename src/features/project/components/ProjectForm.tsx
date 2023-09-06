@@ -27,10 +27,12 @@ const ProjectFormWrapper = styled.form`
 `;
 
 const ProjectContent = styled(motion.section).attrs({
-  initial: {opacity: 0},
-  animate: {opacity: 1},
-  exit: {opacity: 0},
-  transition: {duration: 0.2}
+  key: 'project-content'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {opacity: 0},
+  // animate: {opacity: 1},
+  // exit: {opacity: 0},
+  // transition: {duration: 0.2}
 })<GeistThemeProps>`
   grid-row-start: project-header-start;
   grid-row-end: project-content-end;
@@ -53,10 +55,12 @@ const ProjectContent = styled(motion.section).attrs({
 `;
 
 const ProjectColumn = styled(motion.menu).attrs({
-  initial: {x: '100%'},
-  animate: {x: 0},
-  exit: {x: '100%'},
-  transition: {duration: 0.2}
+  key: 'project-column'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {x: '100%'},
+  // animate: {x: 0},
+  // exit: {x: '100%'},
+  // transition: {duration: 0.2}
 })<GeistThemeProps>`
   grid-row-start: project-header-start;
   grid-row-end: project-content-end;

@@ -12,10 +12,10 @@ import {setProject} from 'lib/sdk/projects/client/set';
 const AddProjectFormWrapper = styled.form<GeistThemeProps>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: minmax(6rem, 12rem) 2.5rem;
+  grid-template-columns: minmax(6rem, 1fr) 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
-  margin-inline-start: auto;
+  width: 100%;
 `;
 
 type AddProjectFormProps = {
