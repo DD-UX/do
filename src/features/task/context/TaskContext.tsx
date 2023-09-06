@@ -8,7 +8,7 @@ import {useParams, useRouter} from 'next/navigation';
 import DeleteModal from 'features/app/components/common/DeleteModal';
 import useProjectByTask from 'features/app/hooks/useProjectByTask';
 import useTaskById from 'features/app/hooks/useTaskById';
-import {ProjectProps} from 'lib/sdk/projects/client/get';
+import {ProjectWithTasksProps} from 'lib/sdk/projects/client/get';
 import {deleteTask} from 'lib/sdk/tasks/client/delete';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {updateTask} from 'lib/sdk/tasks/client/update';
@@ -29,7 +29,7 @@ type TaskContextProps = {
   isDeletingTask: boolean;
   deleteTask(): void;
 
-  project: (ProjectProps & {tasks: TaskProps[]}) | null;
+  project: ProjectWithTasksProps | null;
   isLoadingProject: boolean;
 
   refreshProject(): void;

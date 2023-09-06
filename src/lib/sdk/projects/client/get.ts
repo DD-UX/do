@@ -1,9 +1,13 @@
 import {createClientComponentClient} from '@supabase/auth-helpers-nextjs';
 import {PostgrestSingleResponse} from '@supabase/supabase-js';
 
+import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {type Database} from 'lib/supabase/models';
 
 export type ProjectProps = Database['public']['Tables']['projects']['Row'];
+export type ProjectWithTasksProps<TaskPickedProps = TaskProps> = ProjectProps & {
+  tasks: TaskPickedProps[];
+};
 
 export const getProjects = async ({
   pickProps = ['*'],

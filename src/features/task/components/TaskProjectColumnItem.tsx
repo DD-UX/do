@@ -39,7 +39,7 @@ const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: bo
 `;
 
 type TaskProjectColumnItemProps = {
-  task: TaskProps;
+  task: Pick<TaskProps, 'id' | 'title' | 'status' | 'assignee_id'>;
   active: boolean;
 };
 
@@ -50,11 +50,11 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) =
   const {id, title, status, assignee_id} = task;
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
-    await updateTask({...task, status: updatedStatus});
+    await updateTask({...task, status: updatedStatus} as TaskProps);
   };
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
-    await updateTask({...task, assignee_id: updatedUserId});
+    await updateTask({...task, assignee_id: updatedUserId} as TaskProps);
   };
 
   const handleSelectTask: MouseEventHandler<HTMLAnchorElement> = (event) => {

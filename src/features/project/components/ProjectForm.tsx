@@ -86,8 +86,9 @@ const ProjectColumn = styled(motion.menu).attrs({
 const ProjectForm: FC = () => {
   const theme = useTheme();
   const {project, isLoadingProject, updateProject} = useContext(ProjectContext);
+  const {tasks, ...projectData} = project || {};
   const formikInstance = useFormik<ProjectProps>({
-    initialValues: project || ({} as ProjectProps),
+    initialValues: (projectData as ProjectProps) || ({} as ProjectProps),
     enableReinitialize: true,
     validationSchema: yup.object().shape({
       title: yup.string().label('Title').required().nullable()

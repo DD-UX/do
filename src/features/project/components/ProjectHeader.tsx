@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, MouseEvent, useContext, useRef, useState} from 'react';
+import {FC, MouseEvent, useRef, useState} from 'react';
 import {
   Button,
   Keyboard,
@@ -19,15 +19,13 @@ import {useRouter} from 'next/navigation';
 
 import {LayoutHeader, LayoutHeading} from 'features/app/components/Layout';
 import SignOutButton from 'features/auth/components/SignOutButton';
+import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
 import AddTaskForm from 'features/task/components/AddTaskForm';
-import TaskProjectColumn from 'features/task/components/TaskProjectColumn';
-import {TaskContext} from 'features/task/context/TaskContext';
 
-const TaskHeader: FC = () => {
+const ProjectHeader: FC = () => {
   const theme = useTheme();
   const router = useRouter();
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
-  const {task} = useContext(TaskContext);
   const isMobile = useMediaQuery('mobile');
   const [menuVisible, setMenuVisible] = useState(!isMobile);
 
@@ -61,7 +59,7 @@ const TaskHeader: FC = () => {
 
   return (
     <>
-      <LayoutHeader $theme={theme} $fullWidth={!task?.project_id || isMobile}>
+      <LayoutHeader $theme={theme} $fullWidth={isMobile}>
         {isMobile && (
           <Button
             auto
@@ -101,13 +99,11 @@ const TaskHeader: FC = () => {
         <AddTaskForm autoFocus={false} />
         <SignOutButton />
       </LayoutHeader>
-      {task?.project_id && (
-        <AnimatePresence mode="wait">
-          {(menuVisible || !isMobile) && <TaskProjectColumn />}
-        </AnimatePresence>
-      )}
+      <AnimatePresence mode="wait">
+        {(menuVisible || !isMobile) && <ProjectTasksColumn />}
+      </AnimatePresence>
     </>
   );
 };
 
-export default TaskHeader;
+export default ProjectHeader;

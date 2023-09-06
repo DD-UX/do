@@ -2,11 +2,11 @@ import {useEffect, useMemo, useState} from 'react';
 import {useToasts} from '@geist-ui/core';
 import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
-import {getProject, ProjectProps} from 'lib/sdk/projects/client/get';
+import {getProject, ProjectWithTasksProps} from 'lib/sdk/projects/client/get';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 type UseProjectByTaskValues = {
-  project: (ProjectProps & {tasks: TaskProps[]}) | null;
+  project: ProjectWithTasksProps | null;
   error: PostgrestError | null;
   isLoadingProject: boolean;
   refreshProject(): void;
@@ -17,7 +17,7 @@ type UseProjectByTaskValues = {
  */
 function useProjectByTask(task: TaskProps | null): UseProjectByTaskValues {
   const {setToast} = useToasts();
-  const [projectData, setProjectData] = useState<UseProjectByTaskValues['project']>(null);
+  const [projectData, setProjectData] = useState<ProjectWithTasksProps | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
   const [isLoadingProject, setIsLoadingProject] = useState(false);
 
@@ -27,7 +27,7 @@ function useProjectByTask(task: TaskProps | null): UseProjectByTaskValues {
     }
     try {
       setIsLoadingProject(true);
-      const {project, error} = await getProject<UseProjectByTaskValues['project']>({
+      const {project, error} = await getProject<ProjectWithTasksProps>({
         id: String(task?.project_id),
         pickProps: ['*', 'tasks(id, title, status)']
       });

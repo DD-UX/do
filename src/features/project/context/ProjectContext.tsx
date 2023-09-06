@@ -8,15 +8,16 @@ import {useParams, useRouter} from 'next/navigation';
 import DeleteModal from 'features/app/components/common/DeleteModal';
 import useProjectById from 'features/app/hooks/useProjectById';
 import {deleteProject} from 'lib/sdk/projects/client/delete';
-import {ProjectProps} from 'lib/sdk/projects/client/get';
+import {ProjectProps, ProjectWithTasksProps} from 'lib/sdk/projects/client/get';
 import {updateProject} from 'lib/sdk/projects/client/update';
+import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 type ProjectContextProviderProps = {
   onInitialized?: () => void;
 };
 
-type ProjectContextProps = {
-  project: ProjectProps | null;
+export type ProjectContextProps = {
+  project: ProjectWithTasksProps<Pick<TaskProps, 'id' | 'title' | 'status' | 'assignee_id'>> | null;
   isLoadingProject: boolean;
   error: PostgrestError | null;
   refreshProject(): void;
@@ -49,7 +50,12 @@ export const ProjectContextProvider: FC<PropsWithChildren<ProjectContextProvider
   const router = useRouter();
 
   const {setToast} = useToasts();
-  const {project, error, refreshProject, isLoadingProject} = useProjectById(String(projectId));
+  const {project, error, refreshProject, isLoadingProject} = useProjectById<
+    ProjectContextProps['project']
+  >({
+    projectId: String(projectId),
+    withTasks: true
+  });
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -77,7 +83,7 @@ export const ProjectContextProvider: FC<PropsWithChildren<ProjectContextProvider
         type: 'success'
       });
       // Refresh list
-      await router.push('/dashboard');
+      await router.push('/projects');
     } catch (error) {
       setToast({
         text: `An error occurred while deleting ${title} project.`,
