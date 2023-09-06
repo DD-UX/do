@@ -1,34 +1,32 @@
 'use client';
 
-import {FC, FormEvent, useContext, useState} from 'react';
+import {FC, FormEvent, useState} from 'react';
 import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-ui/core';
 import Save from '@geist-ui/icons/save';
 import styled from 'styled-components';
 
 import {openNewTabLink} from 'features/app/helpers/ui-helpers';
-import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {setTask} from 'lib/sdk/tasks/client/set';
 
 const AddTaskFormWrapper = styled.form<GeistThemeProps>`
-  display: grid;
+  display: inline-grid;
   grid-auto-flow: column;
-  grid-template-columns: minmax(6rem, 12rem) 2.5rem;
+  grid-template-columns: minmax(6rem, 20rem) 2.5rem;
   grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
   margin-inline-start: auto;
 `;
 
 type AddTaskFormProps = {
+  projectId?: string | null;
   autoFocus?: boolean;
   onCreate?: () => void;
 };
 
-const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true, onCreate}) => {
+const AddTaskForm: FC<AddTaskFormProps> = ({projectId, autoFocus = true, onCreate}) => {
   const {setToast} = useToasts();
   const theme = useTheme();
-  // when creating a new task within another task, get the product_id if available
-  const {task: currentTask} = useContext(TaskContext);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
@@ -58,7 +56,7 @@ const AddTaskForm: FC<AddTaskFormProps> = ({autoFocus = true, onCreate}) => {
       setIsCreatingTask(true);
       const {task} = await setTask({
         title: newTaskTitle,
-        project_id: currentTask?.project_id || null
+        project_id: projectId || null
       });
       onCreate?.();
       setToast({

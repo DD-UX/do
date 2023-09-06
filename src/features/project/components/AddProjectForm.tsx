@@ -10,12 +10,12 @@ import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {setProject} from 'lib/sdk/projects/client/set';
 
 const AddProjectFormWrapper = styled.form<GeistThemeProps>`
-  display: grid;
+  display: inline-grid;
   grid-auto-flow: column;
-  grid-template-columns: minmax(6rem, 1fr) 2.5rem;
+  grid-template-columns: minmax(6rem, 20rem) 2.5rem;
   gap: ${({$theme}) => $theme.layout.gapQuarter};
   align-items: center;
-  width: 100%;
+  margin-inline-start: auto;
 `;
 
 type AddProjectFormProps = {

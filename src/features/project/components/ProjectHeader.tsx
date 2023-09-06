@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, MouseEvent, useRef, useState} from 'react';
+import {FC, MouseEvent, useContext, useRef, useState} from 'react';
 import {
   Button,
   Keyboard,
@@ -19,12 +19,14 @@ import {useRouter} from 'next/navigation';
 
 import {LayoutHeader, LayoutHeading} from 'features/app/components/Layout';
 import SignOutButton from 'features/auth/components/SignOutButton';
+import AddProjectForm from 'features/project/components/AddProjectForm';
 import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
-import AddTaskForm from 'features/task/components/AddTaskForm';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 
 const ProjectHeader: FC = () => {
   const theme = useTheme();
   const router = useRouter();
+  const {project} = useContext(ProjectContext);
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
   const isMobile = useMediaQuery('mobile');
   const [menuVisible, setMenuVisible] = useState(!isMobile);
@@ -35,8 +37,8 @@ const ProjectHeader: FC = () => {
     setMenuVisible(true);
   };
 
-  const handleGoToTasks = () => {
-    router.push('/tasks');
+  const handleGoToProjects = () => {
+    router.push('/projects');
   };
 
   // Toggle menu
@@ -54,8 +56,8 @@ const ProjectHeader: FC = () => {
   }, [KeyCode.Escape]);
   // Reset form on Escape
   useKeyboard(() => {
-    handleGoToTasks();
-  }, [KeyMod.CtrlCmd, KeyCode.KEY_T]);
+    handleGoToProjects();
+  }, [KeyMod.CtrlCmd, KeyCode.KEY_L]);
 
   return (
     <>
@@ -87,16 +89,16 @@ const ProjectHeader: FC = () => {
           scale={0.75}
           type="default"
           ghost
-          onClick={handleGoToTasks}
+          onClick={handleGoToProjects}
         >
-          Tasks
+          Projects
           <Spacer inline w={0.5} />
           <Keyboard command scale={0.5}>
-            T
+            L
           </Keyboard>
         </Button>
-        <LayoutHeading>Task</LayoutHeading>
-        <AddTaskForm autoFocus={false} />
+        <LayoutHeading>{project?.title}</LayoutHeading>
+        <AddProjectForm autoFocus={false} />
         <SignOutButton />
       </LayoutHeader>
       <AnimatePresence mode="wait">

@@ -57,7 +57,7 @@ const TaskHeader: FC = () => {
   // Reset form on Escape
   useKeyboard(() => {
     handleGoToTasks();
-  }, [KeyMod.CtrlCmd, KeyCode.KEY_T]);
+  }, [KeyMod.CtrlCmd, KeyCode.KEY_L]);
 
   return (
     <>
@@ -94,11 +94,11 @@ const TaskHeader: FC = () => {
           Tasks
           <Spacer inline w={0.5} />
           <Keyboard command scale={0.5}>
-            T
+            L
           </Keyboard>
         </Button>
         <LayoutHeading>Task</LayoutHeading>
-        <AddTaskForm autoFocus={false} />
+        <AddTaskForm autoFocus={false} {...(task?.project_id && {projectId: task?.project_id})} />
         <SignOutButton />
       </LayoutHeader>
       {task?.project_id && (

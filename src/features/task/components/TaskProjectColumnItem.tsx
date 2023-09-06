@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, MouseEventHandler, useContext} from 'react';
+import {FC, useContext} from 'react';
 import {useTheme} from '@geist-ui/core';
 import styled, {css} from 'styled-components';
 
@@ -13,7 +13,6 @@ import {
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
-import useRouterShallow from 'features/app/hooks/useRouterShallow';
 import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
@@ -45,7 +44,6 @@ type TaskProjectColumnItemProps = {
 
 const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
-  const {push} = useRouterShallow();
   const {updateTask} = useContext(TaskContext);
   const {id, title, status, assignee_id} = task;
 
@@ -55,12 +53,6 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) =
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
     await updateTask({...task, assignee_id: updatedUserId} as TaskProps);
-  };
-
-  const handleSelectTask: MouseEventHandler<HTMLAnchorElement> = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    push(`/tasks/${id}`);
   };
 
   return (
@@ -73,7 +65,6 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) =
           pathname: `/tasks/${id}`
         }}
         passHref
-        onClick={handleSelectTask}
       >
         <EllipsisText
           h6
