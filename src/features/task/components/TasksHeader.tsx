@@ -17,19 +17,29 @@ import Menu from '@geist-ui/icons/menu';
 import {AnimatePresence} from 'framer-motion';
 import {useRouter} from 'next/navigation';
 
-import {LayoutHeader, LayoutHeading} from 'features/app/components/Layout';
+import EllipsisText from 'features/app/components/common/EllipsisText';
+import {
+  LayoutColumn,
+  LayoutColumnHeader,
+  LayoutHeader,
+  LayoutHeading
+} from 'features/app/components/Layout';
+import {TasksContext} from 'features/app/context/TasksContext';
 import SignOutButton from 'features/auth/components/SignOutButton';
+import AddProjectForm from 'features/project/components/AddProjectForm';
 import AddTaskForm from 'features/task/components/AddTaskForm';
-import TaskProjectColumn from 'features/task/components/TaskProjectColumn';
-import {TaskContext} from 'features/task/context/TaskContext';
 
-const TaskHeader: FC = () => {
-  const theme = useTheme();
+const TasksHeader: FC = () => {
   const router = useRouter();
+  const theme = useTheme();
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
-  const {task} = useContext(TaskContext);
+  const {refreshTasks} = useContext(TasksContext);
   const isMobile = useMediaQuery('mobile');
   const [menuVisible, setMenuVisible] = useState(!isMobile);
+
+  const handleGoProjects = () => {
+    router.push('/projects');
+  };
 
   const handleOpenMenu = (event: MouseEvent) => {
     // Avoid event propagates and trigger clicking away logic that closes the menu
@@ -37,9 +47,10 @@ const TaskHeader: FC = () => {
     setMenuVisible(true);
   };
 
-  const handleGoToTasks = () => {
-    router.push('/tasks');
-  };
+  // Reset form on Escape
+  useKeyboard(() => {
+    handleGoProjects();
+  }, [KeyMod.CtrlCmd, KeyCode.KEY_P]);
 
   // Toggle menu
   useKeyboard(() => {
@@ -54,14 +65,10 @@ const TaskHeader: FC = () => {
   useKeyboard(() => {
     setMenuVisible(false);
   }, [KeyCode.Escape]);
-  // Reset form on Escape
-  useKeyboard(() => {
-    handleGoToTasks();
-  }, [KeyMod.CtrlCmd, KeyCode.KEY_L]);
 
   return (
     <>
-      <LayoutHeader $theme={theme} $fullWidth={!task?.project_id || isMobile}>
+      <LayoutHeader $theme={theme} $fullWidth={isMobile}>
         {isMobile && (
           <Button
             auto
@@ -80,34 +87,39 @@ const TaskHeader: FC = () => {
             </Keyboard>
           </Button>
         )}
-
-        <Button
-          auto
-          tabIndex={0}
-          icon={<ArrowLeft />}
-          px={0.6}
-          scale={0.75}
-          type="default"
-          ghost
-          onClick={handleGoToTasks}
-        >
-          Tasks
-          <Spacer inline w={0.5} />
-          <Keyboard command scale={0.5}>
-            L
-          </Keyboard>
-        </Button>
-        <LayoutHeading>Task</LayoutHeading>
-        <AddTaskForm autoFocus={false} {...(task?.project_id && {projectId: task?.project_id})} />
+        <LayoutHeading>Tasks</LayoutHeading>
+        <AddTaskForm onCreate={refreshTasks} />
         <SignOutButton />
       </LayoutHeader>
-      {task?.project_id && (
-        <AnimatePresence mode="wait">
-          {(menuVisible || !isMobile) && <TaskProjectColumn />}
-        </AnimatePresence>
-      )}
+      <AnimatePresence mode="wait">
+        {(menuVisible || !isMobile) && (
+          <LayoutColumn $theme={theme} ref={menuElementRef}>
+            <LayoutColumnHeader $theme={theme}>
+              <Button
+                auto
+                tabIndex={0}
+                icon={<ArrowLeft />}
+                px={0.6}
+                scale={0.75}
+                type="default"
+                ghost
+                onClick={handleGoProjects}
+              >
+                Projects
+                <Spacer inline w={0.5} />
+                <Keyboard command scale={0.5}>
+                  P
+                </Keyboard>
+              </Button>
+              <AddProjectForm autoFocus={false} />
+            </LayoutColumnHeader>
+            <Spacer h={0.5} />
+            <EllipsisText h3> Other projects</EllipsisText>
+          </LayoutColumn>
+        )}
+      </AnimatePresence>
     </>
   );
 };
 
-export default TaskHeader;
+export default TasksHeader;

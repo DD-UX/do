@@ -9,42 +9,35 @@ import styled from 'styled-components';
 import * as yup from 'yup';
 
 import FormControl from 'features/app/components/common/FormControl';
-import ProjectSelector from 'features/app/components/common/ProjectSelector';
-import StatusSelector from 'features/app/components/common/StatusSelector';
-import UserSelector from 'features/app/components/common/UserSelector';
-import {TASK_STATUSES} from 'features/app/constants/status-constants';
-import {NO_VALUE} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
-import {TaskContext} from 'features/task/context/TaskContext';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
-import {TaskProps} from 'lib/sdk/tasks/client/get';
-import {UserProps} from 'lib/sdk/users/client/get';
 
-const TaskFormWrapper = styled.form`
+const ProjectFormWrapper = styled.form`
   display: grid;
   grid-template-rows:
-    [task-header-start] 3.6rem [task-header-end] 0
-    [task-content-start] minmax(0, 1fr) [task-content-end];
+    [project-header-start] 3.6rem [project-header-end] 0
+    [project-content-start] minmax(0, 1fr) [project-content-end];
   grid-template-columns:
-    [task-content-start] minmax(0, 1fr) [task-content-end] 0
-    [task-column-start] 20rem [task-column-end];
+    [project-content-start] minmax(0, 1fr) [project-content-end] 0
+    [project-column-start] 20rem [project-column-end];
 
   height: 100%;
 `;
 
-const TaskContent = styled(motion.section).attrs({
-  key: 'task-content'
+const ProjectContent = styled(motion.section).attrs({
+  key: 'project-content'
   // to be implemented when shallow routing is available in Next.js app folder
   // initial: {opacity: 0},
   // animate: {opacity: 1},
   // exit: {opacity: 0},
   // transition: {duration: 0.2}
 })<GeistThemeProps>`
-  grid-row-start: task-header-start;
-  grid-row-end: task-content-end;
-  grid-column-start: task-content-start;
-  grid-column-end: task-content-end;
+  grid-row-start: project-header-start;
+  grid-row-end: project-content-end;
+  grid-column-start: project-content-start;
+  grid-column-end: project-content-end;
 
   display: flex;
   flex-direction: column;
@@ -61,18 +54,18 @@ const TaskContent = styled(motion.section).attrs({
   z-index: ${Z_INDEX.modal};
 `;
 
-const TaskColumn = styled(motion.menu).attrs({
-  key: 'task-column'
+const ProjectColumn = styled(motion.menu).attrs({
+  key: 'project-column'
   // to be implemented when shallow routing is available in Next.js app folder
   // initial: {x: '100%'},
   // animate: {x: 0},
   // exit: {x: '100%'},
   // transition: {duration: 0.2}
 })<GeistThemeProps>`
-  grid-row-start: task-header-start;
-  grid-row-end: task-content-end;
-  grid-column-start: task-column-start;
-  grid-column-end: task-column-end;
+  grid-row-start: project-header-start;
+  grid-row-end: project-content-end;
+  grid-column-start: project-column-start;
+  grid-column-end: project-column-end;
 
   display: flex;
   flex-direction: column;
@@ -90,22 +83,17 @@ const TaskColumn = styled(motion.menu).attrs({
   z-index: ${Z_INDEX.modal};
 `;
 
-const TaskForm: FC = () => {
+const ProjectForm: FC = () => {
   const theme = useTheme();
-  const {task, isLoadingTask, updateTask} = useContext(TaskContext);
-  const formikInstance = useFormik<TaskProps>({
-    initialValues: task || ({} as TaskProps),
+  const {project, isLoadingProject, updateProject} = useContext(ProjectContext);
+  const {tasks, ...projectData} = project || {};
+  const formikInstance = useFormik<ProjectProps>({
+    initialValues: (projectData as ProjectProps) || ({} as ProjectProps),
     enableReinitialize: true,
     validationSchema: yup.object().shape({
       title: yup.string().label('Title').required().nullable()
     }),
-    onSubmit: async (values) => {
-      const updatedValues = {...values};
-      if (updatedValues.project_id === NO_VALUE) {
-        updatedValues.project_id = null;
-      }
-      await updateTask(updatedValues);
-    }
+    onSubmit: updateProject
   });
 
   // Reset form on Escape
@@ -113,25 +101,13 @@ const TaskForm: FC = () => {
     formikInstance.resetForm();
   }, [KeyCode.Escape]);
 
-  const updateStatus = (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
-    formikInstance.setFieldValue('status', updatedStatus, true);
-  };
-
-  const updateAssigneeUser = (updatedUser: UserProps['id']) => {
-    formikInstance.setFieldValue('assignee_id', updatedUser, true);
-  };
-
-  const updateProjectId = (updatedProjectId: ProjectProps['id'] | null) => {
-    formikInstance.setFieldValue('project_id', updatedProjectId, true);
-  };
-
   return (
-    <TaskFormWrapper onSubmit={formikInstance.handleSubmit}>
-      {isLoadingTask ? (
-        <Loading>Loading task</Loading>
+    <ProjectFormWrapper onSubmit={formikInstance.handleSubmit}>
+      {isLoadingProject ? (
+        <Loading>Loading project</Loading>
       ) : (
         <>
-          <TaskContent $theme={theme}>
+          <ProjectContent $theme={theme}>
             <FormControl
               label="Title"
               vertical
@@ -161,29 +137,13 @@ const TaskForm: FC = () => {
                 onBlur={formikInstance.handleBlur}
               />
             </FormControl>
-          </TaskContent>
-          <TaskColumn $theme={theme}>
-            <FormControl label="Status:" alignItems="start">
-              <StatusSelector
-                showValue
-                iconSize={18}
-                status={formikInstance.values.status}
-                onChange={updateStatus}
-              />
+          </ProjectContent>
+          <ProjectColumn $theme={theme}>
+            <FormControl label="Start date:" alignItems="start">
+              To do
             </FormControl>
-            <FormControl label="Assigned:" alignItems="start">
-              <UserSelector
-                showUserName
-                userId={formikInstance.values.assignee_id}
-                onChange={updateAssigneeUser}
-              />
-            </FormControl>
-            <FormControl label="Project:">
-              <ProjectSelector
-                scale={0.5}
-                value={formikInstance.values.project_id || NO_VALUE}
-                onChange={updateProjectId}
-              />
+            <FormControl label="End date:" alignItems="start">
+              To do
             </FormControl>
             <Button
               width="100%"
@@ -197,11 +157,11 @@ const TaskForm: FC = () => {
             >
               Save
             </Button>
-          </TaskColumn>
+          </ProjectColumn>
         </>
       )}
-    </TaskFormWrapper>
+    </ProjectFormWrapper>
   );
 };
 
-export default TaskForm;
+export default ProjectForm;

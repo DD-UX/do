@@ -4,7 +4,7 @@ import {PostgrestError} from '@supabase/postgrest-js/dist/module/types';
 
 import {getTasks, TaskProps} from 'lib/sdk/tasks/client/get';
 
-type useTasksDataValues = {
+type UseTasksDataValues = {
   tasks: TaskProps[] | null;
   error: PostgrestError | null;
   isLoadingTasks: boolean;
@@ -15,7 +15,7 @@ type useTasksDataValues = {
 /*
  * This Hook will pull down all the tasks
  */
-function useTasksData(): useTasksDataValues {
+function useTasksData(): UseTasksDataValues {
   const {setToast} = useToasts();
   const [tasksData, setTasksData] = useState<TaskProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
@@ -42,7 +42,7 @@ function useTasksData(): useTasksDataValues {
     loadTasks();
   }, []);
 
-  const memoizedReturnValue: useTasksDataValues = useMemo(() => {
+  const memoizedReturnValue: UseTasksDataValues = useMemo(() => {
     return {
       tasks: tasksData,
       error,

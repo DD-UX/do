@@ -9,3 +9,13 @@ export const setSessionWithGithub = async () => {
     }
   });
 };
+
+export const setSessionWithGoogle = async () => {
+  const {auth} = createClientComponentClient();
+  await auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_DOMAIN}/auth/callback/github`
+    }
+  });
+};

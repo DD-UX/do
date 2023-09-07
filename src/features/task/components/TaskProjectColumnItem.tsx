@@ -1,10 +1,8 @@
 'use client';
 
 import {FC, useContext} from 'react';
-import {Button, useTheme} from '@geist-ui/core';
-import Calendar from '@geist-ui/icons/calendar';
-import Trash2 from '@geist-ui/icons/trash2';
-import styled from 'styled-components';
+import {useTheme} from '@geist-ui/core';
+import styled, {css} from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import StatusSelector from 'features/app/components/common/StatusSelector';
@@ -15,51 +13,59 @@ import {
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
-import {TasksContext} from 'features/app/context/TasksContext';
-import {formatDateTime} from 'features/app/helpers/date-helpers';
+import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
 
-const TaskListItemWrapper = styled.div<GeistThemeProps>`
+const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: boolean}>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content minmax(0, 1fr) 10rem 10rem 2.5rem;
+  grid-template-columns: min-content 1fr min-content;
   gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf} 0;
+  padding: ${({$theme}) => $theme.layout.gapHalf};
   align-items: center;
 
+  ${({$theme, $isActive}) =>
+    $isActive
+      ? css`
+          border-inline-start: 0.125rem solid ${$theme.palette.success};
+        `
+      : ''}
   & + & {
     border-block-start: 0.0625rem solid ${({$theme}) => $theme.palette.border};
   }
 `;
 
-type TaskListItemProps = {
-  task: TaskProps;
+type TaskProjectColumnItemProps = {
+  task: Pick<TaskProps, 'id' | 'title' | 'status' | 'assignee_id'>;
+  active: boolean;
 };
 
-const TaskListItem: FC<TaskListItemProps> = ({task}) => {
+const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
-  const {deleteTask, updateTask} = useContext(TasksContext);
-  const {id, title, created_at, status, assignee_id} = task;
-
-  const removeTaskHandler = () => {
-    deleteTask(task);
-  };
+  const {updateTask} = useContext(TaskContext);
+  const {id, title, status, assignee_id} = task;
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
-    await updateTask({...task, status: updatedStatus});
+    await updateTask({...task, status: updatedStatus} as TaskProps);
   };
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
-    await updateTask({...task, assignee_id: updatedUserId});
+    await updateTask({...task, assignee_id: updatedUserId} as TaskProps);
   };
 
   return (
-    <TaskListItemWrapper $theme={theme}>
+    <TaskProjectColumnItemWrapper $theme={theme} $isActive={active}>
       <StatusSelector status={status} onChange={updateStatus} />
 
-      <LayoutLink $theme={theme} href={`/tasks/${id}`} passHref>
+      <LayoutLink
+        $theme={theme}
+        href={{
+          pathname: `/tasks/${id}`
+        }}
+        passHref
+      >
         <EllipsisText
           h6
           my={0}
@@ -74,25 +80,8 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
       </LayoutLink>
 
       <UserSelector showUserName userId={assignee_id} onChange={updateAssigneeUser} />
-
-      <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
-        <span>
-          <Calendar size={12} />
-        </span>
-        {formatDateTime(created_at)}
-      </div>
-
-      <Button
-        auto
-        icon={<Trash2 />}
-        px={0.4}
-        scale={0.75}
-        type="error"
-        ghost
-        onClick={removeTaskHandler}
-      />
-    </TaskListItemWrapper>
+    </TaskProjectColumnItemWrapper>
   );
 };
 
-export default TaskListItem;
+export default TaskProjectColumnItem;

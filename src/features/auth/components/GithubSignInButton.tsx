@@ -7,7 +7,7 @@ import {setSessionWithGithub} from 'lib/sdk/session/client/set';
 
 const GithubSignInButton: FC = () => {
   return (
-    <Button auto type="secondary" icon={<Github />} onClick={setSessionWithGithub}>
+    <Button auto type="secondary" ghost icon={<Github />} onClick={setSessionWithGithub}>
       Sign in with Github
     </Button>
   );

@@ -1,16 +1,19 @@
-import {Link, Text} from '@geist-ui/core';
+import {Text} from '@geist-ui/core';
 import {motion} from 'framer-motion';
+import NextLink from 'next/link';
 import styled from 'styled-components';
 
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 export const LayoutWrapper = styled(motion.div).attrs({
-  initial: {y: '-20%', opacity: 0},
-  animate: {y: 0, opacity: 1},
-  exit: {y: '20%', opacity: 0},
-  transition: {duration: 0.2}
-})<GeistThemeProps>`
+  key: 'layout-wrapper'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {y: '-20%', opacity: 0},
+  // animate: {y: 0, opacity: 1},
+  // exit: {y: '20%', opacity: 0},
+  // transition: {duration: 0.2}
+})<GeistThemeProps & {withColumn?: boolean}>`
   display: grid;
   grid-template-rows:
     [app-header-start] 3.6rem [app-header-end] 0
@@ -25,10 +28,12 @@ export const LayoutWrapper = styled(motion.div).attrs({
 `;
 
 export const LayoutColumn = styled(motion.menu).attrs({
-  initial: {x: '-100%'},
-  animate: {x: 0},
-  exit: {x: '-100%'},
-  transition: {duration: 0.2, delay: 0.2}
+  key: 'layout-column'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {x: '-100%'},
+  // animate: {x: 0},
+  // exit: {x: '-100%'},
+  // transition: {duration: 0.2, delay: 0.2}
 })<GeistThemeProps>`
   grid-row-start: app-header-start;
   grid-row-end: app-content-end;
@@ -73,10 +78,12 @@ export const LayoutHeader = styled.header<GeistThemeProps & {$fullWidth?: boolea
 export const LayoutHeading = styled(Text).attrs({my: 0, h4: true})``;
 
 export const LayoutContent = styled(motion.section).attrs({
-  initial: {y: 20, opacity: 0},
-  animate: {y: 0, opacity: 1},
-  exit: {y: 20, opacity: 0},
-  transition: {duration: 0.6}
+  key: 'layout-content'
+  // to be implemented when shallow routing is available in Next.js app folder
+  // initial: {y: 20, opacity: 0},
+  // animate: {y: 0, opacity: 1},
+  // exit: {y: 20, opacity: 0},
+  // transition: {duration: 0.6}
 })<GeistThemeProps & {$fullWidth?: boolean; $noPadding?: boolean}>`
   grid-row-start: app-content-start;
   grid-row-end: app-content-end;
@@ -89,7 +96,8 @@ export const LayoutContent = styled(motion.section).attrs({
   overflow: auto;
 `;
 
-export const LayoutLink = styled(Link)<GeistThemeProps>`
+export const LayoutLink = styled(NextLink)<GeistThemeProps>`
+  text-decoration: none !important;
   color: ${({$theme}) => $theme.palette.accents_7}!important;
 
   &:hover {

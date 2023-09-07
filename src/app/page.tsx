@@ -8,7 +8,7 @@ const Home: FC = async () => {
 
   return (
     <main className="flex flex-col gap-1">
-      <NextLink href="/dashboard" passHref>
+      <NextLink href="/projects" passHref>
         Dashboard
       </NextLink>
     </main>

@@ -60,7 +60,7 @@ const UserSelector: FC<UserSelectorProps> = ({
   const {users, isLoadingUsers} = useUsersData();
   const menuElementRef = useRef(null);
   const currentUser = useMemo(
-    () => users?.find(({id}) => id === userId) || (USER_NOT_ASSIGNED as UserProps),
+    () => (users && users?.find(({id}) => id === userId)) || (USER_NOT_ASSIGNED as UserProps),
     [users, userId]
   );
   const [menuVisible, setMenuVisible] = useState(false);

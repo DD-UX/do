@@ -19,15 +19,15 @@ import {useRouter} from 'next/navigation';
 
 import {LayoutHeader, LayoutHeading} from 'features/app/components/Layout';
 import SignOutButton from 'features/auth/components/SignOutButton';
-import AddTaskForm from 'features/task/components/AddTaskForm';
-import TaskProjectColumn from 'features/task/components/TaskProjectColumn';
-import {TaskContext} from 'features/task/context/TaskContext';
+import AddProjectForm from 'features/project/components/AddProjectForm';
+import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 
-const TaskHeader: FC = () => {
+const ProjectHeader: FC = () => {
   const theme = useTheme();
   const router = useRouter();
+  const {project} = useContext(ProjectContext);
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
-  const {task} = useContext(TaskContext);
   const isMobile = useMediaQuery('mobile');
   const [menuVisible, setMenuVisible] = useState(!isMobile);
 
@@ -37,8 +37,8 @@ const TaskHeader: FC = () => {
     setMenuVisible(true);
   };
 
-  const handleGoToTasks = () => {
-    router.push('/tasks');
+  const handleGoToProjects = () => {
+    router.push('/projects');
   };
 
   // Toggle menu
@@ -56,12 +56,12 @@ const TaskHeader: FC = () => {
   }, [KeyCode.Escape]);
   // Reset form on Escape
   useKeyboard(() => {
-    handleGoToTasks();
+    handleGoToProjects();
   }, [KeyMod.CtrlCmd, KeyCode.KEY_L]);
 
   return (
     <>
-      <LayoutHeader $theme={theme} $fullWidth={!task?.project_id || isMobile}>
+      <LayoutHeader $theme={theme} $fullWidth={isMobile}>
         {isMobile && (
           <Button
             auto
@@ -89,25 +89,23 @@ const TaskHeader: FC = () => {
           scale={0.75}
           type="default"
           ghost
-          onClick={handleGoToTasks}
+          onClick={handleGoToProjects}
         >
-          Tasks
+          Projects
           <Spacer inline w={0.5} />
           <Keyboard command scale={0.5}>
             L
           </Keyboard>
         </Button>
-        <LayoutHeading>Task</LayoutHeading>
-        <AddTaskForm autoFocus={false} {...(task?.project_id && {projectId: task?.project_id})} />
+        <LayoutHeading>{project?.title}</LayoutHeading>
+        <AddProjectForm autoFocus={false} />
         <SignOutButton />
       </LayoutHeader>
-      {task?.project_id && (
-        <AnimatePresence mode="wait">
-          {(menuVisible || !isMobile) && <TaskProjectColumn />}
-        </AnimatePresence>
-      )}
+      <AnimatePresence mode="wait">
+        {(menuVisible || !isMobile) && <ProjectTasksColumn />}
+      </AnimatePresence>
     </>
   );
 };
 
-export default TaskHeader;
+export default ProjectHeader;

@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, MouseEvent, useRef, useState} from 'react';
+import {FC, MouseEvent, useContext, useRef, useState} from 'react';
 import {
   Button,
   Keyboard,
@@ -24,6 +24,7 @@ import {
   LayoutHeader,
   LayoutHeading
 } from 'features/app/components/Layout';
+import {TasksContext} from 'features/app/context/TasksContext';
 import SignOutButton from 'features/auth/components/SignOutButton';
 import AddProjectForm from 'features/project/components/AddProjectForm';
 import AddTaskForm from 'features/task/components/AddTaskForm';
@@ -31,7 +32,7 @@ import AddTaskForm from 'features/task/components/AddTaskForm';
 const DashboardHeader: FC = () => {
   const theme = useTheme();
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
-
+  const {refreshTasks} = useContext(TasksContext);
   const isMobile = useMediaQuery('mobile');
   const [menuVisible, setMenuVisible] = useState(!isMobile);
 
@@ -86,12 +87,12 @@ const DashboardHeader: FC = () => {
           </Button>
         )}
         <LayoutHeading>Dashboard</LayoutHeading>
-        <AddTaskForm />
+        <AddTaskForm onCreate={refreshTasks} />
         <SignOutButton />
       </LayoutHeader>
       <AnimatePresence mode="wait">
         {(menuVisible || !isMobile) && (
-          <LayoutColumn key="motion_layout_column" $theme={theme} ref={menuElementRef}>
+          <LayoutColumn $theme={theme} ref={menuElementRef}>
             <LayoutColumnHeader $theme={theme}>
               <Button
                 auto
@@ -109,10 +110,10 @@ const DashboardHeader: FC = () => {
                   L
                 </Keyboard>
               </Button>
-              <AddProjectForm focusPriority={false} />
+              <AddProjectForm autoFocus={false} />
             </LayoutColumnHeader>
             <Spacer h={0.5} />
-            <EllipsisText h3>Other projects</EllipsisText>
+            <EllipsisText h3> Other projects</EllipsisText>
           </LayoutColumn>
         )}
       </AnimatePresence>
