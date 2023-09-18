@@ -13,7 +13,8 @@ import {
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
-import {TaskContext} from 'features/task/context/TaskContext';
+import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -44,15 +45,18 @@ type TaskProjectColumnItemProps = {
 
 const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
-  const {updateTask} = useContext(TaskContext);
+  const {refreshProject} = useContext(ProjectContext);
+  const {updateTask} = useTaskUpdate();
   const {id, title, status, assignee_id} = task;
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus} as TaskProps);
+    refreshProject();
   };
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
     await updateTask({...task, assignee_id: updatedUserId} as TaskProps);
+    refreshProject();
   };
 
   return (

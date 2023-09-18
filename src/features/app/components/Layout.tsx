@@ -7,12 +7,12 @@ import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 export const LayoutWrapper = styled(motion.div).attrs({
-  key: 'layout-wrapper'
+  key: 'layout-wrapper',
   // to be implemented when shallow routing is available in Next.js app folder
-  // initial: {y: '-20%', opacity: 0},
-  // animate: {y: 0, opacity: 1},
-  // exit: {y: '20%', opacity: 0},
-  // transition: {duration: 0.2}
+  initial: {y: '-20%', opacity: 0},
+  animate: {y: 0, opacity: 1},
+  exit: {y: '20%', opacity: 0},
+  transition: {duration: 0.2}
 })<GeistThemeProps & {withColumn?: boolean}>`
   display: grid;
   grid-template-rows:
@@ -28,12 +28,12 @@ export const LayoutWrapper = styled(motion.div).attrs({
 `;
 
 export const LayoutColumn = styled(motion.menu).attrs({
-  key: 'layout-column'
+  key: 'layout-column',
   // to be implemented when shallow routing is available in Next.js app folder
-  // initial: {x: '-100%'},
-  // animate: {x: 0},
-  // exit: {x: '-100%'},
-  // transition: {duration: 0.2, delay: 0.2}
+  initial: {x: '-100%'},
+  animate: {x: 0},
+  exit: {x: '-100%'},
+  transition: {duration: 0.2, delay: 0.2}
 })<GeistThemeProps>`
   grid-row-start: app-header-start;
   grid-row-end: app-content-end;

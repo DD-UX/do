@@ -29,7 +29,7 @@ function useProjectByTask(task: TaskProps | null): UseProjectByTaskValues {
       setIsLoadingProject(true);
       const {project, error} = await getProject<ProjectWithTasksProps>({
         id: String(task?.project_id),
-        pickProps: ['*', 'tasks(id, title, status)']
+        pickProps: ['*', 'tasks(id, title, status, assignee_id)']
       });
       setError(error);
       setProjectData(project);

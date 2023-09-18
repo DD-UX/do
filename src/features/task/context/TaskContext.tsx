@@ -11,7 +11,6 @@ import useTaskById from 'features/app/hooks/useTaskById';
 import {ProjectWithTasksProps} from 'lib/sdk/projects/client/get';
 import {deleteTask} from 'lib/sdk/tasks/client/delete';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
-import {updateTask} from 'lib/sdk/tasks/client/update';
 
 type TaskContextProviderProps = {
   onInitialized?: () => void;
@@ -22,9 +21,6 @@ type TaskContextProps = {
   isLoadingTask: boolean;
   error: PostgrestError | null;
   refreshTask(): void;
-
-  isUpdatingTask: boolean;
-  updateTask(updatingTask: TaskProps): void;
 
   isDeletingTask: boolean;
   deleteTask(): void;
@@ -40,9 +36,6 @@ export const TaskContext = createContext<TaskContextProps>({
   isLoadingTask: false,
   error: null,
   refreshTask: () => {},
-
-  isUpdatingTask: false,
-  updateTask: () => {},
 
   isDeletingTask: false,
   deleteTask: () => {},
@@ -63,7 +56,6 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
   const {task, error, refreshTask, isLoadingTask} = useTaskById(String(taskId));
   const {project, isLoadingProject, refreshProject} = useProjectByTask(task);
   const [hasInitialized, setHasInitialized] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const modalInstance = useModal();
 
@@ -100,30 +92,6 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
     }
   };
 
-  // This method deletes the selected task
-  const updateTaskHandler = async (updatingTask: TaskProps) => {
-    if (!updatingTask.assignee_id) {
-      updatingTask.assignee_id = null;
-    }
-    try {
-      setIsUpdating(true);
-      await updateTask(updatingTask);
-      await refreshTask();
-      await refreshProject();
-      setToast({
-        text: `${updatingTask.title} task updated successfully`,
-        type: 'success'
-      });
-    } catch (error) {
-      setToast({
-        text: `An error occurred while updating ${updatingTask.title} task.`,
-        type: 'error'
-      });
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   useEffect(() => {
     if (!isLoadingTask && !hasInitialized) {
       onInitialized?.();
@@ -138,9 +106,6 @@ export const TaskContextProvider: FC<PropsWithChildren<TaskContextProviderProps>
         task,
         error,
         refreshTask,
-
-        updateTask: updateTaskHandler,
-        isUpdatingTask: isUpdating,
 
         deleteTask: handleDeleteTask,
         isDeletingTask: isDeleting,

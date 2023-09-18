@@ -14,6 +14,7 @@ import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
 import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
+import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {TaskContext} from 'features/task/context/TaskContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -92,7 +93,8 @@ const TaskColumn = styled(motion.menu).attrs({
 
 const TaskForm: FC = () => {
   const theme = useTheme();
-  const {task, isLoadingTask, updateTask} = useContext(TaskContext);
+  const {task, isLoadingTask, refreshTask} = useContext(TaskContext);
+  const {updateTask} = useTaskUpdate();
   const formikInstance = useFormik<TaskProps>({
     initialValues: task || ({} as TaskProps),
     enableReinitialize: true,
@@ -101,10 +103,8 @@ const TaskForm: FC = () => {
     }),
     onSubmit: async (values) => {
       const updatedValues = {...values};
-      if (updatedValues.project_id === NO_VALUE) {
-        updatedValues.project_id = null;
-      }
       await updateTask(updatedValues);
+      refreshTask();
     }
   });
 
