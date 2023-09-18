@@ -7,9 +7,9 @@ import Trash2 from '@geist-ui/icons/trash2';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
+import {LayoutLink} from 'features/app/components/common/Layout';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
-import {LayoutLink} from 'features/app/components/Layout';
 import {
   STATUS_CANCELLED,
   STATUS_DONE,

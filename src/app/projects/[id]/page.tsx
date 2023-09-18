@@ -4,7 +4,7 @@ import {FC} from 'react';
 import {useMediaQuery, useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
-import {LayoutContent, LayoutWrapper} from 'features/app/components/Layout';
+import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
 import ProjectForm from 'features/project/components/ProjectForm';
 import ProjectHeader from 'features/project/components/ProjectHeader';
 import {ProjectContextProvider} from 'features/project/context/ProjectContext';

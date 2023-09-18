@@ -4,7 +4,7 @@ import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
-import {LayoutLink} from 'features/app/components/Layout';
+import {LayoutLink} from 'features/app/components/common/Layout';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
 import {ProjectsContext} from 'features/app/context/ProjectsContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';

@@ -1,4 +1,4 @@
-import {Button, Text} from '@geist-ui/core';
+import {Text} from '@geist-ui/core';
 import {motion} from 'framer-motion';
 import NextLink from 'next/link';
 import styled from 'styled-components';

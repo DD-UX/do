@@ -10,7 +10,7 @@ import {
   LayoutColumn,
   LayoutColumnContent,
   LayoutColumnHeader
-} from 'features/app/components/Layout';
+} from 'features/app/components/common/Layout';
 import AddProjectForm from 'features/project/components/AddProjectForm';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
 import {TaskContext} from 'features/task/context/TaskContext';

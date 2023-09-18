@@ -1,10 +1,14 @@
 'use client';
 
 import {FC, useContext, useRef} from 'react';
-import {Spacer, Text, useTheme} from '@geist-ui/core';
+import {Text, useTheme} from '@geist-ui/core';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
-import {LayoutColumn, LayoutColumnHeader} from 'features/app/components/Layout';
+import {
+  LayoutColumn,
+  LayoutColumnContent,
+  LayoutColumnHeader
+} from 'features/app/components/common/Layout';
 import {ProjectContext} from 'features/project/context/ProjectContext';
 import AddTaskForm from 'features/task/components/AddTaskForm';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
@@ -24,20 +28,20 @@ const ProjectTasksColumn: FC = () => {
             onCreate={() => refreshProject()}
           />
         </LayoutColumnHeader>
-        <Spacer h={0.5} />
-        {isLoadingProject ? (
-          <EllipsisText>Loading...</EllipsisText>
-        ) : (
-          <>
-            <EllipsisText h2>Related tasks</EllipsisText>
-            {project?.tasks?.map((currentTask) => (
-              <TaskProjectColumnItem key={currentTask.id} task={currentTask} active={false} />
-            ))}
-            {(!Array.isArray(project?.tasks) || (project?.tasks && project?.tasks?.length < 1)) && (
-              <Text>No available tasks</Text>
-            )}
-          </>
-        )}
+        <LayoutColumnContent $theme={theme}>
+          {isLoadingProject ? (
+            <EllipsisText>Loading...</EllipsisText>
+          ) : (
+            <>
+              <EllipsisText h2>Related tasks</EllipsisText>
+              {project?.tasks?.map((currentTask) => (
+                <TaskProjectColumnItem key={currentTask.id} task={currentTask} active={false} />
+              ))}
+              {(!Array.isArray(project?.tasks) ||
+                (project?.tasks && project?.tasks?.length < 1)) && <Text>No available tasks</Text>}
+            </>
+          )}
+        </LayoutColumnContent>
       </LayoutColumn>
     )
   );
