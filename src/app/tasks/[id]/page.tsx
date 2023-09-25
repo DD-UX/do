@@ -4,7 +4,7 @@ import {FC, useContext} from 'react';
 import {useMediaQuery, useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
-import {LayoutContent, LayoutWrapper} from 'features/app/components/Layout';
+import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
 import TaskForm from 'features/task/components/TaskForm';
 import TaskHeader from 'features/task/components/TaskHeader';
 import {TaskContext} from 'features/task/context/TaskContext';

@@ -23,7 +23,7 @@ import {
   LayoutColumnHeader,
   LayoutHeader,
   LayoutHeading
-} from 'features/app/components/Layout';
+} from 'features/app/components/common/Layout';
 import {TasksContext} from 'features/app/context/TasksContext';
 import SignOutButton from 'features/auth/components/SignOutButton';
 import AddProjectForm from 'features/project/components/AddProjectForm';

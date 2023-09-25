@@ -7,9 +7,9 @@ import Trash2 from '@geist-ui/icons/trash2';
 import styled from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
+import {LayoutLink} from 'features/app/components/common/Layout';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
-import {LayoutLink} from 'features/app/components/Layout';
 import {
   STATUS_CANCELLED,
   STATUS_DONE,
@@ -17,6 +17,7 @@ import {
 } from 'features/app/constants/status-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
+import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -40,7 +41,8 @@ type TaskListItemProps = {
 
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
   const theme = useTheme();
-  const {deleteTask, updateTask} = useContext(TasksContext);
+  const {updateTask} = useTaskUpdate();
+  const {deleteTask, refreshTasks} = useContext(TasksContext);
   const {id, title, created_at, status, assignee_id} = task;
 
   const removeTaskHandler = () => {
@@ -49,10 +51,12 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus});
+    refreshTasks();
   };
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
     await updateTask({...task, assignee_id: updatedUserId});
+    refreshTasks();
   };
 
   return (

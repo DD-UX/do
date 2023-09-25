@@ -3,7 +3,7 @@
 import {FC, useContext} from 'react';
 import {useTheme} from '@geist-ui/core';
 
-import {LayoutHeader, LayoutHeading} from 'features/app/components/Layout';
+import {LayoutHeader, LayoutHeading} from 'features/app/components/common/Layout';
 import {ProjectsContext} from 'features/app/context/ProjectsContext';
 import SignOutButton from 'features/auth/components/SignOutButton';
 import AddProjectForm from 'features/project/components/AddProjectForm';

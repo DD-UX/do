@@ -5,15 +5,16 @@ import {useTheme} from '@geist-ui/core';
 import styled, {css} from 'styled-components';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
+import {LayoutLink} from 'features/app/components/common/Layout';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
-import {LayoutLink} from 'features/app/components/Layout';
 import {
   STATUS_CANCELLED,
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
-import {TaskContext} from 'features/task/context/TaskContext';
+import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -21,7 +22,7 @@ import {UserProps} from 'lib/sdk/users/client/get';
 const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: boolean}>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: min-content minmax(0, 1fr) min-content;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf};
   align-items: center;
@@ -44,15 +45,18 @@ type TaskProjectColumnItemProps = {
 
 const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) => {
   const theme = useTheme();
-  const {updateTask} = useContext(TaskContext);
+  const {refreshProject} = useContext(ProjectContext);
+  const {updateTask} = useTaskUpdate();
   const {id, title, status, assignee_id} = task;
 
   const updateStatus = async (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     await updateTask({...task, status: updatedStatus} as TaskProps);
+    refreshProject();
   };
 
   const updateAssigneeUser = async (updatedUserId: UserProps['id']) => {
     await updateTask({...task, assignee_id: updatedUserId} as TaskProps);
+    refreshProject();
   };
 
   return (
