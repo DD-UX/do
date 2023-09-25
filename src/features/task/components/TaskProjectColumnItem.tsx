@@ -22,7 +22,7 @@ import {UserProps} from 'lib/sdk/users/client/get';
 const TaskProjectColumnItemWrapper = styled.div<GeistThemeProps & {$isActive: boolean}>`
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: min-content 1fr min-content;
+  grid-template-columns: min-content minmax(0, 1fr) min-content;
   gap: ${({$theme}) => $theme.layout.gapHalf};
   padding: ${({$theme}) => $theme.layout.gapHalf};
   align-items: center;

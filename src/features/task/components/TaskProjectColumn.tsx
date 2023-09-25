@@ -27,7 +27,7 @@ const TaskProjectColumn: FC = () => {
       setIsOpeningProject(true);
       await router.push(`/projects/${project?.id}`);
     } catch (error) {
-      setIsOpeningProject(false);
+      setIsOpeningProject(false); // no need to handle it within finally since the page will be re-rendered
     }
   };
 

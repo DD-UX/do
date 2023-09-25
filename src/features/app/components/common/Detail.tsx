@@ -7,11 +7,11 @@ import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 export const DetailForm = styled.form`
   display: grid;
   grid-template-rows:
-    [project-header-start] 3.6rem [project-header-end] 0
-    [project-content-start] minmax(0, 1fr) [project-content-end];
+    [detail-header-start] 3.6rem [detail-header-end] 0
+    [detail-content-start] minmax(0, 1fr) [detail-content-end];
   grid-template-columns:
-    [project-content-start] minmax(0, 1fr) [project-content-end] 0
-    [project-column-start] 20rem [project-column-end];
+    [detail-content-start] minmax(0, 1fr) [detail-content-end] 0
+    [detail-column-start] 20rem [detail-column-end];
 
   height: 100%;
 `;
@@ -24,10 +24,10 @@ export const DetailContent = styled(motion.section).attrs({
   exit: {opacity: 0},
   transition: {duration: 0.2}
 })<GeistThemeProps>`
-  grid-row-start: project-header-start;
-  grid-row-end: project-content-end;
-  grid-column-start: project-content-start;
-  grid-column-end: project-content-end;
+  grid-row-start: detail-header-start;
+  grid-row-end: detail-content-end;
+  grid-column-start: detail-content-start;
+  grid-column-end: detail-content-end;
 
   display: flex;
   flex-direction: column;
@@ -52,10 +52,10 @@ export const DetailMenu = styled(motion.menu).attrs({
   exit: {x: '100%'},
   transition: {duration: 0.2}
 })<GeistThemeProps>`
-  grid-row-start: project-header-start;
-  grid-row-end: project-content-end;
-  grid-column-start: project-column-start;
-  grid-column-end: project-column-end;
+  grid-row-start: detail-header-start;
+  grid-row-end: detail-content-end;
+  grid-column-start: detail-column-start;
+  grid-column-end: detail-column-end;
 
   display: flex;
   flex-direction: column;
@@ -78,6 +78,7 @@ export const DetailMenu = styled(motion.menu).attrs({
 `;
 
 export const DetailMenuContent = styled.div<GeistThemeProps>`
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   gap: ${({$theme}) => $theme.layout.gapHalf};

@@ -69,13 +69,14 @@ export const LayoutColumnHeader = styled.header<GeistThemeProps>`
 `;
 
 export const LayoutColumnContent = styled.section<GeistThemeProps>`
-  flex-grow: 0;
+  flex-grow: 1;
   flex-shrink: 1;
 
   display: grid;
   grid-template-rows: min-content;
   grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 export const LayoutHeader = styled.header<GeistThemeProps & {$fullWidth?: boolean}>`

@@ -34,11 +34,15 @@ const ProjectTasksColumn: FC = () => {
           ) : (
             <>
               <EllipsisText h2>Related tasks</EllipsisText>
-              {project?.tasks?.map((currentTask) => (
-                <TaskProjectColumnItem key={currentTask.id} task={currentTask} active={false} />
-              ))}
-              {(!Array.isArray(project?.tasks) ||
-                (project?.tasks && project?.tasks?.length < 1)) && <Text>No available tasks</Text>}
+              <div>
+                {project?.tasks?.map((currentTask) => (
+                  <TaskProjectColumnItem key={currentTask.id} task={currentTask} active={false} />
+                ))}
+                {(!Array.isArray(project?.tasks) ||
+                  (project?.tasks && project?.tasks?.length < 1)) && (
+                  <Text>No available tasks</Text>
+                )}
+              </div>
             </>
           )}
         </LayoutColumnContent>
