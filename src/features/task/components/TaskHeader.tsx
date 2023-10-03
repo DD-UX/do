@@ -18,7 +18,6 @@ import {AnimatePresence} from 'framer-motion';
 import {useRouter} from 'next/navigation';
 
 import {LayoutHeader, LayoutHeading} from 'features/app/components/common/Layout';
-import SignOutButton from 'features/auth/components/SignOutButton';
 import AddTaskForm from 'features/task/components/AddTaskForm';
 import TaskProjectColumn from 'features/task/components/TaskProjectColumn';
 import {TaskContext} from 'features/task/context/TaskContext';
@@ -103,7 +102,6 @@ const TaskHeader: FC = () => {
           {...(task?.project_id && {projectId: task?.project_id})}
           onCreate={refreshProject}
         />
-        <SignOutButton />
       </LayoutHeader>
       {task?.project_id && (
         <AnimatePresence mode="wait">

@@ -7,7 +7,11 @@ import {useRouter} from 'next/navigation';
 
 import {deleteSession} from 'lib/sdk/session/client/delete';
 
-const GithubSignInButton: FC = () => {
+type SignOutButtonProps = {
+  compact?: boolean;
+};
+
+const SignOutButton: FC<SignOutButtonProps> = ({compact = false}) => {
   const router = useRouter();
 
   // Delete session and refresh the page so if any guard has to act, it will
@@ -18,9 +22,9 @@ const GithubSignInButton: FC = () => {
 
   return (
     <Button auto type="secondary" icon={<LogOut />} scale={0.75} onClick={handleLogout}>
-      Log out
+      {!compact && 'Log out'}
     </Button>
   );
 };
 
-export default GithubSignInButton;
+export default SignOutButton;

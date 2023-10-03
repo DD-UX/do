@@ -65,6 +65,7 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active}) =
 
       <LayoutLink
         $theme={theme}
+        title={title}
         href={{
           pathname: `/tasks/${id}`
         }}

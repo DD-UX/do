@@ -1,6 +1,7 @@
 import {motion} from 'framer-motion';
 import styled from 'styled-components';
 
+import {TRANSITION_DURATION} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
@@ -22,7 +23,7 @@ export const DetailContent = styled(motion.section).attrs({
   initial: {opacity: 0},
   animate: {opacity: 1},
   exit: {opacity: 0},
-  transition: {duration: 0.2}
+  transition: {duration: TRANSITION_DURATION}
 })<GeistThemeProps>`
   grid-row-start: detail-header-start;
   grid-row-end: detail-content-end;
@@ -50,7 +51,7 @@ export const DetailMenu = styled(motion.menu).attrs({
   initial: {x: '100%'},
   animate: {x: 0},
   exit: {x: '100%'},
-  transition: {duration: 0.2}
+  transition: {duration: TRANSITION_DURATION}
 })<GeistThemeProps>`
   grid-row-start: detail-header-start;
   grid-row-end: detail-content-end;

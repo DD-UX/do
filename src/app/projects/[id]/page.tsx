@@ -4,6 +4,7 @@ import {FC} from 'react';
 import {useMediaQuery, useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
+import AppNavigation from 'features/app/components/common/AppNavigation';
 import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
 import ProjectForm from 'features/project/components/ProjectForm';
 import ProjectHeader from 'features/project/components/ProjectHeader';
@@ -17,6 +18,7 @@ const ProjectDetailPage: FC = () => {
     <ProjectContextProvider>
       <AnimatePresence mode="wait">
         <LayoutWrapper $theme={theme}>
+          <AppNavigation />
           <ProjectHeader />
           <AnimatePresence mode="wait">
             <LayoutContent $theme={theme} $fullWidth={isMobile} $noPadding>

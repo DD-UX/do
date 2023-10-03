@@ -4,8 +4,9 @@ import {FC} from 'react';
 import {useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
+import AppNavigation from 'features/app/components/common/AppNavigation';
 import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
-import DashboardContent from 'features/dashboard/components/DashboardContent';
+import TasksContent from 'features/task/components/TasksContent';
 import TasksHeader from 'features/task/components/TasksHeader';
 
 const TasksPage: FC = () => {
@@ -14,10 +15,11 @@ const TasksPage: FC = () => {
   return (
     <AnimatePresence mode="wait">
       <LayoutWrapper $theme={theme}>
+        <AppNavigation />
         <TasksHeader />
         <AnimatePresence mode="wait">
           <LayoutContent $theme={theme} $fullWidth>
-            <DashboardContent />
+            <TasksContent />
           </LayoutContent>
         </AnimatePresence>
       </LayoutWrapper>

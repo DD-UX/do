@@ -18,7 +18,6 @@ import {AnimatePresence} from 'framer-motion';
 import {useRouter} from 'next/navigation';
 
 import {LayoutHeader, LayoutHeading} from 'features/app/components/common/Layout';
-import SignOutButton from 'features/auth/components/SignOutButton';
 import AddProjectForm from 'features/project/components/AddProjectForm';
 import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
 import {ProjectContext} from 'features/project/context/ProjectContext';
@@ -99,7 +98,6 @@ const ProjectHeader: FC = () => {
         </Button>
         <LayoutHeading>{project?.title}</LayoutHeading>
         <AddProjectForm autoFocus={false} />
-        <SignOutButton />
       </LayoutHeader>
       <AnimatePresence mode="wait">
         {(menuVisible || !isMobile) && <ProjectTasksColumn />}
