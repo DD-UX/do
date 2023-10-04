@@ -1,14 +1,15 @@
-import {FC, FunctionComponent} from 'react';
+import {FC} from 'react';
 import {Text, useTheme} from '@geist-ui/core';
 import {usePathname, useRouter} from 'next/navigation';
 import styled, {css} from 'styled-components';
 
 import {TRANSITION_DURATION} from 'features/app/constants/ui-constants';
+import {GeistIconModel} from 'lib/geist/geist-icon-model';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 const AppNavigationButtonWrapper = styled.button.attrs({
   type: 'button'
-})<GeistThemeProps>`
+})<GeistThemeProps & {$isActive: boolean}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -32,7 +33,7 @@ const AppNavigationButtonWrapper = styled.button.attrs({
 `;
 
 type AppNavigationButtonProps = {
-  Icon: FunctionComponent<{scale: number}>;
+  Icon: GeistIconModel;
   text: string;
 } & (
   | {
@@ -43,22 +44,26 @@ type AppNavigationButtonProps = {
     }
 );
 
-const AppNavigationButton: FC<AppNavigationButtonProps> = ({Icon, text, route, onClick}) => {
+const AppNavigationButton: FC<AppNavigationButtonProps> = (props) => {
   const router = useRouter();
   const theme = useTheme();
   const pathname = usePathname();
+  const {Icon, text} = props; // can't spread route and onClick since they are mutually exclusive
 
   const handleClick = () => {
-    if (route) {
-      router.push(route);
+    if ('route' in props) {
+      router.push(props.route);
     }
-    onClick?.();
+
+    if ('onClick' in props) {
+      props.onClick();
+    }
   };
 
   return (
     <AppNavigationButtonWrapper
       $theme={theme}
-      $isActive={pathname.startsWith(route)}
+      $isActive={'route' in props && pathname.startsWith(props.route)}
       onClick={handleClick}
     >
       <Icon scale={0.8} />

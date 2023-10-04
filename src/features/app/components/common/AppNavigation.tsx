@@ -5,7 +5,7 @@ import {useTheme} from '@geist-ui/core';
 import Folder from '@geist-ui/icons/folder';
 import List from '@geist-ui/icons/list';
 import LogOut from '@geist-ui/icons/logOut';
-import {usePathname, useRouter} from 'next/navigation';
+import {useRouter} from 'next/navigation';
 
 import AppNavigationButton from 'features/app/components/common/AppNavigationButton';
 import {LayoutNavigation} from 'features/app/components/common/Layout';
