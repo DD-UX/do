@@ -53,14 +53,14 @@ const UserSelector: FC<UserSelectorProps> = ({userId, showUserName = false, onCh
             img={USER_NOT_ASSIGNED.avatar_url}
             alt={USER_NOT_ASSIGNED.name}
           />
-          {USER_NOT_ASSIGNED.name}
+          <p className="m-0">{USER_NOT_ASSIGNED.name}</p>
         </div>
       </Dropdown.Item>
       {users?.map(({id, user_name, avatar_url}) => (
         <Dropdown.Item key={id} value={id} onClick={() => handleUserChange(id)}>
           <div className={userSelectorItem()}>
             <Avatar rounded size="xs" img={avatar_url} alt={user_name} />
-            {user_name}
+            <p className="m-0">{user_name}</p>
           </div>
         </Dropdown.Item>
       ))}

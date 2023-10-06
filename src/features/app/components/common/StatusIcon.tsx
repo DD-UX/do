@@ -1,12 +1,13 @@
 import {FC} from 'react';
-import {useTheme} from '@geist-ui/core';
-import CheckCircle from '@geist-ui/icons/checkCircle';
-import ChevronDownCircle from '@geist-ui/icons/chevronDownCircle';
-import Circle from '@geist-ui/icons/circle';
-import Crosshair from '@geist-ui/icons/crosshair';
-import PauseCircle from '@geist-ui/icons/pauseCircle';
-import PlayCircle from '@geist-ui/icons/playCircle';
-import StopCircle from '@geist-ui/icons/stopCircle';
+import {
+  AiOutlineCheckCircle,
+  AiOutlineCloseCircle,
+  AiOutlineDownCircle,
+  AiOutlinePauseCircle,
+  AiOutlinePlayCircle
+} from 'react-icons/ai';
+import {PiCrosshairSimpleLight} from 'react-icons/pi';
+import {TbCircleDotted} from 'react-icons/tb';
 
 import {
   STATUS_BACKLOG,
@@ -25,22 +26,21 @@ type StatusIconProps<STATUS = (typeof TASK_STATUSES)[number] | string> = {
 };
 
 const StatusIcon: FC<StatusIconProps> = ({status, size = 18}) => {
-  const theme = useTheme();
   switch (status) {
     case STATUS_BACKLOG:
-      return <Circle size={size as number} color={theme.palette.accents_5} />;
+      return <TbCircleDotted size={size as number} className="text-gray-300" />;
     case STATUS_TODO:
-      return <ChevronDownCircle size={size as number} color={theme.palette.foreground} />;
+      return <AiOutlineDownCircle size={size as number} className="text-white" />;
     case STATUS_IN_PROGRESS:
-      return <PlayCircle size={size as number} color={theme.palette.warningLight} />;
+      return <AiOutlinePlayCircle size={size as number} className="text-orange-300" />;
     case STATUS_CANCELLED:
-      return <StopCircle size={size as number} color={theme.palette.violetLight} />;
+      return <AiOutlineCloseCircle size={size as number} className="text-purple-300" />;
     case STATUS_IN_REVIEW:
-      return <Crosshair size={size as number} color={theme.palette.cyanLight} />;
+      return <PiCrosshairSimpleLight size={size as number} className="text-cyan-200" />;
     case STATUS_DONE:
-      return <CheckCircle size={size as number} color={theme.palette.successLight} />;
+      return <AiOutlineCheckCircle size={size as number} className="text-green-400" />;
     case STATUS_BLOCKED:
-      return <PauseCircle size={size as number} color={theme.palette.errorLight} />;
+      return <AiOutlinePauseCircle size={size as number} className="text-red-400" />;
     default:
       return <></>;
   }
