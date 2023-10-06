@@ -1,30 +1,19 @@
 'use client';
 
 import {FC, FormEvent, useState} from 'react';
-import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-ui/core';
-import Save from '@geist-ui/icons/save';
-import styled from 'styled-components';
+import {AiOutlineFolderAdd, AiOutlineSave} from 'react-icons/ai';
+import {Button, TextInput} from 'flowbite-react';
 
-import {openNewTabLink} from 'features/app/helpers/ui-helpers';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
+import FloatingToast, {FloatingToastProps} from 'features/app/components/common/FloatingToast';
+import {FAILURE_TYPE, SUCCESS_TYPE} from 'features/app/constants/toast-constants';
 import {setProject} from 'lib/sdk/projects/client/set';
-
-const AddProjectFormWrapper = styled.form<GeistThemeProps>`
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-template-columns: minmax(6rem, 20rem) 2.5rem;
-  gap: ${({$theme}) => $theme.layout.gapQuarter};
-  align-items: center;
-  margin-inline-start: auto;
-`;
 
 type AddProjectFormProps = {
   autoFocus?: boolean;
   onCreate?: () => void;
 };
 const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) => {
-  const {setToast} = useToasts();
-  const theme = useTheme();
+  const [toast, setToast] = useState<Omit<FloatingToastProps, 'onDismiss'> | null>(null);
   const [isCreatingProject, setIsCreatingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
 
@@ -32,11 +21,6 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
   const resetForm = () => {
     setNewProjectName('');
   };
-
-  // Reset form on Escape
-  useKeyboard(() => {
-    resetForm();
-  }, [KeyCode.Escape]);
 
   // Handle add project
   const addProjectHandler = async (event: FormEvent) => {
@@ -56,20 +40,14 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
       onCreate?.();
       setToast({
         text: `Project ${newProjectName} created successfully.`,
-        type: 'success',
-        delay: 5000,
-        actions: [
-          {
-            name: 'Open in new tab',
-            handler: () => openNewTabLink(`/projects/${project?.id}`)
-          }
-        ]
+        type: SUCCESS_TYPE,
+        link: `/projects/${project?.id}`
       });
       resetForm();
     } catch (error) {
       setToast({
         text: `An error occurred while creating ${newProjectName} project.`,
-        type: 'error'
+        type: FAILURE_TYPE
       });
     } finally {
       setIsCreatingProject(false);
@@ -77,27 +55,36 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
   };
 
   return (
-    <AddProjectFormWrapper $theme={theme} onSubmit={addProjectHandler}>
-      <Input
-        autoFocus={autoFocus}
-        tabIndex={-1}
-        width="100%"
-        initialValue={newProjectName}
-        value={newProjectName}
-        placeholder="New project name"
-        onChange={(event) => setNewProjectName(event.target.value)}
-      />
-      <Button
-        auto
-        icon={<Save />}
-        htmlType="submit"
-        loading={isCreatingProject}
-        disabled={newProjectName.length < 1}
-        px={0.6}
-        scale={0.75}
-        type="success"
-      />
-    </AddProjectFormWrapper>
+    <>
+      <form
+        className="inline-grid grid-flow-col grid-rows-[1fr] grid-cols-[minmax(6rem,20rem)_2.5rem] align-items-stretch gap-1 ml-auto h-full"
+        onSubmit={addProjectHandler}
+      >
+        <TextInput
+          autoFocus={autoFocus}
+          icon={AiOutlineFolderAdd}
+          sizing="sm"
+          tabIndex={-1}
+          width="100%"
+          value={newProjectName}
+          placeholder="New project name"
+          onChange={(event) => setNewProjectName(event.target.value)}
+        />
+
+        <Button
+          fullSized
+          type="submit"
+          isProcessing={isCreatingProject}
+          disabled={newProjectName.length < 1}
+          size="xs"
+          className="py-0"
+        >
+          {/*AiOutlineFileAdd*/}
+          {!isCreatingProject && <AiOutlineSave size={16} />}
+        </Button>
+      </form>
+      {toast && <FloatingToast {...toast} onDismiss={() => setToast(null)} />}
+    </>
   );
 };
 

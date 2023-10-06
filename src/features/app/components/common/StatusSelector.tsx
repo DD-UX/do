@@ -6,7 +6,7 @@ import StatusIcon from 'features/app/components/common/StatusIcon';
 import {TASK_STATUSES} from 'features/app/constants/status-constants';
 
 const statusSelectorItem = tv({
-  base: ['grid', 'grid-auto-col ', 'gap-1', ' grid-cols-[2rem_1fr] ', 'cursor-pointer']
+  base: ['grid', 'grid-flow-col', 'gap-2', 'grid-cols-[min-content_1fr] ', 'cursor-pointer']
 });
 
 type StatusSelectorProps = {

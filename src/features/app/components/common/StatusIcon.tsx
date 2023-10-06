@@ -32,15 +32,15 @@ const StatusIcon: FC<StatusIconProps> = ({status, size = 18}) => {
     case STATUS_TODO:
       return <AiOutlineDownCircle size={size as number} className="text-white" />;
     case STATUS_IN_PROGRESS:
-      return <AiOutlinePlayCircle size={size as number} className="text-orange-300" />;
+      return <AiOutlinePlayCircle size={size as number} className="text-anzac" />;
     case STATUS_CANCELLED:
-      return <AiOutlineCloseCircle size={size as number} className="text-purple-300" />;
+      return <AiOutlineCloseCircle size={size as number} className="text-hopbush" />;
     case STATUS_IN_REVIEW:
-      return <PiCrosshairSimpleLight size={size as number} className="text-cyan-200" />;
+      return <PiCrosshairSimpleLight size={size as number} className="text-pelorous" />;
     case STATUS_DONE:
-      return <AiOutlineCheckCircle size={size as number} className="text-green-400" />;
+      return <AiOutlineCheckCircle size={size as number} className="text-conifer" />;
     case STATUS_BLOCKED:
-      return <AiOutlinePauseCircle size={size as number} className="text-red-400" />;
+      return <AiOutlinePauseCircle size={size as number} className="text-froly" />;
     default:
       return <></>;
   }

@@ -8,7 +8,7 @@ import useUsersData from 'features/app/hooks/useUsersData';
 import {UserProps} from 'lib/sdk/users/client/get';
 
 const userSelectorItem = tv({
-  base: ['grid', 'grid-auto-col ', 'gap-1', ' grid-cols-[2rem_1fr] ', 'cursor-pointer']
+  base: ['grid', 'grid-flow-col', 'gap-2', 'grid-cols-[2rem_1fr] ', 'cursor-pointer']
 });
 
 type UserSelectorProps = {
