@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const RootLayout = ({children}: {children: ReactNode}) => (
   <html lang="en" className="h-full">
-    <body className={`${quicksand.className} h-full`}>{children}</body>
+    <body className={`${quicksand.className} h-full dark`}>{children}</body>
   </html>
 );
 

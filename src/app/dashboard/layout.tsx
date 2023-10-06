@@ -21,7 +21,7 @@ const RootLayout = async ({children}: {children: ReactNode}) => {
 
   return (
     <html lang="en" className="h-full">
-      <body className={`${quicksand.className} h-full`}>
+      <body className={`${quicksand.className} h-full dark`}>
         <Providers>
           <TasksContextProvider>{children}</TasksContextProvider>
         </Providers>

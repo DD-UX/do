@@ -66,7 +66,7 @@ const AppNavigationButton: FC<AppNavigationButtonProps> = (props) => {
       $isActive={'route' in props && pathname.startsWith(props.route)}
       onClick={handleClick}
     >
-      <Icon scale={0.8} />
+      <Icon />
       <Text my={0} font={0.7}>
         {text}
       </Text>
