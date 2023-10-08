@@ -45,22 +45,6 @@ const GlobalStylesGenerator = createGlobalStyle`
         }
       `;
     }};
-
-    ul, ol {
-      li {
-        line-height: 1.2;
-        margin: 0;
-      }
-    }
-
-    ul {
-      li {
-        position: relative;
-        &:before {
-          content: '\u2022'!important;
-        }
-      }
-    }
   }
 
   a,

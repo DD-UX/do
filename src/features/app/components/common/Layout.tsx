@@ -3,7 +3,7 @@ import {motion} from 'framer-motion';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 
-import {HEADER_HEIGHT, NAV_WIDTH, TRANSITION_DURATION} from 'features/app/constants/ui-constants';
+import {HEADER_HEIGHT, TRANSITION_DURATION} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
@@ -20,7 +20,7 @@ export const LayoutWrapper = styled(motion.div).attrs({
     [app-header-start] ${HEADER_HEIGHT} [app-header-end] 0
     [app-content-start] minmax(0, 1fr) [app-content-end];
   grid-template-columns:
-    [app-navigation-start] ${NAV_WIDTH} [app-navigation-end] 0
+    [app-navigation-start] min-content [app-navigation-end] 0
     [app-column-start] 20rem [app-column-end] 0
     [app-content-start] minmax(0, 1fr) [app-content-end];
 
@@ -50,33 +50,6 @@ export const LayoutColumn = styled.menu<GeistThemeProps>`
   z-index: ${Z_INDEX.modal};
 
   & > .btn {
-    flex-shrink: 0;
-  }
-`;
-
-export const LayoutNavigation = styled(motion.nav).attrs({
-  key: 'layout-navigation',
-  // to be implemented when shallow routing is available in Next.js app folder
-  initial: {x: '-100%'},
-  animate: {x: 0},
-  exit: {x: '-100%'},
-  transition: {duration: TRANSITION_DURATION, delay: TRANSITION_DURATION}
-})<GeistThemeProps>`
-  grid-row-start: app-header-start;
-  grid-row-end: app-content-end;
-  grid-column-start: app-navigation-start;
-  grid-column-end: app-navigation-end;
-
-  display: flex;
-  flex-direction: column;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
-  background-color: ${({$theme}) => $theme.palette.accents_3};
-  border-inline-end: 0.0625rem solid ${({$theme}) => $theme.palette.secondary};
-  height: 100%;
-  overflow: hidden;
-
-  & > * {
     flex-shrink: 0;
   }
 `;

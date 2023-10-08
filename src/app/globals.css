@@ -236,8 +236,4 @@
   a[href]:hover {
     color: var(--primary-700);
   }
-
-  li[role="menuitem"]:before {
-    content: none!important;
-  }
 }
