@@ -1,7 +1,7 @@
 'use client';
 
 import {FC, FormEvent, useState} from 'react';
-import {AiOutlineFolderAdd, AiOutlineSave} from 'react-icons/ai';
+import {LuFolder, LuSave} from 'react-icons/lu';
 import {Button, TextInput} from 'flowbite-react';
 
 import FloatingToast, {FloatingToastProps} from 'features/app/components/common/FloatingToast';
@@ -62,7 +62,7 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
       >
         <TextInput
           autoFocus={autoFocus}
-          icon={AiOutlineFolderAdd}
+          icon={LuFolder}
           sizing="sm"
           tabIndex={-1}
           width="100%"
@@ -79,8 +79,7 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
           size="xs"
           className="py-0"
         >
-          {/*AiOutlineFileAdd*/}
-          {!isCreatingProject && <AiOutlineSave size={16} />}
+          {!isCreatingProject && <LuSave size={16} />}
         </Button>
       </form>
       {toast && <FloatingToast {...toast} onDismiss={() => setToast(null)} />}

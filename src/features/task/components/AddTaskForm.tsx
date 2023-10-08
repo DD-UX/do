@@ -1,22 +1,12 @@
 'use client';
 
 import {FC, FormEvent, useState} from 'react';
-import {Button, Input, KeyCode, useKeyboard, useTheme, useToasts} from '@geist-ui/core';
-import Save from '@geist-ui/icons/save';
-import styled from 'styled-components';
+import {LuFile, LuSave} from 'react-icons/lu';
+import {Button, TextInput} from 'flowbite-react';
 
-import {openNewTabLink} from 'features/app/helpers/ui-helpers';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
+import FloatingToast, {FloatingToastProps} from 'features/app/components/common/FloatingToast';
+import {FAILURE_TYPE, SUCCESS_TYPE} from 'features/app/constants/toast-constants';
 import {setTask} from 'lib/sdk/tasks/client/set';
-
-const AddTaskFormWrapper = styled.form<GeistThemeProps>`
-  display: inline-grid;
-  grid-auto-flow: column;
-  grid-template-columns: minmax(6rem, 20rem) 2.5rem;
-  grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
-  align-items: center;
-  margin-inline-start: auto;
-`;
 
 type AddTaskFormProps = {
   projectId?: string | null;
@@ -25,8 +15,7 @@ type AddTaskFormProps = {
 };
 
 const AddTaskForm: FC<AddTaskFormProps> = ({projectId, autoFocus = true, onCreate}) => {
-  const {setToast} = useToasts();
-  const theme = useTheme();
+  const [toast, setToast] = useState<Omit<FloatingToastProps, 'onDismiss'> | null>(null);
   const [isCreatingTask, setIsCreatingTask] = useState(false);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
@@ -34,11 +23,6 @@ const AddTaskForm: FC<AddTaskFormProps> = ({projectId, autoFocus = true, onCreat
   const resetForm = () => {
     setNewTaskTitle('');
   };
-
-  // Reset form on Escape
-  useKeyboard(() => {
-    resetForm();
-  }, [KeyCode.Escape]);
 
   // Handle add task
   const addTaskHandler = async (event: FormEvent) => {
@@ -61,20 +45,14 @@ const AddTaskForm: FC<AddTaskFormProps> = ({projectId, autoFocus = true, onCreat
       onCreate?.();
       setToast({
         text: `Task ${newTaskTitle} created successfully.`,
-        type: 'success',
-        delay: 5000,
-        actions: [
-          {
-            name: 'Open in new tab',
-            handler: () => openNewTabLink(`/tasks/${task?.id}`)
-          }
-        ]
+        type: SUCCESS_TYPE,
+        link: `/tasks/${task?.id}`
       });
       resetForm();
     } catch (error) {
       setToast({
         text: `An error occurred while creating ${newTaskTitle} task.`,
-        type: 'error'
+        type: FAILURE_TYPE
       });
     } finally {
       setIsCreatingTask(false);
@@ -82,28 +60,35 @@ const AddTaskForm: FC<AddTaskFormProps> = ({projectId, autoFocus = true, onCreat
   };
 
   return (
-    <AddTaskFormWrapper $theme={theme} onSubmit={addTaskHandler}>
-      <Input
-        tabIndex={0}
-        autoFocus={autoFocus}
-        width="100%"
-        initialValue={newTaskTitle}
-        value={newTaskTitle}
-        placeholder="New task"
-        onChange={(event) => setNewTaskTitle(event.target.value)}
-        clearable
-      />
-      <Button
-        auto
-        icon={<Save />}
-        htmlType="submit"
-        loading={isCreatingTask}
-        disabled={newTaskTitle.length < 1}
-        px={0.6}
-        scale={0.75}
-        type="success"
-      />
-    </AddTaskFormWrapper>
+    <>
+      <form
+        className="inline-grid grid-flow-col grid-rows-[1fr] grid-cols-[minmax(6rem,20rem)_2.5rem] align-items-stretch gap-1 ml-auto h-full"
+        onSubmit={addTaskHandler}
+      >
+        <TextInput
+          autoFocus={autoFocus}
+          icon={LuFile}
+          sizing="sm"
+          tabIndex={-1}
+          width="100%"
+          value={newTaskTitle}
+          placeholder="New task name"
+          onChange={(event) => setNewTaskTitle(event.target.value)}
+        />
+
+        <Button
+          fullSized
+          type="submit"
+          isProcessing={isCreatingTask}
+          disabled={newTaskTitle.length < 1}
+          size="xs"
+          className="py-0"
+        >
+          {!isCreatingTask && <LuSave size={16} />}
+        </Button>
+      </form>
+      {toast && <FloatingToast {...toast} onDismiss={() => setToast(null)} />}
+    </>
   );
 };
 
