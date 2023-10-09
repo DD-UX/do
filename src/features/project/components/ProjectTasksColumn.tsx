@@ -21,7 +21,7 @@ const ProjectTasksColumn: FC = () => {
   return (
     project && (
       <LayoutColumn $theme={theme} ref={menuElementRef}>
-        <LayoutColumnHeader $theme={theme}>
+        <LayoutColumnHeader>
           <AddTaskForm
             projectId={project?.id || null}
             autoFocus={false}

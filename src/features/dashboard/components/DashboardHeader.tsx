@@ -66,7 +66,7 @@ const DashboardHeader: FC = () => {
 
   return (
     <>
-      <LayoutHeader $theme={theme} $fullWidth={isMobile}>
+      <LayoutHeader $fullWidth={isMobile}>
         {isMobile && (
           <Button
             auto
@@ -91,7 +91,7 @@ const DashboardHeader: FC = () => {
       <AnimatePresence mode="wait">
         {(menuVisible || !isMobile) && (
           <LayoutColumn $theme={theme} ref={menuElementRef}>
-            <LayoutColumnHeader $theme={theme}>
+            <LayoutColumnHeader>
               <Button
                 auto
                 tabIndex={0}

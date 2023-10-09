@@ -1,4 +1,5 @@
 import {Text} from '@geist-ui/core';
+import {Navbar} from 'flowbite-react';
 import {motion} from 'framer-motion';
 import NextLink from 'next/link';
 import styled from 'styled-components';
@@ -36,10 +37,8 @@ export const LayoutColumn = styled.menu<GeistThemeProps>`
   grid-column-end: app-column-end;
   margin: 0; // reset menu component
 
-  display: flex;
-  flex-direction: column;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
+  display: grid;
+  grid-template-rows: ${HEADER_HEIGHT} minmax(0, 1fr) min-content;
   background-color: ${({$theme}) => $theme.palette.accents_1};
   border-inline-end: 0.0625rem solid ${({$theme}) => $theme.palette.border};
   height: 100%;
@@ -54,13 +53,7 @@ export const LayoutColumn = styled.menu<GeistThemeProps>`
   }
 `;
 
-export const LayoutColumnHeader = styled.header<GeistThemeProps>`
-  flex-grow: 0;
-  flex-shrink: 0;
-
-  display: flex;
-  gap: ${({$theme}) => $theme.layout.gapQuarter};
-`;
+export const LayoutColumnHeader = styled(Navbar)``;
 
 export const LayoutColumnContent = styled.section<GeistThemeProps>`
   flex-grow: 1;
@@ -69,25 +62,16 @@ export const LayoutColumnContent = styled.section<GeistThemeProps>`
   display: grid;
   grid-template-rows: min-content;
   grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
+  padding: ${({$theme}) => $theme.layout.gapQuarter};
   overflow-x: hidden;
   overflow-y: auto;
 `;
 
-export const LayoutHeader = styled.header<GeistThemeProps & {$fullWidth?: boolean}>`
+export const LayoutHeader = styled(Navbar)<{$fullWidth?: boolean}>`
   grid-row-start: app-header-start;
   grid-row-end: app-header-end;
   grid-column-start: ${({$fullWidth}) => ($fullWidth ? 'app-column-start' : 'app-content-start')};
   grid-column-end: app-content-end;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
-
-  border-block-end: 0.0625rem solid ${({$theme}) => $theme.palette.border};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
-  height: 100%;
-  overflow: auto;
 `;
 
 export const LayoutHeading = styled(Text).attrs({my: 0, h4: true})``;

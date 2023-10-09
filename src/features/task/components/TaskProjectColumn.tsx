@@ -33,7 +33,7 @@ const TaskProjectColumn: FC = () => {
 
   return (
     <LayoutColumn $theme={theme} ref={menuElementRef}>
-      <LayoutColumnHeader $theme={theme}>
+      <LayoutColumnHeader>
         <AddProjectForm autoFocus={false} />
       </LayoutColumnHeader>
       <LayoutColumnContent $theme={theme}>
