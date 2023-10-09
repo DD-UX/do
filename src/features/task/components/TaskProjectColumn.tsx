@@ -1,9 +1,9 @@
 'use client';
 
-import {FC, useContext, useRef, useState} from 'react';
-import {Button, Text, useTheme} from '@geist-ui/core';
-import ArrowUpLeft from '@geist-ui/icons/arrowUpLeft';
-import {useRouter} from 'next/navigation';
+import {FC, useContext, useRef} from 'react';
+import {LuArrowUpLeft} from 'react-icons/lu';
+import {Text, useTheme} from '@geist-ui/core';
+import {Button} from 'flowbite-react';
 
 import EllipsisText from 'features/app/components/common/EllipsisText';
 import {
@@ -16,20 +16,9 @@ import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnIte
 import {TaskContext} from 'features/task/context/TaskContext';
 
 const TaskProjectColumn: FC = () => {
-  const router = useRouter();
   const theme = useTheme();
   const menuElementRef = useRef<HTMLMenuElement | null>(null);
   const {task, project, isLoadingProject} = useContext(TaskContext);
-  const [isOpeningProject, setIsOpeningProject] = useState(false);
-
-  const handleGoToProject = async () => {
-    try {
-      setIsOpeningProject(true);
-      await router.push(`/projects/${project?.id}`);
-    } catch (error) {
-      setIsOpeningProject(false); // no need to handle it within finally since the page will be re-rendered
-    }
-  };
 
   return (
     <LayoutColumn $theme={theme} ref={menuElementRef}>
@@ -56,18 +45,14 @@ const TaskProjectColumn: FC = () => {
           </>
         )}
       </LayoutColumnContent>
-      <Button
-        width="100%"
-        ghost
-        mt="auto"
-        icon={<ArrowUpLeft />}
-        htmlType="button"
-        type="secondary"
-        loading={isOpeningProject}
-        onClick={handleGoToProject}
-      >
-        Go to project
-      </Button>
+      <div className="p-4">
+        <Button as="a" outline href={`/projects/${project?.id}`}>
+          <span className="inline-flex gap-2 items-center">
+            <LuArrowUpLeft />
+            Go to project
+          </span>
+        </Button>
+      </div>
     </LayoutColumn>
   );
 };

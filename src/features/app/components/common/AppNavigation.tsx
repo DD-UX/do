@@ -2,13 +2,20 @@
 
 import {FC} from 'react';
 import {LuFolders, LuListChecks, LuLogOut} from 'react-icons/lu';
-import {Sidebar} from 'flowbite-react';
+import {Button, Sidebar} from 'flowbite-react';
 import {useRouter} from 'next/navigation';
 
 import {deleteSession} from 'lib/sdk/session/client/delete';
 
 const AppNavigation: FC = () => {
   const router = useRouter();
+
+  const logoutThemeButton = {
+    color: {
+      logout:
+        'transition-all text-gray-900 bg-white border border-gray-300 enabled:hover:bg-white focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:text-white dark:border-gray-800 dark:enabled:hover:bg-gray-600 dark:enabled:hover:border-gray-700 dark:focus:ring-gray-800'
+    }
+  };
 
   // Delete session and refresh the page so if any guard has to act, it will
   const handleLogout = async () => {
@@ -37,12 +44,12 @@ const AppNavigation: FC = () => {
             </Sidebar.Item>
           </Sidebar.ItemGroup>
           <Sidebar.ItemGroup className="mt-auto">
-            <Sidebar.CTA className="cursor-pointer mt-0" onClick={handleLogout}>
-              <span className="grid grid-flow-col grid-cols-[min-content_1fr] gap-2 items-center">
+            <Button fullSized color="logout" theme={logoutThemeButton} onClick={handleLogout}>
+              <span className="inline-flex gap-2 items-center">
                 <LuLogOut />
-                <span>Log out</span>
+                Log out
               </span>
-            </Sidebar.CTA>
+            </Button>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>
