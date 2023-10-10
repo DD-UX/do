@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import {TRANSITION_DURATION} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 export const DetailForm = styled.form`
   display: grid;
@@ -24,7 +23,7 @@ export const DetailContent = styled(motion.section).attrs({
   animate: {opacity: 1},
   exit: {opacity: 0},
   transition: {duration: TRANSITION_DURATION}
-})<GeistThemeProps>`
+})`
   grid-row-start: detail-header-start;
   grid-row-end: detail-content-end;
   grid-column-start: detail-content-start;
@@ -32,8 +31,6 @@ export const DetailContent = styled(motion.section).attrs({
 
   display: flex;
   flex-direction: column;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
   height: 100%;
   width: 80%;
   max-width: 100rem;
@@ -52,7 +49,7 @@ export const DetailMenu = styled(motion.menu).attrs({
   animate: {x: 0},
   exit: {x: '100%'},
   transition: {duration: TRANSITION_DURATION}
-})<GeistThemeProps>`
+})`
   grid-row-start: detail-header-start;
   grid-row-end: detail-content-end;
   grid-column-start: detail-column-start;
@@ -60,12 +57,8 @@ export const DetailMenu = styled(motion.menu).attrs({
 
   display: flex;
   flex-direction: column;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
 
   margin: 0; // reset menu component
-  background-color: ${({$theme}) => $theme.palette.accents_2};
-  border-inline-end: 0.0625rem solid ${({$theme}) => $theme.palette.border};
-  padding: ${({$theme}) => $theme.layout.gapHalf};
   height: 100%;
   overflow: hidden;
 
@@ -78,10 +71,9 @@ export const DetailMenu = styled(motion.menu).attrs({
   }
 `;
 
-export const DetailMenuContent = styled.div<GeistThemeProps>`
+export const DetailMenuContent = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
   overflow: auto;
 `;

@@ -1,9 +1,10 @@
 import {Text} from '@geist-ui/core';
-import {Navbar} from 'flowbite-react';
+import {Navbar, Sidebar} from 'flowbite-react';
 import {motion} from 'framer-motion';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 
+import {APP_NAVIGATION_SIDEBAR_THEME} from 'features/app/constants/theme-constants';
 import {HEADER_HEIGHT, TRANSITION_DURATION} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -28,6 +29,13 @@ export const LayoutWrapper = styled(motion.div).attrs({
   background-color: ${({$theme}) => $theme.palette.background};
   height: 100%;
   overflow: hidden;
+`;
+
+export const LayoutNavigation = styled(Sidebar).attrs({theme: APP_NAVIGATION_SIDEBAR_THEME})`
+  grid-row-start: app-header-start;
+  grid-row-end: app-content-end;
+  grid-column-start: app-navigation-start;
+  grid-column-end: app-navigation-end;
 `;
 
 export const LayoutColumn = styled.menu<GeistThemeProps>`
@@ -75,25 +83,6 @@ export const LayoutHeader = styled(Navbar)<{$fullWidth?: boolean}>`
 `;
 
 export const LayoutHeading = styled(Text).attrs({my: 0, h4: true})``;
-
-export const LayoutContent = styled(motion.section).attrs({
-  key: 'layout-content'
-  // to be implemented when shallow routing is available in Next.js app folder
-  // initial: {y: 20, opacity: 0},
-  // animate: {y: 0, opacity: 1},
-  // exit: {y: 20, opacity: 0},
-  // transition: {duration: 0.6}
-})<GeistThemeProps & {$fullWidth?: boolean; $noPadding?: boolean}>`
-  grid-row-start: app-content-start;
-  grid-row-end: app-content-end;
-  grid-column-start: ${({$fullWidth}) => ($fullWidth ? 'app-column-start' : 'app-content-start')};
-  grid-column-end: app-content-end;
-
-  background-color: ${({$theme}) => $theme.palette.accents_1};
-  padding: ${({$theme, $noPadding}) => ($noPadding ? 0 : $theme.layout.gapHalf)};
-  height: 100%;
-  overflow: auto;
-`;
 
 export const LayoutLink = styled(NextLink)<GeistThemeProps>`
   text-decoration: none !important;

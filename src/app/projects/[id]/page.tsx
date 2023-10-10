@@ -1,18 +1,18 @@
 'use client';
 
 import {FC} from 'react';
-import {useMediaQuery, useTheme} from '@geist-ui/core';
+import {useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
-import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
+import {LayoutWrapper} from 'features/app/components/common/Layout';
+import LayoutContent from 'features/app/components/common/LayoutContent';
 import ProjectForm from 'features/project/components/ProjectForm';
 import ProjectHeader from 'features/project/components/ProjectHeader';
 import {ProjectContextProvider} from 'features/project/context/ProjectContext';
 
 const ProjectDetailPage: FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery('mobile');
 
   return (
     <ProjectContextProvider>
@@ -21,7 +21,7 @@ const ProjectDetailPage: FC = () => {
           <AppNavigation />
           <ProjectHeader />
           <AnimatePresence mode="wait">
-            <LayoutContent $theme={theme} $fullWidth={isMobile} $noPadding>
+            <LayoutContent noPadding>
               <ProjectForm />
             </LayoutContent>
           </AnimatePresence>

@@ -5,7 +5,8 @@ import {useTheme} from '@geist-ui/core';
 import {AnimatePresence} from 'framer-motion';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
-import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
+import {LayoutWrapper} from 'features/app/components/common/Layout';
+import LayoutContent from 'features/app/components/common/LayoutContent';
 import TasksContent from 'features/task/components/TasksContent';
 import TasksHeader from 'features/task/components/TasksHeader';
 
@@ -18,7 +19,7 @@ const TasksPage: FC = () => {
         <AppNavigation />
         <TasksHeader />
         <AnimatePresence mode="wait">
-          <LayoutContent $theme={theme} $fullWidth>
+          <LayoutContent fullWidth>
             <TasksContent />
           </LayoutContent>
         </AnimatePresence>

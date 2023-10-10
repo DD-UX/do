@@ -1,7 +1,7 @@
 'use client';
 
 import {FC, FormEvent, useState} from 'react';
-import {LuFolder, LuSave} from 'react-icons/lu';
+import {LuFolderPlus, LuSave} from 'react-icons/lu';
 import {Button, TextInput} from 'flowbite-react';
 
 import FloatingToast, {FloatingToastProps} from 'features/app/components/common/FloatingToast';
@@ -62,7 +62,7 @@ const AddProjectForm: FC<AddProjectFormProps> = ({autoFocus = true, onCreate}) =
       >
         <TextInput
           autoFocus={autoFocus}
-          icon={LuFolder}
+          icon={LuFolderPlus}
           sizing="sm"
           tabIndex={-1}
           width="100%"

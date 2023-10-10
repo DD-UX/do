@@ -1,7 +1,7 @@
 'use client';
 
 import {FC, useContext} from 'react';
-import {Button, Input, KeyCode, Loading, Textarea, useKeyboard, useTheme} from '@geist-ui/core';
+import {Button, Input, KeyCode, Loading, Textarea, useKeyboard} from '@geist-ui/core';
 import Save from '@geist-ui/icons/save';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -25,7 +25,6 @@ import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
 
 const TaskForm: FC = () => {
-  const theme = useTheme();
   const {task, isLoadingTask, refreshTask} = useContext(TaskContext);
   const {updateTask} = useTaskUpdate();
   const formikInstance = useFormik<TaskProps>({
@@ -64,7 +63,7 @@ const TaskForm: FC = () => {
         <Loading>Loading task</Loading>
       ) : (
         <>
-          <DetailContent $theme={theme}>
+          <DetailContent className="p-4 gap-4">
             <FormControl
               label="Title"
               vertical
@@ -95,8 +94,8 @@ const TaskForm: FC = () => {
               />
             </FormControl>
           </DetailContent>
-          <DetailMenu $theme={theme}>
-            <DetailMenuContent $theme={theme}>
+          <DetailMenu className="p-4 gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700">
+            <DetailMenuContent>
               <FormControl label="Status:" alignItems="start">
                 <StatusSelector
                   showValue
