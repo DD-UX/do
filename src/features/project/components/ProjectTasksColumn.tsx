@@ -28,7 +28,7 @@ const ProjectTasksColumn: FC = () => {
             onCreate={() => refreshProject()}
           />
         </LayoutColumnHeader>
-        <LayoutColumnContent $theme={theme}>
+        <LayoutColumnContent>
           {isLoadingProject ? (
             <EllipsisText>Loading...</EllipsisText>
           ) : (

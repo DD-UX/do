@@ -3,7 +3,7 @@
 import {FC, useContext} from 'react';
 import {LuSave} from 'react-icons/lu';
 import {Loading} from '@geist-ui/core';
-import {Button, Textarea, TextInput} from 'flowbite-react';
+import {Button, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 
@@ -14,6 +14,10 @@ import {
   DetailMenuContent
 } from 'features/app/components/common/Detail';
 import FormControl from 'features/app/components/common/FormControl';
+import {
+  APP_HIGH_CONTRAST_INPUT_THEME,
+  APP_HIGH_CONTRAST_TEXTAREA_THEME
+} from 'features/app/constants/theme-constants';
 import {ProjectContext} from 'features/project/context/ProjectContext';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
@@ -34,7 +38,16 @@ const ProjectForm: FC = () => {
       {isLoadingProject ? (
         <Loading>Loading project</Loading>
       ) : (
-        <>
+        <Flowbite
+          theme={
+            {
+              theme: {
+                textInput: APP_HIGH_CONTRAST_INPUT_THEME,
+                textarea: APP_HIGH_CONTRAST_TEXTAREA_THEME
+              }
+            } as ThemeProps
+          }
+        >
           <DetailContent className="p-4 gap-4">
             <FormControl
               label="Title"
@@ -50,6 +63,7 @@ const ProjectForm: FC = () => {
                 placeholder="Update package.json libraries"
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
+                color="gray"
               />
             </FormControl>
             <FormControl label="Content" vertical>
@@ -59,6 +73,7 @@ const ProjectForm: FC = () => {
                 placeholder="We are going to develop..."
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
+                color="gray"
               />
             </FormControl>
           </DetailContent>
@@ -83,7 +98,7 @@ const ProjectForm: FC = () => {
               </span>
             </Button>
           </DetailMenu>
-        </>
+        </Flowbite>
       )}
     </DetailForm>
   );

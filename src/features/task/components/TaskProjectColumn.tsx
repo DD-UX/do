@@ -25,7 +25,7 @@ const TaskProjectColumn: FC = () => {
       <LayoutColumnHeader>
         <AddProjectForm autoFocus={false} />
       </LayoutColumnHeader>
-      <LayoutColumnContent $theme={theme}>
+      <LayoutColumnContent>
         {isLoadingProject ? (
           <EllipsisText>Loading...</EllipsisText>
         ) : (

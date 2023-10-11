@@ -4,7 +4,6 @@ import {motion} from 'framer-motion';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 
-import {APP_NAVIGATION_SIDEBAR_THEME} from 'features/app/constants/theme-constants';
 import {HEADER_HEIGHT, TRANSITION_DURATION} from 'features/app/constants/ui-constants';
 import Z_INDEX from 'features/app/styles/zIndex.styles';
 import {GeistThemeProps} from 'lib/geist/geist-theme-models';
@@ -23,7 +22,7 @@ export const LayoutWrapper = styled(motion.div).attrs({
     [app-content-start] minmax(0, 1fr) [app-content-end];
   grid-template-columns:
     [app-navigation-start] min-content [app-navigation-end] 0
-    [app-column-start] 20rem [app-column-end] 0
+    [app-column-start] min-content [app-column-end] 0
     [app-content-start] minmax(0, 1fr) [app-content-end];
 
   background-color: ${({$theme}) => $theme.palette.background};
@@ -31,7 +30,7 @@ export const LayoutWrapper = styled(motion.div).attrs({
   overflow: hidden;
 `;
 
-export const LayoutNavigation = styled(Sidebar).attrs({theme: APP_NAVIGATION_SIDEBAR_THEME})`
+export const LayoutNavigation = styled(Sidebar)`
   grid-row-start: app-header-start;
   grid-row-end: app-content-end;
   grid-column-start: app-navigation-start;
@@ -63,14 +62,8 @@ export const LayoutColumn = styled.menu<GeistThemeProps>`
 
 export const LayoutColumnHeader = styled(Navbar)``;
 
-export const LayoutColumnContent = styled.section<GeistThemeProps>`
-  flex-grow: 1;
-  flex-shrink: 1;
-
-  display: grid;
-  grid-template-rows: min-content;
-  grid-gap: ${({$theme}) => $theme.layout.gapQuarter};
-  padding: ${({$theme}) => $theme.layout.gapQuarter};
+export const LayoutColumnContent = styled(Sidebar)`
+  height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
 `;
