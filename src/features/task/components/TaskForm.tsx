@@ -2,6 +2,12 @@
 
 import {FC, useContext} from 'react';
 import {LuSave} from 'react-icons/lu';
+import {
+  appEntityFormContentVariants,
+  appEntityFormSidePanelContentVariants,
+  appEntityFormSidePanelVariants,
+  appEntityFormVariants
+} from 'app/layout-variants/app-entity-detail-variants';
 import {Button, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
@@ -65,8 +71,8 @@ const TaskForm: FC = () => {
       {isLoadingTask ? (
         <Loading text="Loading task" />
       ) : (
-        <form className="flex w-full h-full" onSubmit={formikInstance.handleSubmit}>
-          <section className="p-4 flex flex-col gap-2 item-center w-full h-full overflow-y-auto overflow-x-hidden">
+        <form className={appEntityFormVariants()} onSubmit={formikInstance.handleSubmit}>
+          <section className={appEntityFormContentVariants()}>
             <FormControl
               label="Title"
               errors={formikInstance?.errors?.title}
@@ -92,8 +98,8 @@ const TaskForm: FC = () => {
               />
             </FormControl>
           </section>
-          <div className="w-64 flex-[0_0_auto] p-4 grid grid-rows-[minmax(0,1fr)_min-content] gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700 overflow-hidden">
-            <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
+          <aside className={appEntityFormSidePanelVariants()}>
+            <div className={appEntityFormSidePanelContentVariants()}>
               <FormControl label="Status:">
                 <StatusSelector
                   showValue
@@ -128,7 +134,7 @@ const TaskForm: FC = () => {
                 Save
               </span>
             </Button>
-          </div>
+          </aside>
         </form>
       )}
     </Flowbite>
