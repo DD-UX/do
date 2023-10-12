@@ -41,7 +41,7 @@ const FormControl: FC<PropsWithChildren<FormControlProps>> = ({
         errors.length > 0 &&
         showErrors &&
         (errors as string[]).map((error, idx) => (
-          <p className="text-red-500" key={`FormControl-error-${error}-${idx}`}>
+          <p className="text-error" key={`FormControl-error-${error}-${idx}`}>
             {error}
           </p>
         ))}

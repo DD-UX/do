@@ -1,12 +1,13 @@
 'use client';
 
-import {FC} from 'react';
+import {FC, useContext} from 'react';
 import {LuArrowUpLeft} from 'react-icons/lu';
 import {Button, Footer, Navbar, Sidebar} from 'flowbite-react';
 
 import Loading from 'features/app/components/common/Loading';
 import useTasksData from 'features/app/hooks/useTasksData';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
+import {TaskContext} from 'features/task/context/TaskContext';
 import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 type ProjectTasksColumnProps = {
@@ -18,7 +19,8 @@ const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
   projectId,
   showGoToProjectButton = true
 }) => {
-  const {tasks, isLoadingTasks} = useTasksData({projectId});
+  const {tasks, isLoadingTasks, refreshTasks} = useTasksData({projectId});
+  const {task: taskData} = useContext(TaskContext);
 
   return (
     <menu className={headerContentFooterVariants({layout: 'column'})}>
@@ -32,7 +34,12 @@ const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
           <>
             <div>
               {tasks?.map((currentTask) => (
-                <TaskProjectColumnItem key={currentTask.id} task={currentTask} active={false} />
+                <TaskProjectColumnItem
+                  key={currentTask.id}
+                  task={currentTask}
+                  active={currentTask.id === taskData?.id}
+                  onUpdate={refreshTasks}
+                />
               ))}
               {(!Array.isArray(tasks) || (tasks && tasks?.length < 1)) && <p>No tasks</p>}
             </div>
