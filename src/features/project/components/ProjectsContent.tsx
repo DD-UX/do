@@ -1,26 +1,29 @@
 import {FC, useContext} from 'react';
-import {Button, Loading, Table, Text, useTheme} from '@geist-ui/core';
+import {Button, Loading, Table, Text} from '@geist-ui/core';
 import Calendar from '@geist-ui/icons/calendar';
 import Trash2 from '@geist-ui/icons/trash2';
+import {appLinkVariants} from 'app/layout-variants/app-link-variants';
+import NextLink from 'next/link';
 
-import EllipsisText from 'features/app/components/common/EllipsisText';
-import {LayoutLink} from 'features/app/components/common/Layout';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
 import {ProjectsContext} from 'features/app/context/ProjectsContext';
 import {formatDateTime} from 'features/app/helpers/date-helpers';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
 const ProjectsContent: FC = () => {
-  const theme = useTheme();
   const {projects, isLoadingProjects, deleteProject} = useContext(ProjectsContext);
 
   const renderTitle = (_: any, {id, title}: ProjectProps) => {
     return (
-      <LayoutLink $theme={theme} href={`/projects/${id}`} passHref>
-        <EllipsisText h6 my={0}>
-          {title}
-        </EllipsisText>
-      </LayoutLink>
+      <NextLink
+        className={appLinkVariants()}
+        href={{
+          pathname: `/projects/${id}`
+        }}
+        passHref
+      >
+        {title}
+      </NextLink>
     );
   };
 

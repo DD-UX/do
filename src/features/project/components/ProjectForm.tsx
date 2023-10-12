@@ -3,7 +3,7 @@
 import {FC, useContext} from 'react';
 import {LuSave} from 'react-icons/lu';
 import {
-  appEntityFormContentVariants,
+  appEntityContentVariants,
   appEntityFormSidePanelContentVariants,
   appEntityFormSidePanelVariants,
   appEntityFormVariants
@@ -47,7 +47,7 @@ const ProjectForm: FC = () => {
         <Loading text="Loading project" />
       ) : (
         <form className={appEntityFormVariants()} onSubmit={formikInstance.handleSubmit}>
-          <section className={appEntityFormContentVariants()}>
+          <section className={appEntityContentVariants()}>
             <FormControl
               label="Title"
               errors={formikInstance?.errors?.title}

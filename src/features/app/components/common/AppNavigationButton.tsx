@@ -4,8 +4,8 @@ import {usePathname, useRouter} from 'next/navigation';
 import styled, {css} from 'styled-components';
 
 import {TRANSITION_DURATION} from 'features/app/constants/ui-constants';
+import {GeistThemeProps} from 'features/app/models/geist-theme-models';
 import {GeistIconModel} from 'lib/geist/geist-icon-model';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 const AppNavigationButtonWrapper = styled.button.attrs({
   type: 'button'

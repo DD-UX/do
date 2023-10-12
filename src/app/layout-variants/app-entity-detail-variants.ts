@@ -4,7 +4,7 @@ export const appEntityFormVariants = tv({
   base: ['flex', 'w-full', 'h-full']
 });
 
-export const appEntityFormContentVariants = tv({
+export const appEntityContentVariants = tv({
   base: [
     'w-full',
     'h-full',
