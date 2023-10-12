@@ -1,26 +1,19 @@
 'use client';
 
 import {FC, useContext} from 'react';
-import {AnimatePresence} from 'framer-motion';
+import {Navbar} from 'flowbite-react';
 
-import {LayoutHeader, LayoutHeading} from 'features/app/components/common/Layout';
 import AddProjectForm from 'features/project/components/AddProjectForm';
-import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
 import {ProjectContext} from 'features/project/context/ProjectContext';
 
 const ProjectHeader: FC = () => {
   const {project} = useContext(ProjectContext);
 
   return (
-    <>
-      <LayoutHeader $fullWidth>
-        <LayoutHeading>{project?.title}</LayoutHeading>
-        <AddProjectForm autoFocus={false} />
-      </LayoutHeader>
-      <AnimatePresence mode="wait">
-        <ProjectTasksColumn />
-      </AnimatePresence>
-    </>
+    <Navbar>
+      <h4 className="text-sm m-0 truncate text-gray-600 dark:text-gray-200">{project?.title}</h4>
+      <AddProjectForm autoFocus={false} />
+    </Navbar>
   );
 };
 

@@ -5,11 +5,10 @@ import {LuFolders, LuListTodo, LuLogOut} from 'react-icons/lu';
 import {Button, Flowbite, Sidebar, ThemeProps} from 'flowbite-react';
 import {usePathname, useRouter} from 'next/navigation';
 
-import {LayoutNavigation} from 'features/app/components/common/Layout';
 import {
   APP_NAVIGATION_SIDEBAR_LOGOUT_BUTTON_THEME,
   APP_NAVIGATION_SIDEBAR_THEME
-} from 'features/app/constants/theme-constants';
+} from 'features/theme/constants/theme-constants';
 import {deleteSession} from 'lib/sdk/session/client/delete';
 
 const AppNavigation: FC = () => {
@@ -33,7 +32,7 @@ const AppNavigation: FC = () => {
         } as ThemeProps
       }
     >
-      <LayoutNavigation aria-label="Do sidebar">
+      <Sidebar aria-label="Do sidebar">
         <Sidebar.Items className="h-full grid">
           <Sidebar.ItemGroup>
             <Sidebar.Item
@@ -56,7 +55,7 @@ const AppNavigation: FC = () => {
             </Button>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
-      </LayoutNavigation>
+      </Sidebar>
     </Flowbite>
   );
 };

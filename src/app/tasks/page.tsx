@@ -1,30 +1,26 @@
 'use client';
 
 import {FC} from 'react';
-import {useTheme} from '@geist-ui/core';
-import {AnimatePresence} from 'framer-motion';
+import {appLayoutVariants} from 'app/layout-variants/app-layout-variants';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
-import {LayoutWrapper} from 'features/app/components/common/Layout';
-import LayoutContent from 'features/app/components/common/LayoutContent';
 import TasksContent from 'features/task/components/TasksContent';
 import TasksHeader from 'features/task/components/TasksHeader';
+import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 const TasksPage: FC = () => {
-  const theme = useTheme();
-
   return (
-    <AnimatePresence mode="wait">
-      <LayoutWrapper $theme={theme}>
-        <AppNavigation />
+    <div className={appLayoutVariants()}>
+      <AppNavigation />
+      <main
+        className={headerContentFooterVariants({
+          layout: 'content'
+        })}
+      >
         <TasksHeader />
-        <AnimatePresence mode="wait">
-          <LayoutContent fullWidth>
-            <TasksContent />
-          </LayoutContent>
-        </AnimatePresence>
-      </LayoutWrapper>
-    </AnimatePresence>
+        <TasksContent />
+      </main>
+    </div>
   );
 };
 

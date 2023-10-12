@@ -2,30 +2,23 @@
 
 import {FC, useContext} from 'react';
 import {LuSave} from 'react-icons/lu';
-import {Loading} from '@geist-ui/core';
 import {Button, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 
-import {
-  DetailContent,
-  DetailForm,
-  DetailMenu,
-  DetailMenuContent
-} from 'features/app/components/common/Detail';
 import FormControl from 'features/app/components/common/FormControl';
-import {
-  APP_HIGH_CONTRAST_INPUT_THEME,
-  APP_HIGH_CONTRAST_TEXTAREA_THEME
-} from 'features/app/constants/theme-constants';
+import Loading from 'features/app/components/common/Loading';
 import {ProjectContext} from 'features/project/context/ProjectContext';
+import {
+  HIGH_CONTRAST_INPUT_THEME,
+  HIGH_CONTRAST_TEXTAREA_THEME
+} from 'features/theme/constants/theme-constants';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
 const ProjectForm: FC = () => {
   const {project, isLoadingProject, updateProject} = useContext(ProjectContext);
-  const {tasks, ...projectData} = project || {};
   const formikInstance = useFormik<ProjectProps>({
-    initialValues: (projectData as ProjectProps) || ({} as ProjectProps),
+    initialValues: {...project} as ProjectProps,
     enableReinitialize: true,
     validationSchema: yup.object().shape({
       title: yup.string().label('Title').required().nullable()
@@ -34,24 +27,23 @@ const ProjectForm: FC = () => {
   });
 
   return (
-    <DetailForm onSubmit={formikInstance.handleSubmit}>
-      {isLoadingProject ? (
-        <Loading>Loading project</Loading>
-      ) : (
-        <Flowbite
-          theme={
-            {
-              theme: {
-                textInput: APP_HIGH_CONTRAST_INPUT_THEME,
-                textarea: APP_HIGH_CONTRAST_TEXTAREA_THEME
-              }
-            } as ThemeProps
+    <Flowbite
+      theme={
+        {
+          theme: {
+            textInput: HIGH_CONTRAST_INPUT_THEME,
+            textarea: HIGH_CONTRAST_TEXTAREA_THEME
           }
-        >
-          <DetailContent className="p-4 gap-4">
+        } as ThemeProps
+      }
+    >
+      {isLoadingProject ? (
+        <Loading text="Loading project" />
+      ) : (
+        <form className="flex w-full h-full" onSubmit={formikInstance.handleSubmit}>
+          <section className="p-4 flex flex-col gap-2 item-center w-full h-full overflow-y-auto overflow-x-hidden">
             <FormControl
               label="Title"
-              vertical
               errors={formikInstance?.errors?.title}
               showErrors={!!formikInstance?.touched?.title}
             >
@@ -63,29 +55,23 @@ const ProjectForm: FC = () => {
                 placeholder="Update package.json libraries"
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
-                color="gray"
               />
             </FormControl>
-            <FormControl label="Content" vertical>
+            <FormControl label="Content">
               <Textarea
                 name="content"
                 value={formikInstance.values?.content || ''}
                 placeholder="We are going to develop..."
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
-                color="gray"
               />
             </FormControl>
-          </DetailContent>
-          <DetailMenu className="p-4 gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700">
-            <DetailMenuContent>
-              <FormControl label="Start date:" alignItems="start">
-                To do
-              </FormControl>
-              <FormControl label="End date:" alignItems="start">
-                To do
-              </FormControl>
-            </DetailMenuContent>
+          </section>
+          <div className="w-64 flex-[0_0_auto] p-4 grid grid-rows-[minmax(0,1fr)_min-content] gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700 overflow-hidden">
+            <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
+              <FormControl label="Start date:">To do</FormControl>
+              <FormControl label="End date:">To do</FormControl>
+            </div>
             <Button
               fullSized
               type="submit"
@@ -97,10 +83,10 @@ const ProjectForm: FC = () => {
                 Save
               </span>
             </Button>
-          </DetailMenu>
-        </Flowbite>
+          </div>
+        </form>
       )}
-    </DetailForm>
+    </Flowbite>
   );
 };
 

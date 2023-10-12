@@ -38,7 +38,7 @@ export const TasksContextProvider: FC<PropsWithChildren<TasksContextProviderProp
   children
 }) => {
   const {setToast} = useToasts();
-  const {tasks, error, refreshTasks, isLoadingTasks} = useTasksData();
+  const {tasks, error, refreshTasks, isLoadingTasks} = useTasksData({});
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskProps | null>(null);

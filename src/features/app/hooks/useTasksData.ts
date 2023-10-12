@@ -12,10 +12,14 @@ type UseTasksDataValues = {
   refreshTasks(): void;
 };
 
+type UseTasksDataProps = {
+  projectId?: string;
+};
+
 /*
  * This Hook will pull down all the tasks
  */
-function useTasksData(): UseTasksDataValues {
+function useTasksData({projectId}: UseTasksDataProps): UseTasksDataValues {
   const {setToast} = useToasts();
   const [tasksData, setTasksData] = useState<TaskProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
@@ -25,7 +29,7 @@ function useTasksData(): UseTasksDataValues {
   const loadTasks = async () => {
     try {
       setIsLoadingTasks(true);
-      const {tasks: tasksList, error} = await getTasks({search});
+      const {tasks: tasksList, error} = await getTasks({search, projectId});
       setError(error);
       setTasksData(tasksList);
     } catch (error) {
@@ -40,7 +44,7 @@ function useTasksData(): UseTasksDataValues {
 
   useEffect(() => {
     loadTasks();
-  }, []);
+  }, [projectId, search]);
 
   const memoizedReturnValue: UseTasksDataValues = useMemo(() => {
     return {

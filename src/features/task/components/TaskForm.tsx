@@ -1,18 +1,13 @@
 'use client';
 
 import {FC, useContext} from 'react';
-import {Button, Input, KeyCode, Loading, Textarea, useKeyboard} from '@geist-ui/core';
-import Save from '@geist-ui/icons/save';
+import {LuSave} from 'react-icons/lu';
+import {Button, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 
-import {
-  DetailContent,
-  DetailForm,
-  DetailMenu,
-  DetailMenuContent
-} from 'features/app/components/common/Detail';
 import FormControl from 'features/app/components/common/FormControl';
+import Loading from 'features/app/components/common/Loading';
 import ProjectSelector from 'features/app/components/common/ProjectSelector';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
@@ -20,6 +15,10 @@ import {TASK_STATUSES} from 'features/app/constants/status-constants';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
 import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
 import {TaskContext} from 'features/task/context/TaskContext';
+import {
+  HIGH_CONTRAST_INPUT_THEME,
+  HIGH_CONTRAST_TEXTAREA_THEME
+} from 'features/theme/constants/theme-constants';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -28,7 +27,7 @@ const TaskForm: FC = () => {
   const {task, isLoadingTask, refreshTask} = useContext(TaskContext);
   const {updateTask} = useTaskUpdate();
   const formikInstance = useFormik<TaskProps>({
-    initialValues: task || ({} as TaskProps),
+    initialValues: {...task} as TaskProps,
     enableReinitialize: true,
     validationSchema: yup.object().shape({
       title: yup.string().label('Title').required().nullable()
@@ -39,11 +38,6 @@ const TaskForm: FC = () => {
       refreshTask();
     }
   });
-
-  // Reset form on Escape
-  useKeyboard(() => {
-    formikInstance.resetForm();
-  }, [KeyCode.Escape]);
 
   const updateStatus = (updatedStatus: (typeof TASK_STATUSES)[number] | string) => {
     formikInstance.setFieldValue('status', updatedStatus, true);
@@ -58,45 +52,49 @@ const TaskForm: FC = () => {
   };
 
   return (
-    <DetailForm onSubmit={formikInstance.handleSubmit}>
+    <Flowbite
+      theme={
+        {
+          theme: {
+            textInput: HIGH_CONTRAST_INPUT_THEME,
+            textarea: HIGH_CONTRAST_TEXTAREA_THEME
+          }
+        } as ThemeProps
+      }
+    >
       {isLoadingTask ? (
-        <Loading>Loading task</Loading>
+        <Loading text="Loading task" />
       ) : (
-        <>
-          <DetailContent className="p-4 gap-4">
+        <form className="flex w-full h-full" onSubmit={formikInstance.handleSubmit}>
+          <section className="p-4 flex flex-col gap-2 item-center w-full h-full overflow-y-auto overflow-x-hidden">
             <FormControl
               label="Title"
-              vertical
               errors={formikInstance?.errors?.title}
               showErrors={!!formikInstance?.touched?.title}
             >
-              <Input
+              <TextInput
                 name="title"
                 tabIndex={0}
                 autoFocus
-                width="100%"
-                initialValue={formikInstance.values?.title || ''}
                 value={formikInstance.values?.title || ''}
                 placeholder="Update package.json libraries"
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
               />
             </FormControl>
-            <FormControl label="Content" vertical>
+            <FormControl label="Content">
               <Textarea
                 name="content"
-                width="100%"
-                initialValue={formikInstance.values?.content || ''}
                 value={formikInstance.values?.content || ''}
-                placeholder="As a developer I want to..."
+                placeholder="We are going to develop..."
                 onChange={formikInstance.handleChange}
                 onBlur={formikInstance.handleBlur}
               />
             </FormControl>
-          </DetailContent>
-          <DetailMenu className="p-4 gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700">
-            <DetailMenuContent>
-              <FormControl label="Status:" alignItems="start">
+          </section>
+          <div className="w-64 flex-[0_0_auto] p-4 grid grid-rows-[minmax(0,1fr)_min-content] gap-4 bg-gray-100 dark:bg-gray-600 border-l-2 border-l-gray-200 dark:border-l-gray-700 overflow-hidden">
+            <div className="flex flex-col gap-2 overflow-y-auto overflow-x-hidden">
+              <FormControl label="Status:">
                 <StatusSelector
                   showValue
                   iconSize={18}
@@ -104,7 +102,7 @@ const TaskForm: FC = () => {
                   onChange={updateStatus}
                 />
               </FormControl>
-              <FormControl label="Assigned:" alignItems="start">
+              <FormControl label="Assigned:">
                 <UserSelector
                   showUserName
                   userId={formikInstance.values.assignee_id}
@@ -118,24 +116,22 @@ const TaskForm: FC = () => {
                   onChange={updateProjectId}
                 />
               </FormControl>
-            </DetailMenuContent>
+            </div>
             <Button
-              width="100%"
-              icon={<Save />}
-              htmlType="submit"
-              mt="auto"
-              px={0.6}
-              scale={0.75}
-              type="success"
-              loading={formikInstance.isSubmitting}
+              fullSized
+              type="submit"
+              isProcessing={formikInstance.isSubmitting}
               disabled={!formikInstance.isValid}
             >
-              Save
+              <span className="inline-flex gap-2">
+                <LuSave size={16} />
+                Save
+              </span>
             </Button>
-          </DetailMenu>
-        </>
+          </div>
+        </form>
       )}
-    </DetailForm>
+    </Flowbite>
   );
 };
 
