@@ -4,9 +4,9 @@ import {FC} from 'react';
 import {appLayoutVariants} from 'app/layout-variants/app-layout-variants';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
+import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import TasksContent from 'features/task/components/TasksContent';
 import TasksHeader from 'features/task/components/TasksHeader';
-import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 const TasksPage: FC = () => {
   return (

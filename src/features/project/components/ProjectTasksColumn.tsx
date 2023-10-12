@@ -1,26 +1,32 @@
 'use client';
 
-import {FC, useContext} from 'react';
+import {FC, useContext, useEffect} from 'react';
 import {LuArrowUpLeft} from 'react-icons/lu';
 import {Button, Footer, Navbar, Sidebar} from 'flowbite-react';
 
 import Loading from 'features/app/components/common/Loading';
 import useTasksData from 'features/app/hooks/useTasksData';
+import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
 import {TaskContext} from 'features/task/context/TaskContext';
-import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 type ProjectTasksColumnProps = {
   projectId: string;
   showGoToProjectButton?: boolean;
+  setOnSaveColumnCallback?(callback: () => void): void;
 };
 
 const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
   projectId,
-  showGoToProjectButton = true
+  showGoToProjectButton = true,
+  setOnSaveColumnCallback
 }) => {
   const {tasks, isLoadingTasks, refreshTasks} = useTasksData({projectId});
   const {task: taskData} = useContext(TaskContext);
+
+  useEffect(() => {
+    setOnSaveColumnCallback?.(() => refreshTasks);
+  }, [refreshTasks]);
 
   return (
     <menu className={headerContentFooterVariants({layout: 'column'})}>

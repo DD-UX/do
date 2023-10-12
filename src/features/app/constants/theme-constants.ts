@@ -34,3 +34,9 @@ export const HIGH_CONTRAST_INPUT_THEME = {
 export const HIGH_CONTRAST_TEXTAREA_THEME = {
   colors: {...HIGH_CONTRAST_INPUT_THEME.field.input.colors}
 };
+
+export const AVATAR_THEME = {
+  root: {
+    base: 'flex justify-center items-center space-x-0 rounded'
+  }
+};

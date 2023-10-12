@@ -14,11 +14,11 @@ import * as yup from 'yup';
 
 import FormControl from 'features/app/components/common/FormControl';
 import Loading from 'features/app/components/common/Loading';
-import {ProjectContext} from 'features/project/context/ProjectContext';
 import {
   HIGH_CONTRAST_INPUT_THEME,
   HIGH_CONTRAST_TEXTAREA_THEME
-} from 'features/theme/constants/theme-constants';
+} from 'features/app/constants/theme-constants';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
 const ProjectForm: FC = () => {

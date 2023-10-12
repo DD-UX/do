@@ -225,15 +225,4 @@
   body.dark::-webkit-scrollbar-thumb {
     background-color: var(--accent-400);
   }
-
-  /*a[href] {*/
-  /*  color: var(--primary-color);*/
-  /*  text-decoration: underline;*/
-  /*  text-underline-offset: 0.2rem;*/
-  /*  transition: color 200ms linear;*/
-  /*}*/
-
-  a[href]:hover {
-    color: var(--primary-700);
-  }
 }

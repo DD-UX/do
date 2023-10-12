@@ -18,18 +18,22 @@ import ProjectSelector from 'features/app/components/common/ProjectSelector';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
 import {TASK_STATUSES} from 'features/app/constants/status-constants';
-import {NO_VALUE} from 'features/app/constants/ui-constants';
-import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
-import {TaskContext} from 'features/task/context/TaskContext';
 import {
   HIGH_CONTRAST_INPUT_THEME,
   HIGH_CONTRAST_TEXTAREA_THEME
-} from 'features/theme/constants/theme-constants';
+} from 'features/app/constants/theme-constants';
+import {NO_VALUE} from 'features/app/constants/ui-constants';
+import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
+import {TaskContext} from 'features/task/context/TaskContext';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
 
-const TaskForm: FC = () => {
+type TaskFormProps = {
+  onSave?(): void;
+};
+
+const TaskForm: FC<TaskFormProps> = ({onSave}) => {
   const {task, isLoadingTask, refreshTask} = useContext(TaskContext);
   const {updateTask} = useTaskUpdate();
   const formikInstance = useFormik<TaskProps>({
@@ -42,6 +46,7 @@ const TaskForm: FC = () => {
       const updatedValues = {...values};
       await updateTask(updatedValues);
       refreshTask();
+      onSave?.();
     }
   });
 

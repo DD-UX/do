@@ -4,9 +4,9 @@ import {FC} from 'react';
 import {appLayoutVariants} from 'app/layout-variants/app-layout-variants';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
+import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import ProjectsContent from 'features/project/components/ProjectsContent';
 import ProjectsHeader from 'features/project/components/ProjectsHeader';
-import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 const ProjectsPage: FC = () => {
   return (

@@ -2,6 +2,7 @@
 
 import {FC, useContext, useMemo} from 'react';
 import {LuCalendarClock, LuTrash2} from 'react-icons/lu';
+import {appLinkVariants} from 'app/layout-variants/app-link-variants';
 import {Button} from 'flowbite-react';
 import NextLink from 'next/link';
 import {twMerge} from 'tailwind-merge';
@@ -35,7 +36,7 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
     if (status === STATUS_CANCELLED || status === STATUS_DONE) {
       classNames.push(...['line-through', 'opacity-50']);
     }
-    return twMerge(classNames);
+    return twMerge(appLinkVariants(), classNames);
   }, [status]);
 
   const itemClassName = useMemo(() => {
@@ -43,8 +44,8 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
       // layout
       'grid',
       'grid-rows-[min-content]',
-      'grid-cols-[min-content_min-content_8rem_minmax(0,1fr)_8rem_7rem]',
-      'gap-2',
+      'grid-cols-[min-content_min-content_8rem_minmax(0,1fr)_8rem_min-content]',
+      'gap-4',
       'p-2',
       'rounded-md',
       'items-center',

@@ -6,7 +6,12 @@ import StatusIcon from 'features/app/components/common/StatusIcon';
 import {TASK_STATUSES} from 'features/app/constants/status-constants';
 
 const statusSelectorItem = tv({
-  base: ['grid', 'grid-flow-col', 'gap-2', 'grid-cols-[min-content_1fr] ', 'cursor-pointer']
+  base: ['grid', 'grid-flow-col', 'grid-cols-[1.2rem]', 'items-center', 'cursor-pointer'],
+  variants: {
+    showValue: {
+      true: ['grid-cols-[1.2rem_1fr]', 'gap-2']
+    }
+  }
 });
 
 type StatusSelectorProps = {
@@ -31,7 +36,7 @@ const StatusSelector: FC<StatusSelectorProps> = ({
       label="Dropdown"
       inline
       renderTrigger={() => (
-        <div className={statusSelectorItem()}>
+        <div className={statusSelectorItem({showValue})}>
           <StatusIcon size={iconSize as number} status={status} />
           {showValue && <p className="m-0">{status}</p>}
         </div>
@@ -44,7 +49,7 @@ const StatusSelector: FC<StatusSelectorProps> = ({
           value={currentStatus}
           onClick={() => handleStatusChange(currentStatus)}
         >
-          <div className={statusSelectorItem()}>
+          <div className={statusSelectorItem({showValue: true})}>
             <StatusIcon size={iconSize as number} status={currentStatus} />
             <p className="m-0">{currentStatus}</p>
           </div>

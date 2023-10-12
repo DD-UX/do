@@ -8,7 +8,7 @@ import {usePathname, useRouter} from 'next/navigation';
 import {
   APP_NAVIGATION_SIDEBAR_LOGOUT_BUTTON_THEME,
   APP_NAVIGATION_SIDEBAR_THEME
-} from 'features/theme/constants/theme-constants';
+} from 'features/app/constants/theme-constants';
 import {deleteSession} from 'lib/sdk/session/client/delete';
 
 const AppNavigation: FC = () => {

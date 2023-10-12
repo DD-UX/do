@@ -4,11 +4,11 @@ import {FC, useContext} from 'react';
 import {appLayoutVariants} from 'app/layout-variants/app-layout-variants';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
+import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import ProjectForm from 'features/project/components/ProjectForm';
 import ProjectHeader from 'features/project/components/ProjectHeader';
 import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
 import {ProjectContext} from 'features/project/context/ProjectContext';
-import {headerContentFooterVariants} from 'features/theme/layout-variants/header-content-footer-variants';
 
 const ProjectDetailPage: FC = () => {
   const {project} = useContext(ProjectContext);
