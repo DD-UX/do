@@ -33,7 +33,7 @@ const ProjectListItem: FC<ProjectListItemProps> = ({project}) => {
       // layout
       'grid',
       'grid-rows-[min-content]',
-      'grid-cols-[8rem_minmax(0,1fr)_8rem_min-content]',
+      'grid-cols-[minmax(0,1fr)_8rem_min-content]',
       'gap-4',
       'p-2',
       'rounded-md',

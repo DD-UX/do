@@ -40,3 +40,15 @@ export const AVATAR_THEME = {
     base: 'flex justify-center items-center space-x-0 rounded'
   }
 };
+
+export const DATEPICKER_THEME = {
+  views: {
+    days: {
+      items: {
+        item: {
+          disabled: 'line-through opacity-50'
+        }
+      }
+    }
+  }
+};

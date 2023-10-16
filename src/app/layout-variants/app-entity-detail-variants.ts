@@ -33,10 +33,10 @@ export const appEntityFormSidePanelVariants = tv({
     // border
     'border-l-2 ',
     'border-l-gray-200',
-    'dark:border-l-gray-700 overflow-hidden'
+    'dark:border-l-gray-700'
   ]
 });
 
 export const appEntityFormSidePanelContentVariants = tv({
-  base: ['flex', 'flex-col', 'gap-2', 'overflow-y-auto', 'overflow-x-hidden']
+  base: ['flex', 'flex-col', 'gap-2']
 });
