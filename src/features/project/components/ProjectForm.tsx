@@ -8,7 +8,8 @@ import {
   appEntityFormSidePanelVariants,
   appEntityFormVariants
 } from 'app/layout-variants/app-entity-detail-variants';
-import {Button, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
+import dayjs from 'dayjs';
+import {Button, Datepicker, Flowbite, Textarea, TextInput, ThemeProps} from 'flowbite-react';
 import {useFormik} from 'formik';
 import * as yup from 'yup';
 
@@ -18,6 +19,7 @@ import {
   HIGH_CONTRAST_INPUT_THEME,
   HIGH_CONTRAST_TEXTAREA_THEME
 } from 'features/app/constants/theme-constants';
+import {getDateTimeValue} from 'features/app/helpers/date-helpers';
 import {ProjectContext} from 'features/project/context/ProjectContext';
 import {ProjectProps} from 'lib/sdk/projects/client/get';
 
@@ -31,6 +33,14 @@ const ProjectForm: FC = () => {
     }),
     onSubmit: updateProject
   });
+
+  console.log('formikInstance.values?.start_datetime', formikInstance.values?.start_datetime);
+
+  const handleSelectDate = (fieldName: keyof ProjectProps, date: Date) => {
+    console.log('date', date);
+    console.log('date', dayjs(date).valueOf());
+    formikInstance.setFieldValue(fieldName, date);
+  };
 
   return (
     <Flowbite
@@ -75,8 +85,20 @@ const ProjectForm: FC = () => {
           </section>
           <aside className={appEntityFormSidePanelVariants()}>
             <div className={appEntityFormSidePanelContentVariants()}>
-              <FormControl label="Start date:">To do</FormControl>
-              <FormControl label="End date:">To do</FormControl>
+              <FormControl label="Start date:">
+                <Datepicker
+                  name="start_datetime"
+                  value={getDateTimeValue(formikInstance.values?.start_datetime)}
+                  onSelectedDateChanged={(date) => handleSelectDate('start_datetime', date)}
+                />
+              </FormControl>
+              <FormControl label="End date:">
+                <Datepicker
+                  name="end_datetime"
+                  value={getDateTimeValue(formikInstance.values?.end_datetime)}
+                  onSelectedDateChanged={(date) => handleSelectDate('end_datetime', date)}
+                />
+              </FormControl>
             </div>
             <Button
               fullSized

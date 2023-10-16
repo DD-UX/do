@@ -1,6 +1,6 @@
 'use client';
 
-import {FC, useContext, useEffect} from 'react';
+import {FC, useContext, useEffect, useState} from 'react';
 import {LuArrowUpLeft} from 'react-icons/lu';
 import {Button, Footer, Navbar, Sidebar} from 'flowbite-react';
 
@@ -9,24 +9,36 @@ import useTasksData from 'features/app/hooks/useTasksData';
 import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import TaskProjectColumnItem from 'features/task/components/TaskProjectColumnItem';
 import {TaskContext} from 'features/task/context/TaskContext';
+import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 type ProjectTasksColumnProps = {
   projectId: string;
   showGoToProjectButton?: boolean;
-  setOnSaveColumnCallback?(callback: () => void): void;
 };
 
 const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
   projectId,
-  showGoToProjectButton = true,
-  setOnSaveColumnCallback
+  showGoToProjectButton = true
 }) => {
-  const {tasks, isLoadingTasks, refreshTasks} = useTasksData({projectId});
-  const {task: taskData} = useContext(TaskContext);
+  const {tasks, isLoadingTasks, refreshTasks} = useTasksData({
+    projectId,
+    pickProps: ['id', 'title', 'assignee_id', 'status']
+  });
+  const [prevTaskData, setPrevTaskData] = useState<TaskProps | null>(null);
+  const {task: taskData, refreshTask} = useContext(TaskContext);
 
+  const handleItemUpdate = () => {
+    refreshTask();
+    refreshTasks();
+  };
+
+  // This use effect is in charge of monitoring the editing task and keep the list up to date
   useEffect(() => {
-    setOnSaveColumnCallback?.(() => refreshTasks);
-  }, [refreshTasks]);
+    if (JSON.stringify(taskData) !== JSON.stringify(prevTaskData)) {
+      refreshTasks();
+      setPrevTaskData(taskData);
+    }
+  }, [taskData, prevTaskData]);
 
   return (
     <menu className={headerContentFooterVariants({layout: 'column'})}>
@@ -44,7 +56,7 @@ const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
                   key={currentTask.id}
                   task={currentTask}
                   active={currentTask.id === taskData?.id}
-                  onUpdate={refreshTasks}
+                  onUpdate={handleItemUpdate}
                 />
               ))}
               {(!Array.isArray(tasks) || (tasks && tasks?.length < 1)) && <p>No tasks</p>}

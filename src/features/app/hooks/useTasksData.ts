@@ -13,13 +13,14 @@ type UseTasksDataValues = {
 };
 
 type UseTasksDataProps = {
-  projectId?: string;
+  projectId?: string | null;
+  pickProps?: (keyof TaskProps | '*')[];
 };
 
 /*
  * This Hook will pull down all the tasks
  */
-function useTasksData({projectId}: UseTasksDataProps): UseTasksDataValues {
+function useTasksData({projectId, pickProps}: UseTasksDataProps): UseTasksDataValues {
   const {setToast} = useToasts();
   const [tasksData, setTasksData] = useState<TaskProps[] | null>(null);
   const [error, setError] = useState<PostgrestError | null>(null);
@@ -29,7 +30,11 @@ function useTasksData({projectId}: UseTasksDataProps): UseTasksDataValues {
   const loadTasks = async () => {
     try {
       setIsLoadingTasks(true);
-      const {tasks: tasksList, error} = await getTasks({search, projectId});
+      const {tasks: tasksList, error} = await getTasks({
+        search,
+        projectId: projectId || '',
+        ...(pickProps && {pickProps})
+      });
       setError(error);
       setTasksData(tasksList);
     } catch (error) {

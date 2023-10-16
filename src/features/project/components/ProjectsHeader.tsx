@@ -10,7 +10,7 @@ const ProjectsHeader: FC = () => {
   const {refreshProjects} = useContext(ProjectsContext);
 
   return (
-    <Navbar>
+    <Navbar fluid>
       <h4 className="text-sm m-0 truncate text-gray-600 dark:text-gray-200">Projects</h4>
       <AddProjectForm onCreate={refreshProjects} />
     </Navbar>

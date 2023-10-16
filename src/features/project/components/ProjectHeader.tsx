@@ -10,7 +10,7 @@ const ProjectHeader: FC = () => {
   const {project} = useContext(ProjectContext);
 
   return (
-    <Navbar>
+    <Navbar fluid>
       <h4 className="text-sm m-0 truncate text-gray-600 dark:text-gray-200">{project?.title}</h4>
       <AddProjectForm autoFocus={false} />
     </Navbar>

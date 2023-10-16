@@ -39,6 +39,8 @@ const TaskProjectColumnItem: FC<TaskProjectColumnItemProps> = ({task, active, on
       'grid',
       'grid-rows-[min-content]',
       'grid-cols-[min-content_minmax(0,1fr)]',
+      'gap-y-2',
+      'gap-x-3',
       'p-2',
       'rounded-md',
       'items-center',

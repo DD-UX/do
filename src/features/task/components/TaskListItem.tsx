@@ -17,7 +17,7 @@ import {
 } from 'features/app/constants/status-constants';
 import {NO_VALUE} from 'features/app/constants/ui-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
-import {formatDateTime} from 'features/app/helpers/date-helpers';
+import {getDateTimeValue} from 'features/app/helpers/date-helpers';
 import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
@@ -93,7 +93,7 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
         <div>
           <LuCalendarClock size={12} />
         </div>
-        {formatDateTime(created_at)}
+        {getDateTimeValue(created_at)}
       </div>
       <Button fullSized size="xs" type="button" color="failure" outline onClick={removeTaskHandler}>
         <span className="inline-flex gap-2">
