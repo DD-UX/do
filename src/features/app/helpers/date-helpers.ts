@@ -16,7 +16,7 @@ export const getDateTimeRangeValue = (
   // If any of the values is valid, display it as a range
   if (dayjs(startTime).isValid() || dayjs(endTime).isValid()) {
     return `${getDateTimeValue(startTime, formatTemplate)} - ${getDateTimeValue(
-      startTime,
+      endTime,
       formatTemplate
     )}`;
   }
