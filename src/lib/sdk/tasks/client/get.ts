@@ -7,23 +7,32 @@ export type TaskProps = Database['public']['Tables']['tasks']['Row'];
 
 export const getTasks = async ({
   pickProps = ['*'],
-  search = ''
+  search = '',
+  sortBy = 'created_at',
+  projectId
 }: {
   pickProps?: (keyof TaskProps | '*')[];
   search?: string;
+  sortBy?: keyof TaskProps;
+  projectId?: string;
 }) => {
   const supabase = createClientComponentClient();
-  const query = supabase
-    .from('tasks')
-    .select(
-      `
+  const query = supabase.from('tasks').select(
+    `
     ${pickProps?.join(', ')}
   `
-    )
-    .order('created_at', {ascending: false});
+  );
 
   if (search) {
     query.ilike('title', `%${search}%`);
+  }
+
+  if (projectId) {
+    query.eq('project_id', projectId);
+  }
+
+  if (sortBy) {
+    query.order(sortBy, {ascending: false});
   }
 
   const {data: tasks, error} = (await query) as PostgrestSingleResponse<TaskProps[]>;

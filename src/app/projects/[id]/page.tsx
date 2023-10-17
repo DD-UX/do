@@ -1,33 +1,33 @@
 'use client';
 
-import {FC} from 'react';
-import {useMediaQuery, useTheme} from '@geist-ui/core';
-import {AnimatePresence} from 'framer-motion';
+import {FC, useContext} from 'react';
+import {appLayoutVariants} from 'app/layout-variants/app-layout-variants';
 
 import AppNavigation from 'features/app/components/common/AppNavigation';
-import {LayoutContent, LayoutWrapper} from 'features/app/components/common/Layout';
+import {headerContentFooterVariants} from 'features/app/layout-variants/header-content-footer-variants';
 import ProjectForm from 'features/project/components/ProjectForm';
 import ProjectHeader from 'features/project/components/ProjectHeader';
-import {ProjectContextProvider} from 'features/project/context/ProjectContext';
+import ProjectTasksColumn from 'features/project/components/ProjectTasksColumn';
+import {ProjectContext} from 'features/project/context/ProjectContext';
 
 const ProjectDetailPage: FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery('mobile');
+  const {project} = useContext(ProjectContext);
 
   return (
-    <ProjectContextProvider>
-      <AnimatePresence mode="wait">
-        <LayoutWrapper $theme={theme}>
-          <AppNavigation />
-          <ProjectHeader />
-          <AnimatePresence mode="wait">
-            <LayoutContent $theme={theme} $fullWidth={isMobile} $noPadding>
-              <ProjectForm />
-            </LayoutContent>
-          </AnimatePresence>
-        </LayoutWrapper>
-      </AnimatePresence>
-    </ProjectContextProvider>
+    <div className={appLayoutVariants()}>
+      <AppNavigation />
+      <ProjectTasksColumn projectId={String(project?.id)} showGoToProjectButton={false} />
+      <main
+        className={headerContentFooterVariants({
+          layout: 'content'
+        })}
+      >
+        <ProjectHeader />
+        <div className={`bg-white dark:bg-gray-700 h-full overflow-y-auto`}>
+          <ProjectForm />
+        </div>
+      </main>
+    </div>
   );
 };
 

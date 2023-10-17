@@ -8,16 +8,15 @@ import {useParams, useRouter} from 'next/navigation';
 import DeleteModal from 'features/app/components/common/DeleteModal';
 import useProjectById from 'features/app/hooks/useProjectById';
 import {deleteProject} from 'lib/sdk/projects/client/delete';
-import {ProjectProps, ProjectWithTasksProps} from 'lib/sdk/projects/client/get';
+import {ProjectProps} from 'lib/sdk/projects/client/get';
 import {updateProject} from 'lib/sdk/projects/client/update';
-import {TaskProps} from 'lib/sdk/tasks/client/get';
 
 type ProjectContextProviderProps = {
   onInitialized?: () => void;
 };
 
 export type ProjectContextProps = {
-  project: ProjectWithTasksProps<Pick<TaskProps, 'id' | 'title' | 'status' | 'assignee_id'>> | null;
+  project: ProjectProps | null;
   isLoadingProject: boolean;
   error: PostgrestError | null;
   refreshProject(): void;
@@ -53,8 +52,7 @@ export const ProjectContextProvider: FC<PropsWithChildren<ProjectContextProvider
   const {project, error, refreshProject, isLoadingProject} = useProjectById<
     ProjectContextProps['project']
   >({
-    projectId: String(projectId),
-    withTasks: true
+    projectId: String(projectId)
   });
   const [hasInitialized, setHasInitialized] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);

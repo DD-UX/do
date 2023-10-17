@@ -6,7 +6,7 @@ export type GeistThemeProps = {
   };
 };
 
-export type GeistSelectOption = {
+export type DropdownItemModel = {
   label: string;
   value: string;
   disabled?: boolean;

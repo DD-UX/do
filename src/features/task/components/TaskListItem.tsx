@@ -1,13 +1,13 @@
 'use client';
 
-import {FC, useContext} from 'react';
-import {Button, useTheme} from '@geist-ui/core';
-import Calendar from '@geist-ui/icons/calendar';
-import Trash2 from '@geist-ui/icons/trash2';
-import styled from 'styled-components';
+import {FC, useContext, useMemo} from 'react';
+import {LuCalendarClock, LuTrash2} from 'react-icons/lu';
+import {appLinkVariants} from 'app/layout-variants/app-link-variants';
+import {Button} from 'flowbite-react';
+import NextLink from 'next/link';
+import {twMerge} from 'tailwind-merge';
 
-import EllipsisText from 'features/app/components/common/EllipsisText';
-import {LayoutLink} from 'features/app/components/common/Layout';
+import ProjectSelector from 'features/app/components/common/ProjectSelector';
 import StatusSelector from 'features/app/components/common/StatusSelector';
 import UserSelector from 'features/app/components/common/UserSelector';
 import {
@@ -15,35 +15,46 @@ import {
   STATUS_DONE,
   TASK_STATUSES
 } from 'features/app/constants/status-constants';
+import {NO_VALUE} from 'features/app/constants/ui-constants';
 import {TasksContext} from 'features/app/context/TasksContext';
-import {formatDateTime} from 'features/app/helpers/date-helpers';
+import {getDateTimeValue} from 'features/app/helpers/date-helpers';
 import useTaskUpdate from 'features/app/hooks/useTaskUpdate';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 import {TaskProps} from 'lib/sdk/tasks/client/get';
 import {UserProps} from 'lib/sdk/users/client/get';
-
-const TaskListItemWrapper = styled.div<GeistThemeProps>`
-  display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: min-content minmax(0, 1fr) 10rem 10rem 2.5rem;
-  gap: ${({$theme}) => $theme.layout.gapHalf};
-  padding: ${({$theme}) => $theme.layout.gapHalf} 0;
-  align-items: center;
-
-  & + & {
-    border-block-start: 0.0625rem solid ${({$theme}) => $theme.palette.border};
-  }
-`;
 
 type TaskListItemProps = {
   task: TaskProps;
 };
 
 const TaskListItem: FC<TaskListItemProps> = ({task}) => {
-  const theme = useTheme();
   const {updateTask} = useTaskUpdate();
   const {deleteTask, refreshTasks} = useContext(TasksContext);
-  const {id, title, created_at, status, assignee_id} = task;
+  const {id, title, created_at, status, assignee_id, project_id} = task;
+
+  const linkClassName = useMemo(() => {
+    const classNames = ['truncate', 'text-sm', 'cursor-pointer'];
+    if (status === STATUS_CANCELLED || status === STATUS_DONE) {
+      classNames.push(...['line-through', 'opacity-50']);
+    }
+    return twMerge(appLinkVariants(), classNames);
+  }, [status]);
+
+  const itemClassName = useMemo(() => {
+    const classNames = [
+      // layout
+      'grid',
+      'grid-rows-[min-content]',
+      'grid-cols-[min-content_min-content_8rem_minmax(0,1fr)_8rem_min-content]',
+      'gap-4',
+      'p-2',
+      'rounded-md',
+      'items-center',
+      'hover:bg-gray-200',
+      'hover:dark:bg-gray-700',
+      'transition-all'
+    ];
+    return twMerge(classNames);
+  }, [status]);
 
   const removeTaskHandler = () => {
     deleteTask(task);
@@ -59,43 +70,38 @@ const TaskListItem: FC<TaskListItemProps> = ({task}) => {
     refreshTasks();
   };
 
+  const updateProjectId = async (updatedProjectId: UserProps['project_id']) => {
+    await updateTask({...task, project_id: updatedProjectId || null});
+    refreshTasks();
+  };
+
   return (
-    <TaskListItemWrapper $theme={theme}>
+    <div className={itemClassName}>
       <StatusSelector status={status} onChange={updateStatus} />
-
-      <LayoutLink $theme={theme} href={`/tasks/${id}`} passHref>
-        <EllipsisText
-          h6
-          my={0}
-          type={status === STATUS_DONE || status === STATUS_CANCELLED ? 'secondary' : 'default'}
-          style={{
-            textDecoration:
-              status === STATUS_DONE || status === STATUS_CANCELLED ? 'line-through' : 'none'
-          }}
-        >
-          {title}
-        </EllipsisText>
-      </LayoutLink>
-
-      <UserSelector showUserName userId={assignee_id} onChange={updateAssigneeUser} />
-
+      <UserSelector userId={assignee_id} onChange={updateAssigneeUser} />
+      <ProjectSelector value={project_id || NO_VALUE} onChange={updateProjectId} />
+      <NextLink
+        className={linkClassName}
+        href={{
+          pathname: `/tasks/${id}`
+        }}
+        passHref
+      >
+        {title}
+      </NextLink>
       <div className="inline-flex gap-1 items-center whitespace-nowrap text-end justify-self-end">
-        <span>
-          <Calendar size={12} />
-        </span>
-        {formatDateTime(created_at)}
+        <div>
+          <LuCalendarClock size={12} />
+        </div>
+        {getDateTimeValue(created_at)}
       </div>
-
-      <Button
-        auto
-        icon={<Trash2 />}
-        px={0.4}
-        scale={0.75}
-        type="error"
-        ghost
-        onClick={removeTaskHandler}
-      />
-    </TaskListItemWrapper>
+      <Button fullSized size="xs" type="button" color="failure" outline onClick={removeTaskHandler}>
+        <span className="inline-flex gap-2">
+          <LuTrash2 size={16} />
+          Remove
+        </span>
+      </Button>
+    </div>
   );
 };
 

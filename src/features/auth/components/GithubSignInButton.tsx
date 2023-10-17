@@ -1,14 +1,18 @@
 'use client';
+
 import {FC} from 'react';
-import {Button} from '@geist-ui/core';
-import Github from '@geist-ui/icons/github';
+import {RiGithubFill} from 'react-icons/ri';
+import {Button} from 'flowbite-react';
 
 import {setSessionWithGithub} from 'lib/sdk/session/client/set';
 
 const GithubSignInButton: FC = () => {
   return (
-    <Button auto type="secondary" ghost icon={<Github />} onClick={setSessionWithGithub}>
-      Sign in with Github
+    <Button color="light" fullSized onClick={setSessionWithGithub}>
+      <span className="inline-flex gap-2">
+        <RiGithubFill size={20} />
+        Sign in with Github
+      </span>
     </Button>
   );
 };

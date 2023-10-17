@@ -4,8 +4,8 @@ import {usePathname, useRouter} from 'next/navigation';
 import styled, {css} from 'styled-components';
 
 import {TRANSITION_DURATION} from 'features/app/constants/ui-constants';
+import {GeistThemeProps} from 'features/app/models/geist-theme-models';
 import {GeistIconModel} from 'lib/geist/geist-icon-model';
-import {GeistThemeProps} from 'lib/geist/geist-theme-models';
 
 const AppNavigationButtonWrapper = styled.button.attrs({
   type: 'button'
@@ -66,7 +66,7 @@ const AppNavigationButton: FC<AppNavigationButtonProps> = (props) => {
       $isActive={'route' in props && pathname.startsWith(props.route)}
       onClick={handleClick}
     >
-      <Icon scale={0.8} />
+      <Icon />
       <Text my={0} font={0.7}>
         {text}
       </Text>

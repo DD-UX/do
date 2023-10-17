@@ -105,7 +105,7 @@
     --error-900: #7b2c2b;
   }
 
-  .dark-theme {
+  .dark {
     --primary-color: #007bff;
     --primary-100: #0c2547;
     --primary-200: #0e305d;
@@ -183,7 +183,7 @@
     --warning-800: #ffe849;
     --warning-900: #fff45d;
 
-    --error-color: #dc3545;
+    --error-color: #e85455;
     --error-100: #641b1b;
     --error-200: #851f1f;
     --error-300: #a72222;
@@ -218,22 +218,11 @@
     background-color: var(--accent-700);
   }
 
-  body.dark-theme::-webkit-scrollbar-track {
+  body.dark::-webkit-scrollbar-track {
     background-color: var(--background-400);
   }
 
-  body.dark-theme::-webkit-scrollbar-thumb {
+  body.dark::-webkit-scrollbar-thumb {
     background-color: var(--accent-400);
-  }
-
-  a[href] {
-    color: var(--primary-color);
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-    transition: color 200ms linear;
-  }
-
-  a[href]:hover {
-    color: var(--primary-700);
   }
 }
