@@ -1,6 +1,6 @@
 'use client';
 
-import {FC} from 'react';
+import {FC, useState} from 'react';
 import {LuFolders, LuListTodo, LuLogOut} from 'react-icons/lu';
 import {Button, Flowbite, Sidebar, ThemeProps} from 'flowbite-react';
 import {usePathname, useRouter} from 'next/navigation';
@@ -14,6 +14,7 @@ import {deleteSession} from 'lib/sdk/session/client/delete';
 const AppNavigation: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(true);
 
   // Delete session and refresh the page so if any guard has to act, it will
   const handleLogout = async () => {
@@ -32,7 +33,13 @@ const AppNavigation: FC = () => {
         } as ThemeProps
       }
     >
-      <Sidebar aria-label="Do sidebar">
+      <Sidebar
+        collapsed={collapsed}
+        aria-label="Do sidebar"
+        onMouseEnter={() => setCollapsed(false)}
+        onMouseLeave={() => setCollapsed(true)}
+        className="group/app-navigation"
+      >
         <Sidebar.Items className="h-full grid">
           <Sidebar.ItemGroup>
             <Sidebar.Item
@@ -49,8 +56,8 @@ const AppNavigation: FC = () => {
           <Sidebar.ItemGroup className="mt-auto">
             <Button fullSized color="logout" onClick={handleLogout}>
               <span className="inline-flex gap-2 items-center">
-                <LuLogOut />
-                Log out
+                <LuLogOut size="24" style={{flexShrink: 0}} />
+                <span className="truncate">Log out</span>
               </span>
             </Button>
           </Sidebar.ItemGroup>

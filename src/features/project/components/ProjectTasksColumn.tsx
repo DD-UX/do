@@ -68,8 +68,8 @@ const ProjectTasksColumn: FC<ProjectTasksColumnProps> = ({
         <Footer className="p-4 rounded-none border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
           <Button fullSized as="a" outline href={`/projects/${projectId}`}>
             <span className="inline-flex gap-2 items-center">
-              <LuArrowUpLeft />
-              Go to project
+              <LuArrowUpLeft style={{flexShrink: 0}} />
+              <span className="truncate">Go to project</span>
             </span>
           </Button>
         </Footer>

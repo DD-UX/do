@@ -2,8 +2,8 @@ export const APP_NAVIGATION_SIDEBAR_THEME = {
   root: {
     inner: 'h-full overflow-y-auto overflow-x-hidden bg-white dark:bg-gray-900',
     collapsed: {
-      on: 'w-10',
-      off: 'w-14 border-r-4 border-gray-100 dark:border-gray-900'
+      off: 'w-64 transition-[width] ease-in',
+      on: 'w-14 border-r-4 border-gray-100 dark:border-gray-900 transition-[width] ease-out'
     }
   },
   itemGroup:
@@ -11,13 +11,12 @@ export const APP_NAVIGATION_SIDEBAR_THEME = {
 };
 
 export const APP_NAVIGATION_SIDEBAR_LOGOUT_BUTTON_THEME = {
-  base: 'group flex items-stretch items-center p-0.5 text-center font-medium relative focus:z-10 focus:outline-none',
   color: {
     logout:
       'transition-all text-gray-900 bg-white border border-gray-300 enabled:hover:bg-white focus:ring-4 focus:ring-gray-300 dark:bg-gray-700 dark:text-white dark:border-gray-800 dark:enabled:hover:bg-gray-600 dark:enabled:hover:border-gray-700 dark:focus:ring-gray-800'
   },
   size: {
-    md: 'text-sm px-3 py-2'
+    md: 'text-sm px-2 py-1.5'
   }
 };
 
